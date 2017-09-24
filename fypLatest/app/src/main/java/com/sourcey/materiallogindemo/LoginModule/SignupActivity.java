@@ -2,10 +2,12 @@ package com.sourcey.materiallogindemo.LoginModule;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.IntentCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -273,15 +275,30 @@ public class SignupActivity extends Activity {
             if (model != null) {
                 switch (model.getErrorCode()) {
                     case 200:
-                        //Yahan Khulwa de Activity
+
+                        ///
+
                         Intent intent = new Intent(getApplicationContext(), HomeMapActivity.class);
+                        ComponentName cn = intent.getComponent();
+                        Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("email",email);
                         editor.commit();
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+                        startActivity(mainIntent);
+                        /*
+                        ///
+                        //Yahan Khulwa de Activity
+                        Intent intent = new Intent(SignupActivity.this, HomeMapActivity.class);
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("email",email);
+                        editor.commit();
                         finish();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        startActivity(intent);
+                        */
                         break;
                     default:
                         //Error Message
