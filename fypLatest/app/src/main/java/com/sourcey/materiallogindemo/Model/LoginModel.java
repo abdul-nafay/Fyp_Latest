@@ -1,20 +1,30 @@
 package com.sourcey.materiallogindemo.Model;
 
-
 /**
- * Created by abdul on 9/20/17.
+ * Created by Abdul Nafay Waseem on 9/24/2017.
  */
 
-public class SignupModel{
+public class LoginModel{
 
     private int errorCode ;
     private String message ;
+    private User user;
 
-    public SignupModel(int errorCode, String message) {
+    public LoginModel(int errorCode, String message,User user) {
 
         this.errorCode = errorCode;
         this.message = message;
+        this.user = user;
 
+    }
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getErrorCode() {

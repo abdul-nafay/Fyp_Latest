@@ -1,30 +1,41 @@
 package com.sourcey.materiallogindemo.LoginModule;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import android.content.Intent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sourcey.materiallogindemo.HttpHandler;
+import com.sourcey.materiallogindemo.HomeModule.HomeMapActivity;
+import com.sourcey.materiallogindemo.Helpers.JsonParser;
+import com.sourcey.materiallogindemo.Model.LoginModel;
+import com.sourcey.materiallogindemo.Model.User;
+import com.sourcey.materiallogindemo.Network.ConnectionDetector;
+//import com.sourcey.materiallogindemo.Network.ConnnectionDetector;
+import com.sourcey.materiallogindemo.Network.HttpHandler;
 import com.sourcey.materiallogindemo.R;
+import com.sourcey.materiallogindemo.Utility.AppConstants;
+import com.sourcey.materiallogindemo.Utility.MemorizerUtil;
+//import com.sourcey.materiallogindemo.Utility.MemorizerUtils;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import butterknife.ButterKnife;
 import butterknife.Bind;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends Activity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     ProgressDialog progressDialog;
@@ -44,8 +55,8 @@ public class LoginActivity extends AppCompatActivity {
         loginLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
+                MemorizerUtil.hideSoftInput(v,getApplicationContext());
 
                 return false;
             }
@@ -66,7 +77,8 @@ public class LoginActivity extends AppCompatActivity {
                 // Start the Signup activity
                 Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
                 startActivityForResult(intent, REQUEST_SIGNUP);
-                finish();
+
+                //finish();
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
@@ -94,8 +106,14 @@ public class LoginActivity extends AppCompatActivity {
         // TODO: Implement your own authentication logic here.
 
 
-        new LoginRequest(email,password).execute();
-
+        ConnectionDetector connnectionDetector = new ConnectionDetector(getApplicationContext());
+        Boolean isInternetPresent = connnectionDetector.isConnectingToInternet();
+        if (isInternetPresent) {
+            new LoginRequest(email, password).execute();
+        }
+        else {
+            MemorizerUtil.displayToast(getApplicationContext(),"No Internet Connection");
+        }
         onLoginSuccess();
 
         /*new android.os.Handler().postDelayed(
@@ -123,6 +141,15 @@ public class LoginActivity extends AppCompatActivity {
     }*/
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        _emailText.setText("");
+        _passwordText.setText("");
+
+    }
+
+    @Override
     public void onBackPressed() {
         // Disable going back to the MainActivity
         moveTaskToBack(true);
@@ -131,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
-        //finish();
+       // finish();
     }
 
     public void onLoginFailed() {
@@ -190,7 +217,7 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             String response = "";
             try {
-                response = update_api(email,password);
+                response = login_api(email,password);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -201,31 +228,41 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            progressDialog.dismiss();
-        try {
-            if (s.equals("{\"error\":0}")) {
-                //_nameText.setText("");
-                _emailText.setText("");
-               // _mobileText.setText("");
-                _passwordText.setText("");
-               // _reEnterPasswordText.setText("");
-              //  _nameText.hasFocus();
-                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-                startActivity(intent);
+            LoginModel model = JsonParser.getInstance().parseLoginResponse(s);
 
-            } else {
-                _emailText.setError("Invalid email or password");
+            if (model != null) {
+                switch (model.getErrorCode()) {
+                    case 200:
+                        //Yahan Khulwa de Activity
+                        Intent intent = new Intent(getApplicationContext(), HomeMapActivity.class);
+                        User user = model.getUser();
+                        String email = user.getEmail();
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("email",email);
+                        editor.commit();
+                        startActivity(intent);
+                        finish();
+                        break;
+                    default:
+                        //Error Message
+                        MemorizerUtil.displayToast(getApplicationContext(),"Something Went Wrong");
+                        break;
+                }
+            }
+            else {
+
             }
 
+            if(progressDialog != null){
+                progressDialog.dismiss();
+            }
 
-        } catch (Exception e) {
-            e.getLocalizedMessage();
-        }
         }
 
     }
 
-    public String update_api(String email, String password) {
+    public String login_api(String email, String password) {
         String response = "";
         try {
 
@@ -233,7 +270,7 @@ public class LoginActivity extends AppCompatActivity {
             HashMap<String, String> params = new HashMap<>();
             params.put("email", email);
             params.put("password", password);
-             response = httpHandler.performPostCall("http://192.168.10.14/testfyp/local_login.php", params);
+             response = httpHandler.performPostCall(AppConstants.API_LOGIN, params);
             // response = httpHandler.performPostCall("https://androidfyp.000webhostapp.com/signup.php", params);
 
         } catch (Exception e) {

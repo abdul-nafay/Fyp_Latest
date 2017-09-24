@@ -4,4 +4,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_home_map">Map</string>
+    <string name="tracker_logo">ic_location_searching_black_24dp</string>
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+
+        AIzaSyAyXZvRESPMtA-3jfnjBFBNn8epWIgm_AQ
+    </string>
 </resources>

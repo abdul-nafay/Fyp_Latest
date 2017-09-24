@@ -1,10 +1,11 @@
 package com.sourcey.materiallogindemo.LoginModule;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,18 +17,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sourcey.materiallogindemo.HomeModule.HomeActivity;
-import com.sourcey.materiallogindemo.HttpHandler;
+import com.sourcey.materiallogindemo.HomeModule.HomeMapActivity;
+import com.sourcey.materiallogindemo.Network.ConnectionDetector;
+//import com.sourcey.materiallogindemo.Network.ConnnectionDetector;
+import com.sourcey.materiallogindemo.Network.HttpHandler;
 import com.sourcey.materiallogindemo.R;
 
 import java.util.HashMap;
 
 import com.sourcey.materiallogindemo.Helpers.JsonParser;
 import com.sourcey.materiallogindemo.Model.SignupModel;
+import com.sourcey.materiallogindemo.Utility.AppConstants;
+import com.sourcey.materiallogindemo.Utility.MemorizerUtil;
+//import com.sourcey.materiallogindemo.Utility.MemorizerUtils;
+
 import butterknife.ButterKnife;
 import butterknife.Bind;
 
-public class SignupActivity extends AppCompatActivity {
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
+public class SignupActivity extends Activity {
     private static final String TAG = "SignupActivity";
+
 
     ProgressDialog progressDialog;
 
@@ -60,9 +72,7 @@ public class SignupActivity extends AppCompatActivity {
         signUpLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-
+                MemorizerUtil.hideSoftInput(v,getApplicationContext());
                 return false;
             }
         });
@@ -117,8 +127,14 @@ public class SignupActivity extends AppCompatActivity {
 
         // TODO: Implement your own signup logic here.
 
-        new SignUpRequest(name, email, mobile, password).execute();
-
+        ConnectionDetector connnectionDetector = new ConnectionDetector(getApplicationContext());
+        Boolean isInternetPresent = connnectionDetector.isConnectingToInternet();
+        if (isInternetPresent) {
+            new SignUpRequest(name, email, mobile, password).execute();
+        }
+        else {
+            MemorizerUtil.displayToast(getApplicationContext(),"No Internet Connection");
+        }
         onSignupSuccess();
 
        /* new android.os.Handler().postDelayed(
@@ -145,6 +161,13 @@ public class SignupActivity extends AppCompatActivity {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
         _signupButton.setEnabled(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Disable going back to the MainActivity
+       finish();
+
     }
 
     public boolean validate() {
@@ -234,7 +257,7 @@ public class SignupActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             String response = "";
             try {
-                response = update_api(name, email, mobile, password);
+                response = signUp_Api(name, email, mobile, password);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -244,7 +267,6 @@ public class SignupActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            progressDialog.dismiss();
 
             SignupModel model = JsonParser.getInstance().ParseSignupResponse(s);
 
@@ -252,12 +274,18 @@ public class SignupActivity extends AppCompatActivity {
                 switch (model.getErrorCode()) {
                     case 200:
                         //Yahan Khulwa de Activity
-                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), HomeMapActivity.class);
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("email",email);
+                        editor.commit();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         finish();
                         break;
                     default:
                         //Error Message
+                        Toast.makeText(getApplicationContext(),"Something went wrong",Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -265,11 +293,15 @@ public class SignupActivity extends AppCompatActivity {
 
             }
 
+            if(progressDialog != null){
+                progressDialog.dismiss();
+            }
+
         }
 
     }
 
-    public String update_api(String name, String email, String mobile, String password) {
+    public String signUp_Api(String name, String email, String mobile, String password) {
         String response = "";
         try {
 
@@ -279,8 +311,8 @@ public class SignupActivity extends AppCompatActivity {
             params.put("email", email);
             params.put("phone_number", mobile);
             params.put("password", password);
-            response = httpHandler.performPostCall("http://192.168.10.14/testfyp/signup.php", params);
-           // response = httpHandler.performPostCall("https://androidfyp.000webhostapp.com/signup.php", params);
+            response = httpHandler.performPostCall(AppConstants.API_SIGNUP, params);
+            //response = httpHandler.performPostCall(AppConstants.API_SIGNUP, params);
 
         } catch (Exception e) {
             Log.e("log_tag", "Error in http connection " + e.toString());

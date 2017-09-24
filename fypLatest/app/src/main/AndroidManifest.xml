@@ -1,38 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sourcey.materiallogindemo">
+<?xml version="1.0" encoding="utf-8"?><manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="com.sourcey.materiallogindemo">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
-    <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<application android:allowBackup="true" android:icon="@mipmap/ic_launcher" android:label="@string/app_name"
+    android:theme="@style/AppTheme">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".LoginModule.LoginActivity"
-            android:theme="@style/AppTheme.Dark" />
-        <activity
-            android:name=".LoginModule.SignupActivity"
-            android:theme="@style/AppTheme.Dark" />
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCR7Jz5Crrtk0zm-gJN3_5gsyvDwhu4zQY" />
+    <meta-data android:name="com.google.android.geo.API_KEY"
+        android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".HomeModule.HomeActivity"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-    </application>
+    <activity android:name="com.sourcey.materiallogindemo.HomeModule.HomeMapActivity"
+        android:label="@string/title_activity_home_map">
+
+    </activity>
+
+    <activity android:name=".MainActivity" android:label="@string/app_name">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+    <activity android:name=".LoginModule.LoginActivity" android:theme="@style/AppTheme.Dark" />
+    <activity android:name=".LoginModule.SignupActivity" android:theme="@style/AppTheme.Dark" />
+
+
+
+    <activity android:name=".HomeModule.HomeActivity" android:label="@string/title_activity_home"
+        android:theme="@style/AppTheme.NoActionBar"></activity>
+</application>
 
 </manifest>

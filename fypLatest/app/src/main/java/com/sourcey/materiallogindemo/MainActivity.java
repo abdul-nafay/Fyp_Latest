@@ -1,15 +1,18 @@
 package com.sourcey.materiallogindemo;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.sourcey.materiallogindemo.HomeModule.HomeMapActivity;
 import com.sourcey.materiallogindemo.LoginModule.LoginActivity;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,8 +20,19 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
+        String email = preferences.getString("email",null);
+        if (email != null){
+            Intent intent = new Intent(this, HomeMapActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 
     @Override
