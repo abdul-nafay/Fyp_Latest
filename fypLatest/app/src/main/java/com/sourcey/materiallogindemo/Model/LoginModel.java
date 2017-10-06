@@ -18,6 +18,12 @@ public class LoginModel{
 
     }
 
+    public LoginModel(int errorCode, String errorMessage) {
+
+        this.errorCode = errorCode;
+        this.message = errorMessage;
+    }
+
 
     public User getUser() {
         return user;

@@ -241,12 +241,20 @@ public class LoginActivity extends Activity {
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("email",email);
                         editor.commit();
+                        MemorizerUtil.displayToast(getApplicationContext(),model.getMessage());
                         startActivity(intent);
                         finish();
                         break;
+
+                    case 500:
+
+                        MemorizerUtil.displayToast(getApplicationContext(),model.getMessage());
+
+                        break;
+
                     default:
                         //Error Message
-                        MemorizerUtil.displayToast(getApplicationContext(),"Something Went Wrong");
+                        MemorizerUtil.displayToast(getApplicationContext(),"Something went wrong");
                         break;
                 }
             }

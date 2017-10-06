@@ -285,6 +285,7 @@ public class SignupActivity extends Activity {
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("email",email);
                         editor.commit();
+                        MemorizerUtil.displayToast(getApplicationContext(),model.getMessage());
                         startActivity(mainIntent);
                         /*
                         ///
@@ -300,9 +301,15 @@ public class SignupActivity extends Activity {
                         startActivity(intent);
                         */
                         break;
+
+                    case 500:
+
+                        MemorizerUtil.displayToast(getApplicationContext(),model.getMessage());
+                        break;
                     default:
                         //Error Message
-                        Toast.makeText(getApplicationContext(),"Something went wrong",Toast.LENGTH_SHORT).show();
+                        MemorizerUtil.displayToast(getApplicationContext(),"Something went wrong");
+                        //Toast.makeText(getApplicationContext(),"Something went wrong",Toast.LENGTH_SHORT).show();
                         break;
                 }
             }

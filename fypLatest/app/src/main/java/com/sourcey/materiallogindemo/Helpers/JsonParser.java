@@ -35,6 +35,8 @@ public class JsonParser {
             switch (errorCode) {
                 case 200:
                   return new SignupModel(200,response.getString("message"));
+                case 500:
+                    return new SignupModel(500,response.getString("message"));
                 default:
                     return new SignupModel(errorCode,response.getString("message"));
             }
@@ -52,25 +54,35 @@ public class JsonParser {
         try {
             JSONObject response = new JSONObject(s);
 
-            User user = new User();
+            //User user = new User();
 
-            JSONObject responseArray = response.getJSONObject("user");
+            //JSONObject responseArray = response.getJSONObject("user");
 
             int errorCode = response.getInt("error");
-            String name = responseArray.getString("name");
-            String email = responseArray.getString("email");
-            String number = responseArray.getString("phone_number");
-            String password = responseArray.getString("password");
-            user.setName(name);
-            user.setEmail(email);
-            user.setPhoneNumber(number);
-            user.setPassword(password);
+            String errorMessage = response.getString("message");
 
             switch (errorCode) {
                 case 200:
-                    return new LoginModel(200,response.getString("message"),user);
+                    User user = new User();
+
+                    JSONObject responseArray = response.getJSONObject("user");
+
+//                    int errorCode = response.getInt("error");
+  //                  String errorMessage = response.getString("message");
+                    String name = responseArray.getString("name");
+                    String email = responseArray.getString("email");
+                    String number = responseArray.getString("phone_number");
+                    String password = responseArray.getString("password");
+                    user.setName(name);
+                    user.setEmail(email);
+                    user.setPhoneNumber(number);
+                    user.setPassword(password);
+
+                    return new LoginModel(200,errorMessage,user);
+                case 500:
+                    return new LoginModel(500,errorMessage);
                 default:
-                    return new LoginModel(errorCode,response.getString("message"),user);
+                    return new LoginModel(errorCode,response.getString("message"));
             }
         }
 
