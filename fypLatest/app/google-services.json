@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "552569927587",
+    "firebase_url": "https://fyplatest-2.firebaseio.com",
+    "project_id": "fyplatest-2",
+    "storage_bucket": "fyplatest-2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552569927587:android:a4b0a6895ea3d369",
+        "android_client_info": {
+          "package_name": "com.sourcey.materialloginexample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "552569927587-cpfcvvu9s8f84rpic0k6l1f03se9au6s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sourcey.materialloginexample",
+            "certificate_hash": "b653788b284bb242bda06caea106f6adc8bdf5df"
+          }
+        },
+        {
+          "client_id": "552569927587-3o951r5ko0rgh9tf4f0spvrd9lmpi2e8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1WHGF4EuB_zRz1okR6bzO0ASQ3awYhRk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "552569927587-3o951r5ko0rgh9tf4f0spvrd9lmpi2e8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

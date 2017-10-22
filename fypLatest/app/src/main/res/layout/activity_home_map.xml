@@ -2,11 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity">
+    android:background="@color/primary_dark"
+   tools:context=".MainActivity">
 
     <HorizontalScrollView
         android:id="@+id/scrollView"
@@ -16,39 +13,50 @@
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/primary_darker"
             android:orientation="horizontal">
 
 
             <Button
-                android:id="@+id/logoutBtn"
+                android:id="@+id/cargoBtn"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:text="LOGOUT" />
+                android:layout_height="40dp"
+                android:background="@color/primary_darker"
+                android:text="Cargo"
+                android:tag="Cargo"/>
+
 
             <Button
+                android:id="@+id/mandiBtn"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:text="Cargo" />
+                android:layout_height="40dp"
+                android:background="@color/primary_darker"
+                android:text="Mandi"
+                android:tag="Mandi"/>
 
             <Button
+                android:id="@+id/labourBtn"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:text="Mandi" />
+                android:layout_height="40dp"
+                android:background="@color/primary_darker"
+                android:text="Labour"
+                android:tag="Labour"/>
 
             <Button
+                android:id="@+id/picnicBtn"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:text="Labour" />
-
-            <Button
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="40dp"
+                android:background="@color/primary_darker"
                 android:text="picnic" />
 
             <Button
+                android:id="@+id/packingBtn"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="40dp"
+                android:background="@color/primary_darker"
                 android:text="Packing" />
+
+/>
 
         </android.support.v7.widget.LinearLayoutCompat>
 
@@ -57,7 +65,7 @@
     <android.support.v7.widget.LinearLayoutCompat
         android:id="@+id/mapViewLayout"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="350dp"
         android:layout_below="@+id/scrollView"
         android:orientation="vertical">
 
@@ -68,7 +76,7 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:context="com.sourcey.materiallogindemo.HomeModule.HomeMapActivity" />
+            tools:context="com.sourcey.movnpack.HomeModule.HomeMapActivity" />
 
 
     </android.support.v7.widget.LinearLayoutCompat>
@@ -84,7 +92,7 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:src="@drawable/ic_location_searching_black_24dp" />
 
@@ -95,7 +103,7 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:src="@drawable/ic_search_black_24dp" />
 
@@ -115,12 +123,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Service" />
+            android:text="Service"
+            android:background="@color/primary_darker"
+            />
 
         <Button
             android:id="@+id/ride_button_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/primary_darker"
             android:layout_weight="1"
             android:text="Later" />
 
