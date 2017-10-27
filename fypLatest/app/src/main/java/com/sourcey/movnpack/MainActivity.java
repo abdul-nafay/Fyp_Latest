@@ -7,8 +7,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.DrawerModule.DrawerActivity;
+import com.sourcey.movnpack.Helpers.Session;
 import com.sourcey.movnpack.LoginModule.LoginActivity;
+import com.sourcey.movnpack.Model.User;
 
 
 public class MainActivity extends Activity {
@@ -23,10 +26,19 @@ public class MainActivity extends Activity {
         String email = preferences.getString("email",null);
 
         if (email != null){
-            //Intent intent = new Intent(this, HomeMapActivity.class);
+            User user = DatabaseManager.getInstance(getApplicationContext()).getUser(email);
+            if (user != null) {
+                //Intent intent = new Intent(this, HomeMapActivity.class);
+                Session.getInstance().setUser(user);
                 Intent intent = new Intent(this, DrawerActivity.class);
                 startActivity(intent);
                 finish();
+            }
+            else {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
         else {
             Intent intent = new Intent(this, LoginActivity.class);

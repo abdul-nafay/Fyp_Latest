@@ -3,6 +3,7 @@ package com.sourcey.movnpack.AppFragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -11,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,14 +20,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.firebase.geofire.GeoFire;
-import com.firebase.geofire.GeoFire.CompletionListener;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
 import com.firebase.geofire.LocationCallback;
-import com.firebase.geofire.core.GeoHash;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -42,15 +43,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.sourcey.movnpack.Model.Session;
+import com.sourcey.movnpack.Helpers.Session;
+import com.sourcey.movnpack.Model.User;
 import com.sourcey.movnpack.R;
 import com.sourcey.movnpack.Utility.Utility;
 
 import java.util.ArrayList;
-
-import static android.R.attr.key;
-import static android.R.attr.tag;
-import static com.sourcey.movnpack.R.id.map;
 
 //import com.sourcey.materiallogindemo.R;
 
@@ -68,6 +66,19 @@ class HomeFragmentButtonTags extends Object {
      public static final String Cargo = "Cargo";
     public static final String Mandi = "Mandi";
     public static final String Labour = "Labour";
+
+}
+class CategoryButtonsUI extends Object {
+    public static Button previousButton;
+    public static Button currentButton;
+    public static void toggleSelection() {
+
+        if (previousButton != null) {
+            CategoryButtonsUI.previousButton.setBackgroundColor(Color.BLUE);
+
+        }
+        CategoryButtonsUI.currentButton.setBackgroundColor(Color.RED);
+    }
 
 }
 
@@ -100,7 +111,8 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
     private Button cargoButton;
     private Button mandiButton;
     private Button labourButton;
-
+    private TextView userNameTextView;
+    private TextView userNumberTextView;
     public HomeMapFragment() {
         // Required empty public constructor
     }
@@ -194,8 +206,26 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
         } else {
             locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 0, 0, this);
         }
+
+
+      //  setupUIForDrawer();
     }
 
+    public void setupUIForDrawer() {
+        User user = Session.getInstance().getUser();
+        if (user != null) { // User cannot be null
+            NavigationView navigationView = (NavigationView) getView().findViewById(R.id.nav_view);
+            View header=navigationView.getHeaderView(0);
+/*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
+            ///
+            userNameTextView = (TextView)header.findViewById(R.id.drawer_username);
+            userNumberTextView = (TextView)header.findViewById(R.id.drawer_usernumber);
+
+            userNameTextView.setText(user.getName());
+            userNumberTextView.setText(user.getPhoneNumber());
+
+        }
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -258,9 +288,20 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
                     break;
             }*/
             geoFireSetReferenceForServiceNamed(tag);
+
+            //forUI
+            updateUIForSelectedCategory((Button)v);
+            //
         }
 
     }
+
+    public void updateUIForSelectedCategory(Button currentButton) {
+        CategoryButtonsUI.previousButton = CategoryButtonsUI.currentButton;
+        CategoryButtonsUI.currentButton = currentButton;
+        CategoryButtonsUI.toggleSelection();
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this

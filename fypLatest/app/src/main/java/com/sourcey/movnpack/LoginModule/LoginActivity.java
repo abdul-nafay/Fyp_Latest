@@ -16,12 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sourcey.movnpack.AppFragments.HomeMapFragment;
+import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.DrawerModule.DrawerActivity;
 import com.sourcey.movnpack.Helpers.JsonParser;
 import com.sourcey.movnpack.Model.LoginModel;
-import com.sourcey.movnpack.Model.ServiceProvider;
-import com.sourcey.movnpack.Model.Session;
+import com.sourcey.movnpack.Helpers.Session;
 import com.sourcey.movnpack.Model.User;
 import com.sourcey.movnpack.Network.ConnectionDetector;
 //import com.sourcey.materiallogindemo.Network.ConnnectionDetector;
@@ -243,6 +242,15 @@ public class LoginActivity extends Activity {
 
                         session.setUser(user);
 
+                        User userDB = DatabaseManager.getInstance(getApplicationContext()).getUser(user.getEmail());
+                        if (userDB == null) {// Entry in DB
+
+                            DatabaseManager.getInstance(getApplicationContext()).addUser(user);
+
+                        }
+                        else { // Need Nothing to do
+
+                        }
                         /////
                         String email = user.getEmail();
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);

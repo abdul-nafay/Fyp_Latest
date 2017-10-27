@@ -14,16 +14,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.sourcey.movnpack.AppFragments.HomeMapFragment;
 import com.sourcey.movnpack.AppFragments.SettingsFragment;
+import com.sourcey.movnpack.Helpers.Session;
 import com.sourcey.movnpack.LoginModule.LoginActivity;
 import com.sourcey.movnpack.Model.User;
 import com.sourcey.movnpack.R;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HomeMapFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener {
-
+    private TextView userNameTextView;
+    private TextView userNumberTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +69,9 @@ public class DrawerActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        setupUIForDrawer();
+
     }
 
     @Override
@@ -149,5 +156,21 @@ public class DrawerActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    public void setupUIForDrawer() {
+        User user = Session.getInstance().getUser();
+        if (user != null) { // User cannot be null
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            View header=navigationView.getHeaderView(0);
+/*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
+            ///
+            userNameTextView = (TextView)header.findViewById(R.id.drawer_username);
+            userNumberTextView = (TextView)header.findViewById(R.id.drawer_usernumber);
+
+            userNameTextView.setText(user.getName());
+            userNumberTextView.setText(user.getPhoneNumber());
+
+        }
     }
 }
