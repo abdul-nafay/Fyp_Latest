@@ -30,6 +30,8 @@
         <activity
             android:name="com.sourcey.movnpack.LoginModule.SignupActivity"
             android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".SP.SPSignUpActivity"
+            android:theme="@style/AppTheme.Dark"/>
         <activity
             android:name="com.sourcey.movnpack.DrawerModule.DrawerActivity"
             android:label="@string/title_activity_drawer"
