@@ -65,7 +65,7 @@
     <android.support.v7.widget.LinearLayoutCompat
         android:id="@+id/mapViewLayout"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="match_parent"
         android:layout_below="@+id/scrollView"
         android:orientation="vertical">
 
@@ -81,7 +81,7 @@
 
     </android.support.v7.widget.LinearLayoutCompat>
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <!--<android.support.v7.widget.LinearLayoutCompat
 
         android:id="@+id/location_status"
         android:layout_width="match_parent"
@@ -135,7 +135,7 @@
             android:layout_weight="1"
             android:text="Later" />
 
-    </android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v7.widget.LinearLayoutCompat> -->
 
 
 </RelativeLayout>

@@ -295,6 +295,11 @@ public class SignupActivity extends Activity {
 
                         ///
 
+
+
+
+
+
                         Intent intent = new Intent(getApplicationContext(), DrawerActivity.class);
                         ComponentName cn = intent.getComponent();
                         Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);

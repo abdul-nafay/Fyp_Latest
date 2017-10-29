@@ -1,15 +1,21 @@
 package com.sourcey.movnpack.AppFragments;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Interpolator;
+import android.graphics.Point;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -19,6 +25,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -34,6 +41,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -43,12 +51,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Transaction;
 import com.sourcey.movnpack.Helpers.Session;
 import com.sourcey.movnpack.Model.User;
 import com.sourcey.movnpack.R;
 import com.sourcey.movnpack.Utility.Utility;
 
 import java.util.ArrayList;
+
+import static com.google.firebase.database.Transaction.*;
 
 //import com.sourcey.materiallogindemo.R;
 
@@ -74,10 +85,13 @@ class CategoryButtonsUI extends Object {
     public static void toggleSelection() {
 
         if (previousButton != null) {
-            CategoryButtonsUI.previousButton.setBackgroundColor(Color.BLUE);
-
+            //CategoryButtonsUI.previousButton.setBackgroundColor(Color.parseColor("#6ec6ff"));
+            CategoryButtonsUI.previousButton.setTextColor(Color.BLACK);
+            CategoryButtonsUI.previousButton.setSelected(true);
         }
-        CategoryButtonsUI.currentButton.setBackgroundColor(Color.RED);
+        //CategoryButtonsUI.currentButton.setBackgroundColor(Color.RED);
+        CategoryButtonsUI.currentButton.setTextColor(Color.parseColor("#0069c0"));
+        CategoryButtonsUI.currentButton.setHighlightColor(Color.parseColor("#0069c0"));
     }
 
 }
@@ -432,7 +446,7 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
                 System.out.println(String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
-                MarkerOptions markerOpt = new MarkerOptions().position(new LatLng(location.latitude,location.longitude)).title("Hello Maps");
+                MarkerOptions markerOpt = new MarkerOptions().position(new LatLng(location.latitude,location.longitude)).title(key);
                 Marker marker = mMap.addMarker(markerOpt);
                 marker.setTag(key);
                 serviceMarkers.add(marker);
@@ -441,11 +455,24 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
             @Override
             public void onKeyExited(String key) {
                 System.out.println(String.format("Key %s is no longer in the search area", key));
+                for (Marker smarker : serviceMarkers) {
+                    if (smarker.getTag().equals(key)) {
+                        smarker.remove();
+                        serviceMarkers.remove(smarker);
+                        break;
+                    }
+                }
             }
 
             @Override
             public void onKeyMoved(String key, GeoLocation location) {
                 System.out.println(String.format("Key %s moved within the search area to [%f,%f]", key, location.latitude, location.longitude));
+                for (Marker marker : serviceMarkers) {
+                    if (marker.getTag().equals(key)) {
+                        animateMarkerNew(location,marker);
+                        break;
+                    }
+                }
             }
 
             @Override
@@ -617,4 +644,89 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
 
     }
 
+    private void animateMarkerNew(final GeoLocation destination, final Marker marker) {
+
+        if (marker != null) {
+
+            final LatLng startPosition = marker.getPosition();
+            final LatLng endPosition = new LatLng(destination.latitude, destination.longitude);
+
+            final float startRotation = marker.getRotation();
+            final LatLngInterpolatorNew latLngInterpolator = new LatLngInterpolatorNew.LinearFixed();
+
+            ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
+            valueAnimator.setDuration(3000); // duration 3 second
+            valueAnimator.setInterpolator(new LinearInterpolator());
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    try {
+                        float v = animation.getAnimatedFraction();
+                        LatLng newPosition = latLngInterpolator.interpolate(v, startPosition, endPosition);
+                        marker.setPosition(newPosition);
+                        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
+                                .target(newPosition)
+                                .zoom(5.5f)
+                                .build()));
+
+                        marker.setRotation(getBearing(startPosition, new LatLng(destination.latitude, destination.longitude)));
+                    } catch (Exception ex) {
+                        //I don't care atm..
+                    }
+                }
+            });
+            valueAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+
+                    // if (mMarker != null) {
+                    // mMarker.remove();
+                    // }
+                    // mMarker = googleMap.addMarker(new MarkerOptions().position(endPosition).icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_car)));
+
+                }
+            });
+            valueAnimator.start();
+        }
+    }
+
+
+    private interface LatLngInterpolatorNew {
+        LatLng interpolate(float fraction, LatLng a, LatLng b);
+
+        class LinearFixed implements LatLngInterpolatorNew {
+            @Override
+            public LatLng interpolate(float fraction, LatLng a, LatLng b) {
+                double lat = (b.latitude - a.latitude) * fraction + a.latitude;
+                double lngDelta = b.longitude - a.longitude;
+                // Take the shortest path across the 180th meridian.
+                if (Math.abs(lngDelta) > 180) {
+                    lngDelta -= Math.signum(lngDelta) * 360;
+                }
+                double lng = lngDelta * fraction + a.longitude;
+                return new LatLng(lat, lng);
+            }
+        }
+    }
+
+
+    //Method for finding bearing between two points
+    private float getBearing(LatLng begin, LatLng end) {
+        double lat = Math.abs(begin.latitude - end.latitude);
+        double lng = Math.abs(begin.longitude - end.longitude);
+
+        if (begin.latitude < end.latitude && begin.longitude < end.longitude)
+            return (float) (Math.toDegrees(Math.atan(lng / lat)));
+        else if (begin.latitude >= end.latitude && begin.longitude < end.longitude)
+            return (float) ((90 - Math.toDegrees(Math.atan(lng / lat))) + 90);
+        else if (begin.latitude >= end.latitude && begin.longitude >= end.longitude)
+            return (float) (Math.toDegrees(Math.atan(lng / lat)) + 180);
+        else if (begin.latitude < end.latitude && begin.longitude >= end.longitude)
+            return (float) ((90 - Math.toDegrees(Math.atan(lng / lat))) + 270);
+        return -1;
+    }
+
 }
+
+
