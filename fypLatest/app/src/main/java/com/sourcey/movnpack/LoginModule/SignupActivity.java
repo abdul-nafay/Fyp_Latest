@@ -150,12 +150,12 @@ public class SignupActivity extends Activity {
 
 
 
-        User user = new User();
+        /*User user = new User();
         user = db.getUser(email);
 
         ArrayList<BaseModel> userArrayList = new ArrayList<>();
         userArrayList = db.getUsers();
-
+*/
        /* new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
@@ -294,11 +294,6 @@ public class SignupActivity extends Activity {
                     case 200:
 
                         ///
-
-
-
-
-
 
                         Intent intent = new Intent(getApplicationContext(), DrawerActivity.class);
                         ComponentName cn = intent.getComponent();

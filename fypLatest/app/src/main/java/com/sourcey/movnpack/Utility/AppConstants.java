@@ -15,6 +15,10 @@ public class AppConstants  {
     public static String API_SIGNUP = "https://androidfyp.000webhostapp.com/signup.php";
     public static String API_LOGIN = "https://androidfyp.000webhostapp.com/login.php";
 
+    public static String API_SIGNUP_SP = "https://androidfyp.000webhostapp.com/sp_signup.php";
+    public static String API_LOGIN_SP = "https://androidfyp.000webhostapp.com/sp_login.php";
+
+
     public static String SERVICE_PROVIDER = "service_provider";
 
 }

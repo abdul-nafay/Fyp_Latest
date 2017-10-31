@@ -1,11 +1,15 @@
 package com.sourcey.movnpack.SP;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.support.v4.content.IntentCompat;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -18,10 +22,21 @@ import android.widget.Toast;
 
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.DrawerModule.DrawerActivity;
+import com.sourcey.movnpack.DrawerModule.SPDrawerActivity;
+import com.sourcey.movnpack.Helpers.JsonParser;
+import com.sourcey.movnpack.Helpers.Session;
 import com.sourcey.movnpack.LoginModule.LoginActivity;
+import com.sourcey.movnpack.LoginModule.SignupActivity;
 import com.sourcey.movnpack.Model.ServiceProvider;
+import com.sourcey.movnpack.Model.SignupModel;
+import com.sourcey.movnpack.Network.ConnectionDetector;
+import com.sourcey.movnpack.Network.HttpHandler;
 import com.sourcey.movnpack.R;
+import com.sourcey.movnpack.Utility.AppConstants;
+import com.sourcey.movnpack.Utility.MemorizerUtil;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
+
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,6 +44,8 @@ import butterknife.ButterKnife;
 public class SPSignUpActivity extends Activity implements View.OnClickListener {
 
     String[] spinnerList = {"Labour","Cargo","Mandi","Picnic","Paccking","Electrician","Plumber"};
+    ProgressDialog progressDialog;
+
 
     @Bind(R.id.input_name) EditText _nameText;
     @Bind(R.id.input_email) EditText _emailText;
@@ -91,6 +108,15 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
+        ConnectionDetector connnectionDetector = new ConnectionDetector(getApplicationContext());
+        Boolean isInternetPresent = connnectionDetector.isConnectingToInternet();
+        if (isInternetPresent) {
+            new SignUpRequestSP(name, email, mobileNumber, password,address,cnicNumber,licenseNumber,1).execute();
+        }
+        else {
+            MemorizerUtil.displayToast(getApplicationContext(),"No Internet Connection");
+        }
+
         ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setName(name);
         serviceProvider.setEmail(email);
@@ -103,6 +129,7 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
 
         DatabaseManager.getInstance(getApplicationContext()).addServiceProvider(serviceProvider);
 
+/*
         Intent intent = new Intent(getApplicationContext(), DrawerActivity.class);
         ComponentName cn = intent.getComponent();
         Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
@@ -112,6 +139,7 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
         editor.commit();
         //MemorizerUtil.displayToast(getApplicationContext(),model.getMessage());
         startActivity(mainIntent);
+*/
 
 
     }
@@ -215,5 +243,145 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
 
             signUp();
         }
+    }
+
+    public class SignUpRequestSP extends AsyncTask<String, Void, String> {
+
+        private String name, email, mobile, password;
+        private String Address;
+        private String CNIC;
+        private String LicenseNumber;
+        private int Category;
+
+
+        public SignUpRequestSP(String name, String email, String mobile, String password,String address,String cnic,String licenseNumber,int category) {
+            // this.id = id;
+            this.name = name;
+            this.email = email;
+            this.mobile = mobile;
+            this.password = password;
+            this.Address = address;
+            this.CNIC = cnic;
+            this.LicenseNumber = licenseNumber;
+            this.Category = category;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = new ProgressDialog(SPSignUpActivity.this,
+                    R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Creating Account...");
+            progressDialog.show();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String response = "";
+            try {
+                response = signUpSP_Api(name, email, mobile, password,Address,CNIC,LicenseNumber,Category);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            SignupModel model = JsonParser.getInstance().ParseSignupResponse(s);
+
+            if (model != null) {
+                switch (model.getErrorCode()) {
+                    case 200:
+
+                        ///
+                        /*ServiceProvider serviceProvider = model.getServiceProvider();
+                        Session.getInstance().setServiceProvider(serviceProvider);
+
+                        ServiceProvider serviceProviderDB = DatabaseManager.getInstance(getApplicationContext()).getServiceProvider(serviceProvider.getEmail());
+                        if (serviceProviderDB == null){
+                            // Add SP in local
+                            DatabaseManager.getInstance(getApplicationContext()).addServiceProvider(serviceProvider);
+                        }
+                        else {
+                            // Nothing to do
+                        }
+                        */
+                        Intent intent = new Intent(getApplicationContext(), SPDrawerActivity.class);
+                        ComponentName cn = intent.getComponent();
+                        Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("email",email);
+                        editor.commit();
+                        MemorizerUtil.displayToast(getApplicationContext(),model.getMessage());
+                        startActivity(mainIntent);
+                        /*
+                        ///
+                        //Yahan Khulwa de Activity
+                        Intent intent = new Intent(SignupActivity.this, HomeMapActivity.class);
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("email",email);
+                        editor.commit();
+                        finish();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        startActivity(intent);
+                        */
+                        break;
+
+                    case 500:
+
+                        MemorizerUtil.displayToast(getApplicationContext(),model.getMessage());
+                        break;
+                    default:
+                        //Error Message
+                        MemorizerUtil.displayToast(getApplicationContext(),"Something went wrong");
+                        //Toast.makeText(getApplicationContext(),"Something went wrong",Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+            else {
+
+            }
+
+            if(progressDialog != null){
+                progressDialog.dismiss();
+            }
+
+        }
+
+    }
+
+    public String signUpSP_Api(String name, String email, String mobile, String password,String address,String cnic,String licenseNumber,int category) {
+        String response = "";
+        try {
+
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> params = new HashMap<>();
+            params.put("name", name);
+            params.put("email", email);
+            params.put("phone_number", mobile);
+            params.put("password", password);
+            params.put("address",address);
+            params.put("cnic",cnic);
+            params.put("license_no",licenseNumber);
+            params.put("category","1");
+            response = httpHandler.performPostCall(AppConstants.API_SIGNUP_SP, params);
+            //response = httpHandler.performPostCall(AppConstants.API_SIGNUP, params);
+
+        } catch (Exception e) {
+            Log.e("log_tag", "Error in http connection " + e.toString());
+        }
+
+        return response;
+
     }
 }

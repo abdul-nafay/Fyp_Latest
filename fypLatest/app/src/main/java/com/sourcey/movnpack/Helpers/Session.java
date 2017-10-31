@@ -1,5 +1,6 @@
 package com.sourcey.movnpack.Helpers;
 
+import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.Model.User;
 
 /**
@@ -9,6 +10,15 @@ import com.sourcey.movnpack.Model.User;
 public class Session {
     static Session sharedInstance;
     private User user;
+    private ServiceProvider serviceProvider;
+
+    public ServiceProvider getServiceProvider() {
+        return serviceProvider;
+    }
+
+    public void setServiceProvider(ServiceProvider serviceProvider) {
+        this.serviceProvider = serviceProvider;
+    }
 
     public User getUser() {
         return user;

@@ -21,9 +21,11 @@ import android.widget.Toast;
 
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.DrawerModule.DrawerActivity;
+import com.sourcey.movnpack.DrawerModule.SPDrawerActivity;
 import com.sourcey.movnpack.Helpers.JsonParser;
 import com.sourcey.movnpack.Model.LoginModel;
 import com.sourcey.movnpack.Helpers.Session;
+import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.Model.User;
 import com.sourcey.movnpack.Network.ConnectionDetector;
 //import com.sourcey.materiallogindemo.Network.ConnnectionDetector;
@@ -131,11 +133,19 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
         }
 
+
         else {
             // Hit API for Service Provider Login
-            MemorizerUtil.displayToast(getApplicationContext(),"HIt SP API");
+            //MemorizerUtil.displayToast(getApplicationContext(),"HIt SP API");
+            if (isInternetPresent) {
+                new SP_LoginRequest(email, password).execute();
+            }
+            else {
+                MemorizerUtil.displayToast(getApplicationContext(),"No Internet Connection");
+            }
 
         }
+
 
         // TODO: Implement your own authentication logic here.
 
@@ -242,7 +252,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 switch (model.getErrorCode()) {
                     case 200:
                         //Yahan Khulwa de Activity
-                        Intent intent = new Intent(getApplicationContext(), DrawerActivity.class);
                         User user = model.getUser();
 
                         ////////
@@ -265,6 +274,9 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("email",email);
                         editor.commit();
+
+                        Intent intent = new Intent(getApplicationContext(), DrawerActivity.class);
+
                         MemorizerUtil.displayToast(getApplicationContext(),model.getMessage());
                         startActivity(intent);
                         finish();
@@ -302,7 +314,13 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             HashMap<String, String> params = new HashMap<>();
             params.put("email", email);
             params.put("password", password);
-             response = httpHandler.performPostCall(AppConstants.API_LOGIN, params);
+            if (userRadioBtn.isChecked()) {
+                response = httpHandler.performPostCall(AppConstants.API_LOGIN, params);
+            }
+            else {
+                //response = httpHandler.performPostCall(APISPLogin,params);
+            }
+
             // response = httpHandler.performPostCall("https://androidfyp.000webhostapp.com/signup.php", params);
 
         } catch (Exception e) {
@@ -314,6 +332,122 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
 
+
+
+    public class SP_LoginRequest extends AsyncTask<String, Void, String> {
+
+        private String email, password;
+
+        public SP_LoginRequest(String email, String password) {
+            // this.id = id;
+            this.email = email;
+            this.password = password;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = new ProgressDialog(LoginActivity.this,
+                    R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Verifying details...");
+            progressDialog.show();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String response = "";
+            try {
+                response = login_api_sp(email,password);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            LoginModel model = JsonParser.getInstance().parseLoginResponseSP(s);
+
+            if (model != null) {
+                switch (model.getErrorCode()) {
+                    case 200:
+                        //Yahan Khulwa de Activity
+                        ServiceProvider serviceProvider = (ServiceProvider ) model.getUser();
+
+                        ////////
+                        Session session = Session.getInstance();
+
+                        session.setUser(serviceProvider);
+
+                        User userDB = DatabaseManager.getInstance(getApplicationContext()).getServiceProvider(serviceProvider.getEmail());
+                        if (userDB == null) {// Entry in DB
+
+                            DatabaseManager.getInstance(getApplicationContext()).addServiceProvider(serviceProvider);
+
+                        }
+                        else { // Need Nothing to do
+
+                        }
+                        /////
+                        String email = serviceProvider.getEmail();
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("email",email);
+                        editor.commit();
+
+                        Intent intent = new Intent(getApplicationContext(), SPDrawerActivity.class);
+
+                        MemorizerUtil.displayToast(getApplicationContext(),model.getMessage());
+                        startActivity(intent);
+                        finish();
+                        break;
+
+                    case 500:
+
+                        MemorizerUtil.displayToast(getApplicationContext(),model.getMessage());
+
+                        break;
+
+                    default:
+                        //Error Message
+                        MemorizerUtil.displayToast(getApplicationContext(),"Something went wrong");
+                        break;
+                }
+            }
+            else {
+
+            }
+
+            if(progressDialog != null){
+                progressDialog.dismiss();
+            }
+
+        }
+
+    }
+
+    public String login_api_sp(String email, String password) {
+        String response = "";
+        try {
+
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> params = new HashMap<>();
+            params.put("email", email);
+            params.put("password", password);
+                response = httpHandler.performPostCall(AppConstants.API_LOGIN_SP, params);
+
+        } catch (Exception e) {
+            Log.e("log_tag", "Error in http connection " + e.toString());
+        }
+
+        return response;
+
+    }
 
 
 

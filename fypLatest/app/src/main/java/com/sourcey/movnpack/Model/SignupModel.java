@@ -9,12 +9,21 @@ public class SignupModel{
 
     private int errorCode ;
     private String message ;
+    private ServiceProvider serviceProvider;
 
     public SignupModel(int errorCode, String message) {
 
         this.errorCode = errorCode;
         this.message = message;
 
+    }
+
+    public ServiceProvider getServiceProvider() {
+        return serviceProvider;
+    }
+
+    public void setServiceProvider(ServiceProvider serviceProvider) {
+        this.serviceProvider = serviceProvider;
     }
 
     public int getErrorCode() {
@@ -32,4 +41,6 @@ public class SignupModel{
     public void setMessage(String message) {
         this.message = message;
     }
+
+
 }
