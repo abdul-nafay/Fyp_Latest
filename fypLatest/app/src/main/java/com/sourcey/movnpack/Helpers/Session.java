@@ -8,7 +8,7 @@ import com.sourcey.movnpack.Model.User;
  */
 
 public class Session {
-    static Session sharedInstance;
+    public static Session sharedInstance;
     private User user;
     private ServiceProvider serviceProvider;
 

@@ -192,4 +192,36 @@ public class DatabaseManager extends DatabaseHandler {
 
 
     /// End SP here
+
+    public long updateUser(User userModel){
+
+        SQLiteDatabase db = null;
+        long result = 0;
+        try {
+            db = getDbForwrite();
+            UserTable userTable=new UserTable() ;
+            String[] whereArgs = {String.valueOf(userModel.getEmail())};
+            result = userTable.updateData(db, userModel, userTable.whereClauseForUpdate(), whereArgs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally{
+            if(db!= null)
+                closeDb();
+        }
+        return result;
+    }
+
+    public boolean edituserprofile(User userModel){
+        boolean result=false;
+        if(userModel!=null) {
+            long x = updateUser(userModel);
+            result = x > 0;
+        }
+        else {
+            result=false;
+        }
+        return result;
+
+    }
 }

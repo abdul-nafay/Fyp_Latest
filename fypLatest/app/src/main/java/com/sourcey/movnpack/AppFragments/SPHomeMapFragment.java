@@ -122,7 +122,7 @@ public class SPHomeMapFragment extends Fragment  implements LocationListener  ,O
         if ( lastKnownLocation != null) {
             System.out.println("Provider " + provider + " has been selected.");
             onLocationChanged( lastKnownLocation);
-            locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 0, 0, this);
+           // locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 0, 0, this);
             //locationManager.requestLocationUpdates();
             if( provider.equals("gps")) {
                 locationManager.getAllProviders();
@@ -133,7 +133,7 @@ public class SPHomeMapFragment extends Fragment  implements LocationListener  ,O
             if ( lastKnownLocation != null) {
 
                 onLocationChanged( lastKnownLocation);
-                locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 0, 0, this);
+               // locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 0, 0, this);
                 //locationManager.requestLocationUpdates();
                 if( provider.equals("gps")) {
                     locationManager.getAllProviders();
@@ -312,14 +312,14 @@ public class SPHomeMapFragment extends Fragment  implements LocationListener  ,O
     public void updateLocationOnFireBase(double lat , double longi)
     {
         //String path = Utility.getPathForServiceNamed(Session.getInstance().getServiceProvider())
-        String path = Utility.getPathForServiceNamed(HomeFragmentButtonTags.Cargo);
+        String path = Utility.getPathForServiceNamed(Utility.getCategoryNameFromServiceCategory(Session.getInstance().getServiceProvider().getCategory()));
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(path);
         geoFire = new GeoFire(ref);
 
         //String number = Session.getInstance().getServiceProvider().getPhoneNumber();
         //String Cat = Utility.getCategoryNameFromServiceCategory(Session.getInstance().getServiceProvider().getCategory());
 
-        geoFire.setLocation("Cargo1", new GeoLocation(lat, longi), new GeoFire.CompletionListener() {
+        geoFire.setLocation(Session.getInstance().getServiceProvider().getPhoneNumber(), new GeoLocation(lat, longi), new GeoFire.CompletionListener() {
             @Override
             public void onComplete(String key, DatabaseError error) {
                 if (error != null) {

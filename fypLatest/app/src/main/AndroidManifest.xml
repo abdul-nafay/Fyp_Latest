@@ -39,7 +39,8 @@
         <activity
             android:name="com.sourcey.movnpack.DrawerModule.SPDrawerActivity"
             android:label="@string/title_activity_drawer"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".SP.spProfileInfo"></activity>
     </application>
 
 </manifest>

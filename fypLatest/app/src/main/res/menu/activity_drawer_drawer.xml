@@ -8,8 +8,8 @@
             android:title="Home" />
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/timein"
-            android:title="Time In" />
+            android:icon="@drawable/update"
+            android:title="Update Profile" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/timeout"

@@ -390,8 +390,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
                         ////////
                         Session session = Session.getInstance();
-
-                        session.setUser(serviceProvider);
+                        session.setServiceProvider(serviceProvider);
+                        //session.setUser(serviceProvider);
 
                         User userDB = DatabaseManager.getInstance(getApplicationContext()).getServiceProvider(serviceProvider.getEmail());
                         if (userDB == null) {// Entry in DB

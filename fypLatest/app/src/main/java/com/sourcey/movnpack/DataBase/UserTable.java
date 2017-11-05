@@ -83,6 +83,11 @@ public class UserTable extends Table {
     }
 
     @Override
+    protected String whereClauseForUpdate() {
+        return EMAIL + "=?";
+    }
+
+    @Override
     protected String whereClauseForData() {
         return null;
     }

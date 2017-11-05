@@ -102,4 +102,9 @@ public class ServiceProviderTable extends Table {
     protected String whereClauseForData() {
         return null;
     }
+
+    @Override
+    protected String whereClauseForUpdate() {
+        return null;
+    }
 }

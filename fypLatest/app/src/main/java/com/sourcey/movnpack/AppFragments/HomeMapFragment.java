@@ -5,6 +5,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Interpolator;
@@ -55,6 +56,7 @@ import com.google.firebase.database.Transaction;
 import com.sourcey.movnpack.Helpers.Session;
 import com.sourcey.movnpack.Model.User;
 import com.sourcey.movnpack.R;
+import com.sourcey.movnpack.SP.spProfileInfo;
 import com.sourcey.movnpack.Utility.MemorizerUtil;
 import com.sourcey.movnpack.Utility.Utility;
 
@@ -319,11 +321,16 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        if (marker.getTag().toString().equals("Self"))
-        {
-            return;
-        }
-        MemorizerUtil.displayToast(getContext(),marker.getTag().toString());
+
+        String number = marker.getTag().toString();
+        MemorizerUtil.displayToast(getContext(),number);
+
+        //spProfileInfo.SP_ProfileInfo.execute(number);
+      //  new spProfileInfo(number).execute();
+
+        Intent intent = new Intent(getContext(), spProfileInfo.class);
+        intent.putExtra("number",number);
+        startActivity(intent);
     }
 
 
@@ -362,9 +369,9 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
             mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             setCamera(lastKnownLocation);
             isLocationSet=true;
-            mMap.setOnInfoWindowClickListener(this);
-        }
 
+        }
+        mMap.setOnInfoWindowClickListener(this);
         // Add a marker in Sydney and move the camera
      /*  LatLng sydney = new LatLng(24.9349491, 67.0974638);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));

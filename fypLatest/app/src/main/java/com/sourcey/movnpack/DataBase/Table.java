@@ -105,4 +105,6 @@ public abstract class Table {
     protected abstract String cutomQuery();
     protected abstract String whereClause();
     protected abstract String whereClauseForData();
+    protected abstract String whereClauseForUpdate();
+
 }

@@ -328,7 +328,7 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
                         serviceProvider.setAddress(Address);
                         serviceProvider.setCNIC(CNIC);
                         serviceProvider.setLicenseNumber(LicenseNumber);
-                        serviceProvider.setCategory(1);
+                        serviceProvider.setCategory(Utility.getCategoryFromInt(Category));
                         serviceProvider.setPassword(password);
 
                         DatabaseManager.getInstance(getApplicationContext()).addServiceProvider(serviceProvider);
@@ -395,7 +395,7 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
         try {
 
             HttpHandler httpHandler = new HttpHandler();
-            HashMap params = new HashMap<>();
+            HashMap<String,String> params = new HashMap<>();
             params.put("name", name);
             params.put("email", email);
             params.put("phone_number", mobile);
@@ -403,8 +403,8 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
             params.put("address",address);
             params.put("cnic",cnic);
             params.put("license_no",licenseNumber);
-            SPCategory spCat = Utility.getCategoryForServiceProviderUsingString(_categoryListText.getText().toString().toUpperCase());
-            params.put("category",spCat.value);
+            SPCategory spCat = Utility.getCategoryForServiceProviderUsingString(_categoryListText.getSelectedItem().toString().toUpperCase());
+            params.put("category",spCat.value+"");
             response = httpHandler.performPostCall(AppConstants.API_SIGNUP_SP, params);
             //response = httpHandler.performPostCall(AppConstants.API_SIGNUP, params);
 
