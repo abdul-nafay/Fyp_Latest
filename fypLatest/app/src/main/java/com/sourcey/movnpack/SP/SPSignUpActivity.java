@@ -34,6 +34,8 @@ import com.sourcey.movnpack.Network.HttpHandler;
 import com.sourcey.movnpack.R;
 import com.sourcey.movnpack.Utility.AppConstants;
 import com.sourcey.movnpack.Utility.MemorizerUtil;
+import com.sourcey.movnpack.Utility.SPCategory;
+import com.sourcey.movnpack.Utility.Utility;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.util.HashMap;
@@ -43,7 +45,7 @@ import butterknife.ButterKnife;
 
 public class SPSignUpActivity extends Activity implements View.OnClickListener {
 
-    String[] spinnerList = {"Labour","Cargo","Mandi","Picnic","Paccking","Electrician","Plumber"};
+    String[] spinnerList = {"Labour","Cargo","Mandi","Picnic","Packing","Electrician","Plumber"};
     ProgressDialog progressDialog;
 
 
@@ -124,7 +126,8 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
         serviceProvider.setAddress(address);
         serviceProvider.setCNIC(cnicNumber);
         serviceProvider.setLicenseNumber(licenseNumber);
-        serviceProvider.setCategory(1);
+        serviceProvider.setCategory(Utility.getCategoryForServiceProviderUsingString(category));
+
         serviceProvider.setPassword(reEnterPassword);
 
         DatabaseManager.getInstance(getApplicationContext()).addServiceProvider(serviceProvider);
@@ -365,7 +368,7 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
         try {
 
             HttpHandler httpHandler = new HttpHandler();
-            HashMap<String, String> params = new HashMap<>();
+            HashMap params = new HashMap<>();
             params.put("name", name);
             params.put("email", email);
             params.put("phone_number", mobile);
@@ -373,7 +376,8 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
             params.put("address",address);
             params.put("cnic",cnic);
             params.put("license_no",licenseNumber);
-            params.put("category","1");
+            SPCategory spCat = Utility.getCategoryForServiceProviderUsingString(_categoryListText.getText().toString().toUpperCase());
+            params.put("category",spCat.value);
             response = httpHandler.performPostCall(AppConstants.API_SIGNUP_SP, params);
             //response = httpHandler.performPostCall(AppConstants.API_SIGNUP, params);
 
