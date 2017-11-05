@@ -55,6 +55,7 @@ import com.google.firebase.database.Transaction;
 import com.sourcey.movnpack.Helpers.Session;
 import com.sourcey.movnpack.Model.User;
 import com.sourcey.movnpack.R;
+import com.sourcey.movnpack.Utility.MemorizerUtil;
 import com.sourcey.movnpack.Utility.Utility;
 
 import java.util.ArrayList;
@@ -97,7 +98,7 @@ class CategoryButtonsUI extends Object {
 }
 
 
-public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, LocationListener ,  GoogleApiClient.ConnectionCallbacks  , GoogleApiClient.OnConnectionFailedListener , View.OnClickListener{
+public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, LocationListener ,  GoogleApiClient.ConnectionCallbacks  , GoogleApiClient.OnConnectionFailedListener , View.OnClickListener, GoogleMap.OnInfoWindowClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -316,6 +317,15 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
         CategoryButtonsUI.toggleSelection();
     }
 
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        if (marker.getTag().toString().equals("Self"))
+        {
+            return;
+        }
+        MemorizerUtil.displayToast(getContext(),marker.getTag().toString());
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -348,9 +358,11 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
 // Changing marker icon
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_user));
             currentMarker= mMap.addMarker(marker);
+            currentMarker.setTag("Self");
             mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             setCamera(lastKnownLocation);
             isLocationSet=true;
+            mMap.setOnInfoWindowClickListener(this);
         }
 
         // Add a marker in Sydney and move the camera
@@ -378,7 +390,7 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
 // Changing marker icon
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_user));
             currentMarker= mMap.addMarker(marker);
-
+            currentMarker.setTag("Self");
            // setCamera(lastKnownLocation);
         }
 

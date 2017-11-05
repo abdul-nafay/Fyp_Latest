@@ -1,5 +1,7 @@
 package com.sourcey.movnpack.Model;
 
+import com.sourcey.movnpack.Utility.SPCategory;
+
 /**
  * Created by abdul on 10/22/17.
  */
@@ -8,7 +10,7 @@ public class ServiceProvider extends User {
     private String Address;
     private String CNIC;
     private String LicenseNumber;
-    private int Category;
+    private SPCategory Category;
 
     public String getAddress() {
         return Address;
@@ -22,11 +24,11 @@ public class ServiceProvider extends User {
         return CNIC;
     }
 
-    public int getCategory() {
+    public SPCategory getCategory() {
         return Category;
     }
 
-    public void setCategory(int category) {
+    public void setCategory(SPCategory category) {
         Category = category;
     }
 

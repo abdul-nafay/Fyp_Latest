@@ -137,7 +137,7 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
             MemorizerUtil.displayToast(getApplicationContext(),"No Internet Connection");
         }
 
-        /*ServiceProvider serviceProvider = new ServiceProvider();
+        ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setName(name);
         serviceProvider.setEmail(email);
         serviceProvider.setPhoneNumber(mobileNumber);
@@ -149,7 +149,7 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
         serviceProvider.setPassword(reEnterPassword);
 
         DatabaseManager.getInstance(getApplicationContext()).addServiceProvider(serviceProvider);
-*/
+
 /*
         Intent intent = new Intent(getApplicationContext(), DrawerActivity.class);
         ComponentName cn = intent.getComponent();

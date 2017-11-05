@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.sourcey.movnpack.Model.BaseModel;
 import com.sourcey.movnpack.Model.ServiceProvider;
+import com.sourcey.movnpack.Utility.SPCategory;
+import com.sourcey.movnpack.Utility.Utility;
 
 import java.util.ArrayList;
 
@@ -46,7 +48,7 @@ public class ServiceProviderTable extends Table {
         contentValues.put(ADDRESS,((ServiceProvider) data).getAddress());
         contentValues.put(CNIC,((ServiceProvider) data).getCNIC());
         contentValues.put(LICENSE_NUMBER,((ServiceProvider) data).getLicenseNumber());
-        contentValues.put(CATEGORY,((ServiceProvider) data).getCategory());
+        contentValues.put(CATEGORY,((ServiceProvider) data).getCategory().value);
 
 
         return contentValues;
@@ -73,7 +75,7 @@ public class ServiceProviderTable extends Table {
                 serviceProvider.setAddress(cursor.getString(cursor.getColumnIndex(ADDRESS)));
                 serviceProvider.setCNIC(cursor.getString(cursor.getColumnIndex(CNIC)));
                 serviceProvider.setLicenseNumber(cursor.getString(cursor.getColumnIndex(LICENSE_NUMBER)));
-                serviceProvider.setCategory(cursor.getInt(cursor.getColumnIndex(CATEGORY)));
+                serviceProvider.setCategory(Utility.getCategoryFromInt(cursor.getInt(cursor.getColumnIndex(CATEGORY))));
                 userArray.add(serviceProvider);
                 cursor.moveToNext();
                 i++;

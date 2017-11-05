@@ -4,6 +4,7 @@ import com.sourcey.movnpack.Model.LoginModel;
 import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.Model.SignupModel;
 import com.sourcey.movnpack.Model.User;
+import com.sourcey.movnpack.Utility.Utility;
 
 import org.json.JSONObject;
 
@@ -130,7 +131,7 @@ public class JsonParser {
                     serviceProvider.setAddress(address);
                     serviceProvider.setCNIC(cnic);
                     serviceProvider.setLicenseNumber(license_no);
-                    serviceProvider.setCategory(category);
+                    serviceProvider.setCategory(Utility.getCategoryFromInt(category));
 
                     return new LoginModel(200,errorMessage,serviceProvider);
                 case 500:
