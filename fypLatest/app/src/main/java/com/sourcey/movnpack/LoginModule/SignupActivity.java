@@ -17,17 +17,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sourcey.movnpack.AppFragments.HomeMapFragment;
+import com.google.gson.Gson;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.DrawerModule.DrawerActivity;
-import com.sourcey.movnpack.Model.BaseModel;
+import com.sourcey.movnpack.Helpers.Session;
 import com.sourcey.movnpack.Model.User;
 import com.sourcey.movnpack.Network.ConnectionDetector;
 //import com.sourcey.materiallogindemo.Network.ConnnectionDetector;
 import com.sourcey.movnpack.Network.HttpHandler;
 import com.sourcey.movnpack.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.sourcey.movnpack.Helpers.JsonParser;
@@ -39,7 +38,7 @@ import com.sourcey.movnpack.Utility.MemorizerUtil;
 import butterknife.ButterKnife;
 import butterknife.Bind;
 
-public class SignupActivity extends Activity {
+public class SignupActivity extends Activity implements View.OnClickListener {
     private static final String TAG = "SignupActivity";
 
 
@@ -70,6 +69,9 @@ public class SignupActivity extends Activity {
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
 
+        _signupButton.setOnClickListener((View.OnClickListener)this);
+        _loginLink.setOnClickListener((View.OnClickListener)this);
+
 
         signUpLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -78,29 +80,22 @@ public class SignupActivity extends Activity {
                 return false;
             }
         });
+    }
 
 
+    @Override
+    public void onClick(View v) {
 
+        if (_loginLink.getId() == v.getId()){
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+        }
+        else if (_signupButton.getId() == v.getId()){
+            signup();
+        }
 
-
-
-        _signupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signup();
-            }
-        });
-
-        _loginLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Finish the registration screen and return to the Login activity
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-                finish();
-                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-            }
-        });
     }
 
     public void signup() {
@@ -138,7 +133,7 @@ public class SignupActivity extends Activity {
             MemorizerUtil.displayToast(getApplicationContext(),"No Internet Connection");
         }
 
-        User userModel = new User();
+        /*User userModel = new User();
         userModel.setName(name);
         userModel.setEmail(email);
         userModel.setPhoneNumber(mobile);
@@ -146,26 +141,9 @@ public class SignupActivity extends Activity {
 
         DatabaseManager db = DatabaseManager.getInstance(this);
         db.addUser(userModel);
-        onSignupSuccess();
+        */onSignupSuccess();
 
 
-
-        /*User user = new User();
-        user = db.getUser(email);
-
-        ArrayList<BaseModel> userArrayList = new ArrayList<>();
-        userArrayList = db.getUsers();
-*/
-       /* new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
-                        onSignupSuccess();
-                        // onSignupFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);*/
     }
 
 
@@ -248,6 +226,7 @@ public class SignupActivity extends Activity {
     }
 
 
+
     public class SignUpRequest extends AsyncTask<String, Void, String> {
 
         private String name, email, mobile, password;
@@ -295,12 +274,33 @@ public class SignupActivity extends Activity {
 
                         ///
 
+                        User userModel = new User();
+                        userModel.setName(name);
+                        userModel.setEmail(email);
+                        userModel.setPhoneNumber(mobile);
+                        userModel.setPassword(password);
+
+                        DatabaseManager db = DatabaseManager.getInstance(getApplicationContext());
+                        db.addUser(userModel);
+
+                        Session.getInstance().setUser(userModel);
+
                         Intent intent = new Intent(getApplicationContext(), DrawerActivity.class);
                         ComponentName cn = intent.getComponent();
                         Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
+
+                        HashMap<String,String> map = new HashMap<>();
+                        map.put("Email",email);
+                        map.put("Type","0");
+
+                        Gson gson = new Gson();
+                        String mapString = gson.toJson(map);
+
+
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
-                        editor.putString("email",email);
+
+                        editor.putString("HashString",mapString).apply();
                         editor.commit();
                         MemorizerUtil.displayToast(getApplicationContext(),model.getMessage());
                         startActivity(mainIntent);

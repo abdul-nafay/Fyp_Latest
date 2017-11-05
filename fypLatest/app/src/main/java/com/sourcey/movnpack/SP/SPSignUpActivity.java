@@ -7,19 +7,23 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.IntentCompat;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.gson.Gson;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.DrawerModule.DrawerActivity;
 import com.sourcey.movnpack.DrawerModule.SPDrawerActivity;
@@ -43,7 +47,7 @@ import butterknife.ButterKnife;
 
 public class SPSignUpActivity extends Activity implements View.OnClickListener {
 
-    String[] spinnerList = {"Labour","Cargo","Mandi","Picnic","Paccking","Electrician","Plumber"};
+    String[] spinnerList = {"Labour","Cargo","Mandi","Picnic","Packing","Electrician","Plumber"};
     ProgressDialog progressDialog;
 
 
@@ -53,7 +57,10 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
     @Bind(R.id.input_address) EditText _addressText;
     @Bind(R.id.input_cnic) EditText _cnicText;
     @Bind(R.id.input_license_number) EditText _licenseNumberText;
-    @Bind(R.id.input_categoryList) EditText _categoryListText;
+
+    @Bind(R.id.input_license_number_parent)
+    TextInputLayout _licenseNumberTextParent;
+    @Bind(R.id.input_categoryList) Spinner _categoryListText;
     @Bind(R.id.input_password) EditText _passwordText;
     @Bind(R.id.input_reEnterPassword) EditText _reEnterPasswordText;
     @Bind(R.id.btn_signup) Button _signupButton;
@@ -68,21 +75,32 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
         ButterKnife.bind(this);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,spinnerList);
-        MaterialBetterSpinner spinner = (MaterialBetterSpinner) findViewById(R.id.input_categoryList);
-        spinner.setAdapter(arrayAdapter);
+        _categoryListText = (Spinner) findViewById(R.id.input_categoryList);
+
+        _categoryListText.setAdapter(arrayAdapter);
+
+
+        _categoryListText.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            if (position == 0 || position == 5 || position == 6){
+                _licenseNumberTextParent.setVisibility(View.GONE);
+            }
+            else {
+                _licenseNumberTextParent.setVisibility(View.VISIBLE);
+             }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+            Log.i("","");
+        }
+        });
+
 
         _loginLink.setOnClickListener((View.OnClickListener) this);
         _signupButton.setOnClickListener((View.OnClickListener) this);
-        /*_loginLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Finish the registration screen and return to the Login activity
-                Intent intent = new Intent(getApplicationContext(), SPLoginActivity.class);
-                startActivity(intent);
-                finish();
-                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-            }
-        });*/
 
 
     }
@@ -104,7 +122,7 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
         String address = _addressText.getText().toString();
         String cnicNumber = _cnicText.getText().toString();
         String licenseNumber = _licenseNumberText.getText().toString();
-        String category = _categoryListText.getText().toString();
+        String category = _categoryListText.getSelectedItem().toString();
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
@@ -117,7 +135,7 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
             MemorizerUtil.displayToast(getApplicationContext(),"No Internet Connection");
         }
 
-        ServiceProvider serviceProvider = new ServiceProvider();
+        /*ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setName(name);
         serviceProvider.setEmail(email);
         serviceProvider.setPhoneNumber(mobileNumber);
@@ -128,7 +146,7 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
         serviceProvider.setPassword(reEnterPassword);
 
         DatabaseManager.getInstance(getApplicationContext()).addServiceProvider(serviceProvider);
-
+*/
 /*
         Intent intent = new Intent(getApplicationContext(), DrawerActivity.class);
         ComponentName cn = intent.getComponent();
@@ -154,7 +172,7 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
         String address = _addressText.getText().toString();
         String cnicNumber = _cnicText.getText().toString();
         String licenseNumber = _licenseNumberText.getText().toString();
-        String category = _categoryListText.getText().toString();
+        String category = _categoryListText.getSelectedItem().toString();
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
@@ -198,13 +216,13 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
             _cnicText.setError(null);
         }
 
-        if (licenseNumber.isEmpty() || licenseNumber.length() != 13){
+        /*if (licenseNumber.isEmpty() || licenseNumber.length() != 13){
             _licenseNumberText.setError("Enter Valid License Number");
             valid = false;
         }
         else {
             _licenseNumberText.setError(null);
-        }
+        }*/
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
             _passwordText.setError("Between 4 and 10 alphanumeric characters");
@@ -300,25 +318,34 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
                 switch (model.getErrorCode()) {
                     case 200:
 
-                        ///
-                        /*ServiceProvider serviceProvider = model.getServiceProvider();
+                        ServiceProvider serviceProvider = new ServiceProvider();
+                        serviceProvider.setName(name);
+                        serviceProvider.setEmail(email);
+                        serviceProvider.setPhoneNumber(mobile);
+                        serviceProvider.setAddress(Address);
+                        serviceProvider.setCNIC(CNIC);
+                        serviceProvider.setLicenseNumber(LicenseNumber);
+                        serviceProvider.setCategory(1);
+                        serviceProvider.setPassword(password);
+
+                        DatabaseManager.getInstance(getApplicationContext()).addServiceProvider(serviceProvider);
+
                         Session.getInstance().setServiceProvider(serviceProvider);
 
-                        ServiceProvider serviceProviderDB = DatabaseManager.getInstance(getApplicationContext()).getServiceProvider(serviceProvider.getEmail());
-                        if (serviceProviderDB == null){
-                            // Add SP in local
-                            DatabaseManager.getInstance(getApplicationContext()).addServiceProvider(serviceProvider);
-                        }
-                        else {
-                            // Nothing to do
-                        }
-                        */
                         Intent intent = new Intent(getApplicationContext(), SPDrawerActivity.class);
                         ComponentName cn = intent.getComponent();
                         Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
+
+                        HashMap<String,String> map = new HashMap<>();
+                        map.put("Email",email);
+                        map.put("Type","1");
+
+                        Gson gson = new Gson();
+                        String mapString = gson.toJson(map);
+
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
-                        editor.putString("email",email);
+                        editor.putString("HashString",mapString).apply();
                         editor.commit();
                         MemorizerUtil.displayToast(getApplicationContext(),model.getMessage());
                         startActivity(mainIntent);

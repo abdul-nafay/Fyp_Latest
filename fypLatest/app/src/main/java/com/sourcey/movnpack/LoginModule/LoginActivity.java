@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.DrawerModule.DrawerActivity;
 import com.sourcey.movnpack.DrawerModule.SPDrawerActivity;
@@ -270,9 +271,17 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                         }
                         /////
                         String email = user.getEmail();
+
+                        HashMap<String,String> map = new HashMap<>();
+                        map.put("Email",email);
+                        map.put("Type","0");
+
+                        Gson gson = new Gson();
+                        String mapString = gson.toJson(map);
+
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
-                        editor.putString("email",email);
+                        editor.putString("HashString",mapString).apply();
                         editor.commit();
 
                         Intent intent = new Intent(getApplicationContext(), DrawerActivity.class);
@@ -395,9 +404,17 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                         }
                         /////
                         String email = serviceProvider.getEmail();
+
+                        HashMap<String,String> map = new HashMap<>();
+                        map.put("Email",email);
+                        map.put("Type","1");
+
+                        Gson gson = new Gson();
+                        String mapString = gson.toJson(map);
+
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
-                        editor.putString("email",email);
+                        editor.putString("HashString",mapString).apply();
                         editor.commit();
 
                         Intent intent = new Intent(getApplicationContext(), SPDrawerActivity.class);
