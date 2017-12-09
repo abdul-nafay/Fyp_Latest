@@ -221,7 +221,9 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
             }
 
         } else {
-            locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 0, 0, this);
+           // locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 0, 0, this);
+            buildGoogleApiClient();
+            mGoogleApiClient.connect();
         }
 
 
@@ -263,10 +265,34 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        LatLng sydney = new LatLng(20.7 , 19.8);
 
-         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if (lastKnownLocation != null) {
+            LatLng sydney = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+            if(currentMarker != null){
+                currentMarker.remove();
+            }
+            MarkerOptions marker = new MarkerOptions().position(sydney).title("Hello Maps");
+// Changing marker icon
+            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_user));
+            currentMarker= mMap.addMarker(marker);
+            currentMarker.setTag("Self");
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            setCamera(lastKnownLocation);
+            isLocationSet=true;
+        }
 
     }
 
@@ -439,7 +465,7 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
     public void setCamera(Location location){
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(location.getLatitude(), location.getLongitude()))
-                .zoom(17)
+                .zoom(5)
                 .build();
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
@@ -466,6 +492,7 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
             public void onKeyEntered(String key, GeoLocation location) {
                 System.out.println(String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
                 MarkerOptions markerOpt = new MarkerOptions().position(new LatLng(location.latitude,location.longitude)).title(key);
+                markerOpt.icon(BitmapDescriptorFactory.fromResource(R.drawable.pink_car));
                 Marker marker = mMap.addMarker(markerOpt);
                 marker.setTag(key);
                 serviceMarkers.add(marker);

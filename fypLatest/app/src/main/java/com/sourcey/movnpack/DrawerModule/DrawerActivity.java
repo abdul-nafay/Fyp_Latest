@@ -127,11 +127,11 @@ public class DrawerActivity extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
            fragmentClass = SettingsFragment.class;
         } else if (id == R.id.nav_slideshow) {
-
+            return true;
         } else if (id == R.id.nav_manage) {
-
+            return true;
         } else if (id == R.id.nav_share) {
-
+            return true;
         } else if (id == R.id.nav_send) {
 
             SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);

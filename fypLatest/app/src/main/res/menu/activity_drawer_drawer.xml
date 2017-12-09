@@ -13,7 +13,7 @@
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/timeout"
-            android:title="Time Out" />
+            android:title="Status" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
@@ -29,7 +29,7 @@
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
-                android:title="log out" />
+                android:title="Log Out" />
         </menu>
     </item>
 

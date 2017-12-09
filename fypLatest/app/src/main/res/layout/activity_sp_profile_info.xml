@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/primary_dark">
+
+    <LinearLayout
+
+        android:id="@+id/spProfileInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="56dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/member" />
+
+
+        <!-- Name Label -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name :"
+                android:textSize="25dp" />
+
+            <TextView
+                android:id="@+id/sp_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name" />
+
+        </LinearLayout>
+
+
+        <!-- mobile number -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/mobile_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mobile :"
+                android:textSize="25dp" />
+
+            <TextView
+                android:id="@+id/sp_mobile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mobile Number" />
+
+        </LinearLayout>
+
+
+        <!-- registration Number Label-->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/registration_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Registration# :"
+                android:textSize="25dp" />
+
+            <TextView
+                android:id="@+id/sp_registration_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="123456" />
+
+        </LinearLayout>
+
+
+        <!-- Category Label -->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/category_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category :"
+                android:textSize="25dp" />
+
+            <TextView
+                android:id="@+id/sp_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category" />
+
+
+        </LinearLayout>
+
+
+        <!-- rating bar -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/rating_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rating :"
+                android:textSize="25dp" />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:numStars="5"
+                android:stepSize="1" />
+
+        </LinearLayout>
+
+        <!-- Call Image -->
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/call2" />
+
+    </LinearLayout>
+</ScrollView>

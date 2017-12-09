@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,9 @@ import android.view.ViewGroup;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -48,7 +52,7 @@ import static com.sourcey.movnpack.R.id.map;
  * Use the {@link SPHomeMapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SPHomeMapFragment extends Fragment  implements LocationListener  ,OnMapReadyCallback {
+public class SPHomeMapFragment extends Fragment  implements LocationListener  ,OnMapReadyCallback ,  GoogleApiClient.ConnectionCallbacks  , GoogleApiClient.OnConnectionFailedListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,7 +69,7 @@ public class SPHomeMapFragment extends Fragment  implements LocationListener  ,O
 
     private LocationManager locationManager;
     private String provider;
-
+    GoogleApiClient mGoogleApiClient;
     private GoogleMap mMap;
 
     private GeoFire geoFire;
@@ -128,20 +132,10 @@ public class SPHomeMapFragment extends Fragment  implements LocationListener  ,O
                 locationManager.getAllProviders();
             }
 
-        } else {
-            lastKnownLocation = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
-            if ( lastKnownLocation != null) {
-
-                onLocationChanged( lastKnownLocation);
-               // locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 0, 0, this);
-                //locationManager.requestLocationUpdates();
-                if( provider.equals("gps")) {
-                    locationManager.getAllProviders();
-                }
-
-            }
-
-
+        }
+        else {
+            buildGoogleApiClient();
+            mGoogleApiClient.connect();
         }
 
         ////
@@ -262,7 +256,8 @@ public class SPHomeMapFragment extends Fragment  implements LocationListener  ,O
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_user));
             currentMarker= mMap.addMarker(marker);
             currentMarker.setDraggable(true);
-            // setCamera(lastKnownLocation);
+            setCamera(lastKnownLocation);
+            updateLocationOnFireBase(marker.getPosition().latitude,marker.getPosition().longitude);
         }
 
 
@@ -300,14 +295,7 @@ public class SPHomeMapFragment extends Fragment  implements LocationListener  ,O
 
 
 
-    public void setCamera(Location location){
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(location.getLatitude(), location.getLongitude()))
-                .zoom(17)
-                .build();
-        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-    }
 
     public void updateLocationOnFireBase(double lat , double longi)
     {
@@ -331,6 +319,59 @@ public class SPHomeMapFragment extends Fragment  implements LocationListener  ,O
         });
     }
 
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if (lastKnownLocation != null) {
+            LatLng sydney = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+            if(currentMarker != null){
+                currentMarker.remove();
+            }
+            MarkerOptions marker = new MarkerOptions().position(sydney).title("Hello Maps");
+// Changing marker icon
+            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_user));
+            currentMarker= mMap.addMarker(marker);
+            currentMarker.setTag("Self");
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            setCamera(lastKnownLocation);
+            isLocationSet=true;
+           // mMap.animateCamera(CameraUpdateFactory.newLatLng(currentMarker.getPosition()));
+            setCamera(lastKnownLocation);
+            updateLocationOnFireBase(marker.getPosition().latitude,marker.getPosition().longitude);
+        }
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this.getContext())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        System.out.println("ABC buildGoogleApiClient map was invoked: ");
+    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -342,6 +383,14 @@ public class SPHomeMapFragment extends Fragment  implements LocationListener  ,O
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
+    public void setCamera(Location location){
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(location.getLatitude(), location.getLongitude()))
+                .zoom(5)
+                .build();
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+    }
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
