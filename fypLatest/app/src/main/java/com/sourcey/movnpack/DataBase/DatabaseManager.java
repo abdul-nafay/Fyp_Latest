@@ -157,7 +157,7 @@ public class DatabaseManager extends DatabaseHandler {
         try {
             db = getDbForRead();
             ServiceProviderTable serviceProviderTable = new ServiceProviderTable();
-            data =serviceProviderTable.getData(db, null, new String[]{spId});
+            data =serviceProviderTable.getData(db, serviceProviderTable.whereClause(), new String[]{spId});
             return  data != null ? (ServiceProvider) (data.get(0)) : null;
         } catch (Exception e) {
             e.printStackTrace();

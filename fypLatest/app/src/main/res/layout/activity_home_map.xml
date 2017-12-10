@@ -47,14 +47,31 @@
                 android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:background="@color/primary_darker"
-                android:text="picnic" />
+                android:text="Picnic"
+                android:tag="Picnic"/>
 
             <Button
                 android:id="@+id/packingBtn"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:background="@color/primary_darker"
-                android:text="Packing" />
+                android:text="Packing"
+                android:tag="Packing"/>
+
+            <Button
+                android:id="@+id/electricianBtn"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:background="@color/primary_darker"
+                android:text="Electrician"
+                android:tag="Electrician"/>
+            <Button
+                android:id="@+id/plumberBtn"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:background="@color/primary_darker"
+                android:text="Plumber"
+                android:tag="Plumber"/>
 
 />
 

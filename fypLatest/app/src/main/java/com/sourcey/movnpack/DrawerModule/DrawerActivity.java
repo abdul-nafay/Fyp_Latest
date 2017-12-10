@@ -136,7 +136,7 @@ public class DrawerActivity extends AppCompatActivity
 
             SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("email",null);
+            editor.putString("Email",null);
             editor.commit();
             User user = new User();
             user.setEmail("");

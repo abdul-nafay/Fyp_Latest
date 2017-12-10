@@ -95,7 +95,7 @@ public class ServiceProviderTable extends Table {
 
     @Override
     protected String whereClause() {
-        return null;
+        return " WHERE "+ EMAIL + "=?";
     }
 
     @Override

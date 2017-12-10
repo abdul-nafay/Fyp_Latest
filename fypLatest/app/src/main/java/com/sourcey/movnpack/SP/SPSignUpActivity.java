@@ -124,7 +124,7 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
         String address = _addressText.getText().toString();
         String cnicNumber = _cnicText.getText().toString();
         String licenseNumber = _licenseNumberText.getText().toString();
-        String category = _categoryListText.getSelectedItem().toString();
+        String category = _categoryListText.getSelectedItem().toString().toUpperCase();
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 

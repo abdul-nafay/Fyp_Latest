@@ -128,6 +128,10 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
     private Button cargoButton;
     private Button mandiButton;
     private Button labourButton;
+    private Button picnicButton;
+    private Button packingButton;
+    private Button plumberButton;
+    private Button electricianButton;
     private TextView userNameTextView;
     private TextView userNumberTextView;
     public HomeMapFragment() {
@@ -185,10 +189,18 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
          cargoButton = (Button) getView().findViewById(R.id.cargoBtn);
          mandiButton = (Button) getView().findViewById(R.id.mandiBtn);
          labourButton = (Button) getView().findViewById(R.id.labourBtn);
+        picnicButton = (Button) getView().findViewById(R.id.picnicBtn);
+        packingButton = (Button) getView().findViewById(R.id.packingBtn);
+        plumberButton = (Button) getView().findViewById(R.id.plumberBtn);
+        electricianButton = (Button) getView().findViewById(R.id.electricianBtn);
 
         cargoButton.setOnClickListener((View.OnClickListener) this);
         mandiButton.setOnClickListener((View.OnClickListener) this);
         labourButton.setOnClickListener((View.OnClickListener) this);
+        picnicButton.setOnClickListener((View.OnClickListener) this);
+        packingButton.setOnClickListener((View.OnClickListener) this);
+        plumberButton.setOnClickListener((View.OnClickListener) this);
+        electricianButton.setOnClickListener((View.OnClickListener) this);
         // mapFragment.getMapAsync(this);
         mapFragment.getMapAsync(this);
             // Get the location manager

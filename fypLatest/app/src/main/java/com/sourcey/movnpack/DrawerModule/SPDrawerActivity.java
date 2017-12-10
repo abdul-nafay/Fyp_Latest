@@ -2,6 +2,7 @@ package com.sourcey.movnpack.DrawerModule;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.sourcey.movnpack.AppFragments.HomeMapFragment;
 import com.sourcey.movnpack.AppFragments.SPHomeMapFragment;
 import com.sourcey.movnpack.AppFragments.SettingsFragment;
+import com.sourcey.movnpack.Helpers.LocManager;
 import com.sourcey.movnpack.Helpers.Session;
 import com.sourcey.movnpack.LoginModule.LoginActivity;
 import com.sourcey.movnpack.Model.ServiceProvider;
@@ -127,62 +129,55 @@ public class SPDrawerActivity extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
             fragmentClass = SettingsFragment.class;
         } else if (id == R.id.nav_slideshow) {
+            return true;
 
         } else if (id == R.id.nav_manage) {
+            return true;
 
         } else if (id == R.id.nav_TimeIn) {
 
-            String path = Utility.getPathForServiceNamed("Cargo");
+            ServiceProvider sp = Session.sharedInstance.getServiceProvider();
+            String path = Utility.getPathForServiceNamed(sp.getCategoryName());
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference(path);
             geoFire = new GeoFire(ref);
-            User user = Session.getInstance().getUser();
+
             String number = "";
-            if (user != null){
-                number = user.getPhoneNumber();
+            if (sp != null){
+                number = sp.getPhoneNumber();
             }
             else {
                 number = "923362600692";
             }
-            geoFire.setLocation(number, new GeoLocation(32.0908, 68.9652), new GeoFire.CompletionListener() {
-                @Override
-                public void onComplete(String key, DatabaseError error) {
-                    if (error != null) {
-                        System.err.println("There was an error saving the location to GeoFire: " + error);
-                    } else {
-                        System.out.println("Location saved on server successfully!");
+            Location lc = LocManager.sharedInstance.getLastLcoation();
+            if (lc != null) {
+                geoFire.setLocation(number, new GeoLocation(lc.getLatitude(), lc.getLongitude()), new GeoFire.CompletionListener() {
+                    @Override
+                    public void onComplete(String key, DatabaseError error) {
+                        if (error != null) {
+                            System.err.println("There was an error saving the location to GeoFire: " + error);
+                        } else {
+                            System.out.println("Location saved on server successfully!");
+                        }
                     }
-                }
-            });
+                });
+            }
+
             return true ;
         } else if (id == R.id.nav_TimeOut) {
 
-            String path = Utility.getPathForServiceNamed("Cargo");
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference(path);
-            geoFire = new GeoFire(ref);
-            User user = Session.getInstance().getUser();
-            String number = "";
-            if (user != null){
-                number = user.getPhoneNumber();
-            }
-            else {
-                number = "923362600692";
-            }
-            geoFire.setLocation(number, new GeoLocation(0, 0), new GeoFire.CompletionListener() {
-                @Override
-                public void onComplete(String key, DatabaseError error) {
-                    if (error != null) {
-                        System.err.println("There was an error saving the location to GeoFire: " + error);
-                    } else {
-                        System.out.println("Location saved on server successfully!");
-                    }
-                }
-            });
+            timeOutForSP();
             return true;
             //Logout COmmented
-            /*
+
+
+        }
+        else if (id == R.id.nav_send){
+
+            // Logout and TimeOut setting 0,0 Location
+            timeOutForSP();
             SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("email",null);
+            editor.putString("Email",null);
             editor.commit();
             ServiceProvider serviceProvider = new ServiceProvider();
             serviceProvider.setEmail("");
@@ -190,7 +185,7 @@ public class SPDrawerActivity extends AppCompatActivity
             startActivity(intent);
             finish();
             return true;
-            */
+
 
         }
 
@@ -226,5 +221,30 @@ public class SPDrawerActivity extends AppCompatActivity
             userNumberTextView.setText(user.getPhoneNumber());
 
         }
+    }
+
+    public void timeOutForSP(){
+        ServiceProvider sp = Session.sharedInstance.getServiceProvider();
+        String path = Utility.getPathForServiceNamed(sp.getCategoryName());
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(path);
+        geoFire = new GeoFire(ref);
+
+        String number = "";
+        if (sp != null){
+            number = sp.getPhoneNumber();
+        }
+        else {
+            number = "923362600692";
+        }
+        geoFire.setLocation(number, new GeoLocation(0, 0), new GeoFire.CompletionListener() {
+            @Override
+            public void onComplete(String key, DatabaseError error) {
+                if (error != null) {
+                    System.err.println("There was an error saving the location to GeoFire: " + error);
+                } else {
+                    System.out.println("Location saved on server successfully!");
+                }
+            }
+        });
     }
 }
