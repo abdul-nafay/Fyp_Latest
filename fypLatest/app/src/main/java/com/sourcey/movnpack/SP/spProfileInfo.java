@@ -1,5 +1,6 @@
 package com.sourcey.movnpack.SP;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ import java.util.HashMap;
 import butterknife.Bind;
 
 
-public class spProfileInfo extends AppCompatActivity {
+public class spProfileInfo extends Activity {
 
 
     @Bind(R.id.sp_name)
@@ -43,11 +44,13 @@ public class spProfileInfo extends AppCompatActivity {
         _spName = (TextView) findViewById(R.id.sp_name);
         _spCategory = (TextView) findViewById(R.id.sp_category);
         _spMobileNumber = (TextView) findViewById(R.id.sp_mobile);
+/*
         progressDialog = new ProgressDialog(this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Verifying details...");
         progressDialog.show();
+*/
 
         String number = (String) getIntent().getExtras().get("number");
         new SP_ProfileInfo(number).execute();
@@ -67,11 +70,11 @@ public class spProfileInfo extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
 //
-//            progressDialog = new ProgressDialog(LoginActivity.this,
-//                    R.style.AppTheme_Dark_Dialog);
-//            progressDialog.setIndeterminate(true);
-//            progressDialog.setMessage("Verifying details...");
-//            progressDialog.show();
+            progressDialog = new ProgressDialog(spProfileInfo.this,
+                    R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Fetching details...");
+            progressDialog.show();
 
         }
 
@@ -91,7 +94,7 @@ public class spProfileInfo extends AppCompatActivity {
             super.onPostExecute(s);
 
             SpProfileViewModel model = JsonParser.getInstance().parseModelViewResponse(s);
-            progressDialog.hide();
+            //progressDialog.hide();
             if (model != null) {
                 switch (model.getErrorCode()) {
                     case 200:
@@ -144,9 +147,9 @@ public class spProfileInfo extends AppCompatActivity {
 
             }
 
-           /* if(progressDialog != null){
+            if(progressDialog != null){
                 progressDialog.dismiss();
-            }*/
+            }
 
         }
 

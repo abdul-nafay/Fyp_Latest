@@ -68,8 +68,8 @@ public class SettingsFragment extends Fragment {
     boolean update;
 
 
-    @Bind(R.id.init)
-    TextView _init;
+  //  @Bind(R.id.init)
+   // TextView _init;
 
     @Bind(R.id.input_name)
     EditText _nameText;
@@ -158,6 +158,8 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 update();
             }
+
+
         });
 
 
