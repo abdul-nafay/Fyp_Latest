@@ -386,14 +386,14 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 switch (model.getErrorCode()) {
                     case 200:
                         //Yahan Khulwa de Activity
-                        ServiceProvider serviceProvider = (ServiceProvider ) model.getUser();
-
+                      //  ServiceProvider serviceProvider = (ServiceProvider ) model.getUser();
+                        ServiceProvider serviceProvider = model.getServiceProvider();
                         ////////
                         Session session = Session.getInstance();
                         session.setServiceProvider(serviceProvider);
                         //session.setUser(serviceProvider);
 
-                        User userDB = DatabaseManager.getInstance(getApplicationContext()).getServiceProvider(serviceProvider.getEmail());
+                        ServiceProvider userDB = DatabaseManager.getInstance(getApplicationContext()).getServiceProvider(serviceProvider.getEmail());
                         if (userDB == null) {// Entry in DB
 
                             DatabaseManager.getInstance(getApplicationContext()).addServiceProvider(serviceProvider);

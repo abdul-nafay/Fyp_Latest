@@ -156,7 +156,6 @@ public class JsonParser {
                     serviceProvider.setCNIC(cnic);
                     serviceProvider.setLicenseNumber(license_no);
                     serviceProvider.setCategory(Utility.getCategoryFromInt(category));
-
                     return new LoginModel(200,errorMessage,serviceProvider);
                 case 500:
                     return new LoginModel(500,errorMessage);

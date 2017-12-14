@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.core.GeoHashQuery;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -35,13 +36,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.sourcey.movnpack.Helpers.LocChangeListener;
+import com.sourcey.movnpack.Helpers.LocManager;
 import com.sourcey.movnpack.Helpers.Session;
 import com.sourcey.movnpack.R;
+import com.sourcey.movnpack.Utility.MemorizerUtil;
 import com.sourcey.movnpack.Utility.Utility;
 
 import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static com.sourcey.movnpack.R.id.map;
 
 /**
@@ -52,7 +57,7 @@ import static com.sourcey.movnpack.R.id.map;
  * Use the {@link SPHomeMapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SPHomeMapFragment extends Fragment  implements LocationListener  ,OnMapReadyCallback ,  GoogleApiClient.ConnectionCallbacks  , GoogleApiClient.OnConnectionFailedListener {
+public class SPHomeMapFragment extends Fragment  implements LocationListener  ,OnMapReadyCallback , LocChangeListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -103,43 +108,13 @@ public class SPHomeMapFragment extends Fragment  implements LocationListener  ,O
         super.onViewCreated(view, savedInstanceState);
         SupportMapFragment mapFragment =((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map1));
 
+        //
+        LocManager.createInstance(getActivity().getApplicationContext(), this);
+        //
+
+
         ////
         mapFragment.getMapAsync(this);
-        // Get the location manager
-        locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-        // Define the criteria how to select the locatioin provider -> use
-        // default
-        Criteria criteria = new Criteria();
-        provider = locationManager.getBestProvider(criteria, false);
-        if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        lastKnownLocation = locationManager.getLastKnownLocation(provider);
-
-        if ( lastKnownLocation != null) {
-            System.out.println("Provider " + provider + " has been selected.");
-            onLocationChanged( lastKnownLocation);
-           // locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 0, 0, this);
-            //locationManager.requestLocationUpdates();
-            if( provider.equals("gps")) {
-                locationManager.getAllProviders();
-            }
-
-        }
-        else {
-            buildGoogleApiClient();
-            mGoogleApiClient.connect();
-        }
-
-        ////
-
 
     }
 
@@ -319,60 +294,6 @@ public class SPHomeMapFragment extends Fragment  implements LocationListener  ,O
         });
     }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        if (lastKnownLocation != null) {
-            LatLng sydney = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-            if(currentMarker != null){
-                currentMarker.remove();
-            }
-            MarkerOptions marker = new MarkerOptions().position(sydney).title("Hello Maps");
-// Changing marker icon
-            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_user));
-            currentMarker= mMap.addMarker(marker);
-            currentMarker.setTag("Self");
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-            setCamera(lastKnownLocation);
-            isLocationSet=true;
-           // mMap.animateCamera(CameraUpdateFactory.newLatLng(currentMarker.getPosition()));
-            setCamera(lastKnownLocation);
-            updateLocationOnFireBase(marker.getPosition().latitude,marker.getPosition().longitude);
-        }
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this.getContext())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        System.out.println("ABC buildGoogleApiClient map was invoked: ");
-    }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -391,6 +312,35 @@ public class SPHomeMapFragment extends Fragment  implements LocationListener  ,O
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
     }
+
+    @Override
+    public void locationDidChanged(Location loc) {
+        lastKnownLocation = loc;
+        if (lastKnownLocation != null) {
+            LatLng sydney = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+            if(currentMarker != null){
+                currentMarker.remove();
+            }
+            MarkerOptions marker = new MarkerOptions().position(sydney).title("Hello Maps");
+// Changing marker icon
+            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_user));
+            currentMarker= mMap.addMarker(marker);
+            currentMarker.setTag("Self");
+            currentMarker.setDraggable(true);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            setCamera(lastKnownLocation);
+            isLocationSet=true;
+            // mMap.animateCamera(CameraUpdateFactory.newLatLng(currentMarker.getPosition()));
+            setCamera(lastKnownLocation);
+            updateLocationOnFireBase(marker.getPosition().latitude,marker.getPosition().longitude);
+        }
+    }
+
+    @Override
+    public void failedToGetLocationWithError(String error) {
+        MemorizerUtil.displayToast(getContext(),error);
+    }
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

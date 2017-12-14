@@ -43,9 +43,9 @@ public class User extends BaseModel {
         this.password = password;
     }
 
-    public boolean isServiceProvider()
+/*    public boolean isServiceProvider()
     {
         return this instanceof ServiceProvider;
     }
-
+*/
 }
