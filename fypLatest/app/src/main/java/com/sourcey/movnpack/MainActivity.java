@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sourcey.movnpack.BidPlacementActivities.UserBidPlacementActivity;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.DrawerModule.DrawerActivity;
 import com.sourcey.movnpack.DrawerModule.SPDrawerActivity;
@@ -75,7 +76,9 @@ public class MainActivity extends Activity {
             }
         }
         else {
-            Intent intent = new Intent(this, LoginActivity.class);
+           Intent intent = new Intent(this, LoginActivity.class);
+           // Intent intent = new Intent(this, UserBidPlacementActivity.class);
+
             startActivity(intent);
             finish();
         }

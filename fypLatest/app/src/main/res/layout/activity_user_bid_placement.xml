@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/signUpLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="56dp">
+
+        <TextView
+            android:id="@+id/category_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:text="Category Name"
+            android:textSize="20dip" />
+
+
+        <!-- Message Details Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            >
+
+
+            <EditText
+                android:id="@+id/input_name"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:hint="Message Details"
+                android:inputType="text|textMultiLine"
+                android:gravity="top"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Minimum Bid Amount Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/input_min_bid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Minimum Bid " />
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Minimum Bid Amount Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/input_max_bid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Maximum Bid " />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+
+        <!-- Create Bid Button -->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_create_bid"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="24dp"
+            android:padding="12dp"
+            android:text="Bid" />
+
+
+    </LinearLayout>
+</ScrollView>
