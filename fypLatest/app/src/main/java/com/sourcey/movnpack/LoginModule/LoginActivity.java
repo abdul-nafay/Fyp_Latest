@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.DrawerModule.DrawerActivity;
@@ -392,7 +393,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                         Session session = Session.getInstance();
                         session.setServiceProvider(serviceProvider);
                         //session.setUser(serviceProvider);
-
+                        FirebaseMessaging.getInstance().subscribeToTopic("news");
                         ServiceProvider userDB = DatabaseManager.getInstance(getApplicationContext()).getServiceProvider(serviceProvider.getEmail());
                         if (userDB == null) {// Entry in DB
 
