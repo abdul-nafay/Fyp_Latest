@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="24dp">
+
+        <TextView
+            android:id="@+id/subject_text_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:text="Subject"
+            android:textSize="20dip" />
+
+
+        <!-- Message Details Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            >
+
+
+            <EditText
+                android:id="@+id/input_message"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:hint="Reply to the Bid"
+                android:inputType="text|textMultiLine"
+                android:gravity="top"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Propose Amount Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/input_propose_amount"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Propose Amount" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+        <!-- Reply to Bid Button -->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_counter_bid"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:padding="12dp"
+            android:background="@color/yellow"
+            android:text="Counter Bid" />
+
+
+
+
+    </LinearLayout>
+</ScrollView>

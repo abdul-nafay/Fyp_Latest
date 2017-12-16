@@ -60,7 +60,8 @@
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".BidPlacementActivities.SPBidRecievedActivity"
-            android:theme="@style/AppTheme.Dark"/>
+            android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".BidPlacementActivities.SPCounterBidActivity"></activity>
     </application>
 
 </manifest>

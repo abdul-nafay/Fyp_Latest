@@ -26,12 +26,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.sourcey.movnpack.AppFragments.HomeMapFragment;
 import com.sourcey.movnpack.AppFragments.SPHomeMapFragment;
 import com.sourcey.movnpack.AppFragments.SettingsFragment;
+import com.sourcey.movnpack.BidPlacementActivities.SPBidRecievedActivity;
+import com.sourcey.movnpack.BidPlacementActivities.SPCounterBidActivity;
 import com.sourcey.movnpack.Helpers.LocManager;
 import com.sourcey.movnpack.Helpers.Session;
 import com.sourcey.movnpack.LoginModule.LoginActivity;
 import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.Model.User;
 import com.sourcey.movnpack.R;
+import com.sourcey.movnpack.UserServiceProviderCommunication.UserBidActivity;
 import com.sourcey.movnpack.Utility.Utility;
 
 public class SPDrawerActivity extends AppCompatActivity
@@ -129,9 +132,15 @@ public class SPDrawerActivity extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
             fragmentClass = SettingsFragment.class;
         } else if (id == R.id.nav_slideshow) {
+           // return true;
+            Intent intent = new Intent(getApplicationContext(), SPBidRecievedActivity.class);
+            startActivity(intent);
             return true;
 
         } else if (id == R.id.nav_manage) {
+
+            Intent intent = new Intent(getApplicationContext(), SPCounterBidActivity.class);
+            startActivity(intent);
             return true;
 
         } else if (id == R.id.nav_TimeIn) {
