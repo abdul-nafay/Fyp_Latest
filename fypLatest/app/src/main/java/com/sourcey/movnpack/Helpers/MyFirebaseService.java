@@ -14,10 +14,19 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.DrawerModule.DrawerActivity;
+import com.sourcey.movnpack.Model.BidRecievedModel;
+import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.R;
+import com.sourcey.movnpack.Utility.MemorizerUtil;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.R.attr.breakStrategy;
 import static android.R.attr.data;
+import static android.R.attr.defaultToDeviceProtectedStorage;
 
 /**
  * Created by abdul on 12/15/17.
@@ -34,10 +43,49 @@ public class MyFirebaseService extends FirebaseMessagingService{
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d("TAG", "From: " + remoteMessage.getFrom());
+        Log.d("Ali",remoteMessage.toString());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d("TAG", "Message data payload: " + remoteMessage.getData());
+
+            Map<String,String> data = remoteMessage.getData();
+            String bidType = data.get("Bid_Type");
+            switch (bidType)
+            {
+                case "Bid_Received":
+                    // Handle Here Bide Received
+                    ServiceProvider serviceProvider = Session.getInstance().getServiceProvider();
+                    String spId = serviceProvider.getPhoneNumber();
+
+                    BidRecievedModel bidRecievedModel = new BidRecievedModel();
+                    bidRecievedModel.setMessage(data.get("message"));
+                    bidRecievedModel.setBidId(data.get("bidId"));
+                    bidRecievedModel.setDate(data.get("date"));
+                    bidRecievedModel.setUserToken(data.get("userToken"));
+                    bidRecievedModel.setUserId(data.get("userId"));
+                    bidRecievedModel.setUserName(data.get("userName"));
+                    bidRecievedModel.setAmount(data.get("amount"));
+                    bidRecievedModel.setCategoryName(data.get("to"));
+
+                    bidRecievedModel.setStatus("0");
+                    bidRecievedModel.setSpId(spId);
+
+                    boolean res = DatabaseManager.getInstance(this).addBidRecieved(bidRecievedModel);
+                    if(res){
+                        //MemorizerUtil.displayToast(getApplicationContext(),"Data Inserted");
+                    }
+                    else {
+                        //MemorizerUtil.displayToast(getApplicationContext(),"Error in Insert");
+                    }
+
+
+
+                    //
+                    break;
+                default:
+                    break;
+            }
 
             if (/* Check if data needs to be processed by long running job */ true) {
                 // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.

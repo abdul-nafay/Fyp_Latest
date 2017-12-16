@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.sourcey.movnpack.Model.BaseModel;
 import com.sourcey.movnpack.Model.BidModel;
+import com.sourcey.movnpack.Model.BidRecievedModel;
 import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.Model.User;
 
@@ -245,16 +246,13 @@ public class DatabaseManager extends DatabaseHandler {
 
     }
 
-
-    public ArrayList<BaseModel> getBidsForUserId(){
+    public boolean addBidRecieved(BidRecievedModel bidRecievedModel){
         SQLiteDatabase db = null;
-        ArrayList<BaseModel> data = null;
         try {
-            db = getDbForRead();
-            Bid bid = new Bid();
-            data =bid.getData(db,null,  null);
-
-            return  data;
+            db = getDbForwrite();
+            BidRecievedTable bidRecievedTable = new BidRecievedTable();
+            long row = bidRecievedTable.insertData(db,bidRecievedModel);
+            return  row >0  ? true : false;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -262,8 +260,7 @@ public class DatabaseManager extends DatabaseHandler {
             if(db!= null)
                 closeDb();
         }
-        return null;
+        return false;
 
     }
-
 }

@@ -23,6 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(UserTable.SCHEMA);
         db.execSQL(ServiceProviderTable.SCHEMA);
         db.execSQL(Bid.SCHEMA);
+        db.execSQL(BidRecievedTable.SCHEMA);
 
         //UserTable userTable = new UserTable();
         //userTable.insertData(db,new User());
@@ -35,5 +36,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + UserTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + ServiceProviderTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Bid.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + BidRecievedTable.TABLE_NAME);
     }
 }

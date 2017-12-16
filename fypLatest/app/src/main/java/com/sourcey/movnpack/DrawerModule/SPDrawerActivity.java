@@ -23,6 +23,7 @@ import com.firebase.geofire.GeoLocation;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.sourcey.movnpack.AppFragments.HomeMapFragment;
 import com.sourcey.movnpack.AppFragments.SPHomeMapFragment;
 import com.sourcey.movnpack.AppFragments.SettingsFragment;
@@ -206,6 +207,7 @@ public class SPDrawerActivity extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
             startActivity(intent);
             finish();
+            FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
             return true;
 
 
