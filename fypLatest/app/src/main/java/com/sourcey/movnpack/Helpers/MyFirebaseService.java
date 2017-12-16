@@ -1,5 +1,6 @@
 package com.sourcey.movnpack.Helpers;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -68,7 +69,7 @@ public class MyFirebaseService extends FirebaseMessagingService{
                 .setContentTitle("FCM Message")
                 .setContentText(messageBody)
                 .setAutoCancel(true)
-                .setSound(defaultSoundUri).setContentIntent(pendingIntent);
+                .setSound(defaultSoundUri).setContentIntent(pendingIntent).setPriority(Notification.PRIORITY_HIGH);
                 ;
 
         NotificationManager notificationManager =

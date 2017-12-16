@@ -9,7 +9,6 @@ import android.view.MenuItem;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sourcey.movnpack.BidPlacementActivities.UserBidPlacementActivity;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.DrawerModule.DrawerActivity;
 import com.sourcey.movnpack.DrawerModule.SPDrawerActivity;
@@ -17,10 +16,9 @@ import com.sourcey.movnpack.Helpers.Session;
 import com.sourcey.movnpack.LoginModule.LoginActivity;
 import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.Model.User;
+import com.sourcey.movnpack.UserServiceProviderCommunication.UserBidActivity;
 
 import java.util.HashMap;
-
-import static android.R.attr.type;
 
 
 public class MainActivity extends Activity {
@@ -76,8 +74,8 @@ public class MainActivity extends Activity {
             }
         }
         else {
-           Intent intent = new Intent(this, LoginActivity.class);
-           // Intent intent = new Intent(this, UserBidPlacementActivity.class);
+           //Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(this, UserBidActivity.class);
 
             startActivity(intent);
             finish();

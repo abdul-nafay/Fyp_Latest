@@ -47,13 +47,20 @@
         <activity
             android:name=".BidPlacementActivities.UserBidPlacementActivity"
             android:label="@string/title_activity_user_bid_placement"
-            android:theme="@style/AppTheme.Dark"></activity>
-        <service
-            android:name="com.sourcey.movnpack.Helpers.MyFirebaseService">
+            android:theme="@style/AppTheme.Dark" />
+
+        <service android:name=".Helpers.MyFirebaseService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <activity
+            android:name=".UserServiceProviderCommunication.UserBidActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".BidPlacementActivities.SPBidRecievedActivity"
+            android:theme="@style/AppTheme.Dark"/>
     </application>
 
 </manifest>

@@ -53,7 +53,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Transaction;
+import com.sourcey.movnpack.BidPlacementActivities.UserBidPlacementActivity;
 import com.sourcey.movnpack.Helpers.Session;
+import com.sourcey.movnpack.LoginModule.SignupActivity;
 import com.sourcey.movnpack.Model.User;
 import com.sourcey.movnpack.R;
 import com.sourcey.movnpack.SP.spProfileInfo;
@@ -132,6 +134,7 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
     private Button packingButton;
     private Button plumberButton;
     private Button electricianButton;
+    private Button messageButton;
     private TextView userNameTextView;
     private TextView userNumberTextView;
     public HomeMapFragment() {
@@ -194,6 +197,8 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
         plumberButton = (Button) getView().findViewById(R.id.plumberBtn);
         electricianButton = (Button) getView().findViewById(R.id.electricianBtn);
 
+        messageButton = (Button) getView().findViewById(R.id.message_button);
+
         cargoButton.setOnClickListener((View.OnClickListener) this);
         mandiButton.setOnClickListener((View.OnClickListener) this);
         labourButton.setOnClickListener((View.OnClickListener) this);
@@ -201,6 +206,8 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
         packingButton.setOnClickListener((View.OnClickListener) this);
         plumberButton.setOnClickListener((View.OnClickListener) this);
         electricianButton.setOnClickListener((View.OnClickListener) this);
+
+        messageButton.setOnClickListener((View.OnClickListener) this);
         // mapFragment.getMapAsync(this);
         mapFragment.getMapAsync(this);
             // Get the location manager
@@ -329,6 +336,11 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
 
     @Override
     public void onClick(View v) {
+
+        if (messageButton.getId() == v.getId()){
+            Intent intent = new Intent(getContext(), UserBidPlacementActivity.class);
+            startActivity(intent);
+        }
 
         if (v instanceof Button && v.getTag() != null && ((String)v.getTag()) != "") {
             String tag = (String) v.getTag();

@@ -86,6 +86,7 @@
         android:layout_below="@+id/scrollView"
         android:orientation="vertical">
 
+
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:map="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
@@ -96,7 +97,18 @@
             tools:context="com.sourcey.movnpack.HomeModule.HomeMapActivity" />
 
 
+
     </android.support.v7.widget.LinearLayoutCompat>
+
+    <Button
+        android:id="@+id/message_button"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="message"
+        android:background="@drawable/pink_car"/>
+
 
     <!--<android.support.v7.widget.LinearLayoutCompat
 
