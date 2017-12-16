@@ -61,17 +61,7 @@
         <activity
             android:name=".BidPlacementActivities.SPBidRecievedActivity"
             android:theme="@style/AppTheme.Dark" />
-        <activity
-            android:name=".BidPlacementActivities.SPCounterBidActivity"
-            android:theme="@style/AppTheme.Dark" />
-
-        <service android:name=".Helpers.MyFirebaseInstanceIDService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-
-        <activity android:name=".UserServiceProviderCommunication.SPBidActivity"></activity>
+        <activity android:name=".BidPlacementActivities.SPCounterBidActivity"></activity>
     </application>
 
 </manifest>

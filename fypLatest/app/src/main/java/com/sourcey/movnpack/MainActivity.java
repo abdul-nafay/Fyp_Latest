@@ -75,7 +75,8 @@ public class MainActivity extends Activity {
         }
         else {
            Intent intent = new Intent(this, LoginActivity.class);
-            //Intent intent = new Intent(this, UserBidActivity.class);
+          // activity test Area
+          //  Intent intent = new Intent(this, UserBidActivity.class);
 
             startActivity(intent);
             finish();

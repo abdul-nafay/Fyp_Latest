@@ -23,6 +23,7 @@ import com.sourcey.movnpack.Helpers.Session;
 import com.sourcey.movnpack.LoginModule.LoginActivity;
 import com.sourcey.movnpack.Model.User;
 import com.sourcey.movnpack.R;
+import com.sourcey.movnpack.UserServiceProviderCommunication.UserBidActivity;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HomeMapFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener {
@@ -127,7 +128,10 @@ public class DrawerActivity extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
            fragmentClass = SettingsFragment.class;
         } else if (id == R.id.nav_slideshow) {
+            Intent intent = new Intent(getApplicationContext(), UserBidActivity.class);
+            startActivity(intent);
             return true;
+
         } else if (id == R.id.nav_manage) {
             return true;
         } else if (id == R.id.nav_share) {

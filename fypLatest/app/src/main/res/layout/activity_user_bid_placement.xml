@@ -23,6 +23,20 @@
             android:textSize="20dip" />
 
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/input_subject"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Subject " />
+        </android.support.design.widget.TextInputLayout>
+
+
         <!-- Message Details Label -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -56,18 +70,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <!-- Minimum Bid Amount Label -->
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
 
-            <EditText
-                android:id="@+id/input_max_bid"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="Maximum Bid " />
-        </android.support.design.widget.TextInputLayout>
 
 
 

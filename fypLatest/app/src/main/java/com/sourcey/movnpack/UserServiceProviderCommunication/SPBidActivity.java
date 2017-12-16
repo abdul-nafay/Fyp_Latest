@@ -15,18 +15,17 @@ import com.sourcey.movnpack.R;
 import java.util.ArrayList;
 
 
-public class UserBidActivity extends AppCompatActivity {
-
+public class SPBidActivity extends AppCompatActivity {
 
     ArrayList<BidModel> dataModels;
     ArrayList<BaseModel> bids;
     ListView listView;
-    private static UserBidAdapter adapter;
+    private static SPBidAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_bid);
+        setContentView(R.layout.activity_spbid);
 
         listView = (ListView)findViewById(R.id.list);
         bids = DatabaseManager.getInstance(this).getBidsForUserId();
@@ -37,10 +36,10 @@ public class UserBidActivity extends AppCompatActivity {
                 dataModels.add((BidModel) bid);
             }
         }
-       // dataModels= new ArrayList<>();
+        // dataModels= new ArrayList<>();
 
 
-        adapter= new UserBidAdapter(dataModels,getApplicationContext());
+        adapter= new SPBidAdapter(dataModels,getApplicationContext());
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -56,7 +55,4 @@ public class UserBidActivity extends AppCompatActivity {
         });
 
     }
-
-
-
 }

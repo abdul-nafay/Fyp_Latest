@@ -54,24 +54,24 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <activity
             android:name=".UserServiceProviderCommunication.UserBidActivity"
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".BidPlacementActivities.SPBidRecievedActivity"
+<<<<<<< HEAD
             android:theme="@style/AppTheme.Dark" />
-        <activity
-            android:name=".BidPlacementActivities.SPCounterBidActivity"
-            android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".BidPlacementActivities.SPCounterBidActivity"></activity>
+=======
+            android:theme="@style/AppTheme.Dark"/>
 
-        <service android:name=".Helpers.MyFirebaseInstanceIDService">
+        <service
+            android:name="com.sourcey.movnpack.Helpers.MyFirebaseInstanceIDService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
-
-        <activity android:name=".UserServiceProviderCommunication.SPBidActivity"></activity>
+>>>>>>> d490f182eb3dbad14add654e09716303eb9cc914
     </application>
 
 </manifest>

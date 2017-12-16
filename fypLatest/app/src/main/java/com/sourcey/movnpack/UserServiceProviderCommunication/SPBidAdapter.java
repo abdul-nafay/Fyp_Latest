@@ -9,17 +9,16 @@ import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-
 import com.sourcey.movnpack.Model.BidModel;
 import com.sourcey.movnpack.R;
 
 import java.util.ArrayList;
 
 /**
- * Created by Abdul Nafay Waseem on 12/16/2017.
+ * Created by Abdul Nafay Waseem on 12/17/2017.
  */
 
-public class UserBidAdapter extends ArrayAdapter<BidModel> implements View.OnClickListener{
+public class SPBidAdapter extends ArrayAdapter<BidModel> implements View.OnClickListener{
 
     private ArrayList<BidModel> dataSet;
     Context mContext;
@@ -32,7 +31,7 @@ public class UserBidAdapter extends ArrayAdapter<BidModel> implements View.OnCli
 
     }
 
-    public UserBidAdapter(ArrayList<BidModel> data, Context context) {
+    public SPBidAdapter(ArrayList<BidModel> data, Context context) {
         super(context, R.layout.user_bid_items, data);
         this.dataSet = data;
         this.mContext=context;

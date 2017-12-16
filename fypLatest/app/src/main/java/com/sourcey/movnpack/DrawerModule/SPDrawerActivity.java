@@ -28,12 +28,14 @@ import com.sourcey.movnpack.AppFragments.SPHomeMapFragment;
 import com.sourcey.movnpack.AppFragments.SettingsFragment;
 import com.sourcey.movnpack.BidPlacementActivities.SPBidRecievedActivity;
 import com.sourcey.movnpack.BidPlacementActivities.SPCounterBidActivity;
+import com.sourcey.movnpack.BidPlacementActivities.UserBidPlacementActivity;
 import com.sourcey.movnpack.Helpers.LocManager;
 import com.sourcey.movnpack.Helpers.Session;
 import com.sourcey.movnpack.LoginModule.LoginActivity;
 import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.Model.User;
 import com.sourcey.movnpack.R;
+import com.sourcey.movnpack.UserServiceProviderCommunication.SPBidActivity;
 import com.sourcey.movnpack.UserServiceProviderCommunication.UserBidActivity;
 import com.sourcey.movnpack.Utility.Utility;
 
@@ -130,20 +132,31 @@ public class SPDrawerActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             fragmentClass = SPHomeMapFragment.class;
         } else if (id == R.id.nav_settings) {
-            fragmentClass = SettingsFragment.class;
+           // fragmentClass = SettingsFragment.class;
+            Intent intent = new Intent(getApplicationContext(), SPBidActivity.class);
+            startActivity(intent);
+            return true;
         } else if (id == R.id.nav_slideshow) {
            // return true;
-            Intent intent = new Intent(getApplicationContext(), SPBidRecievedActivity.class);
+            Intent intent = new Intent(getApplicationContext(), UserBidPlacementActivity.class);
             startActivity(intent);
             return true;
 
         } else if (id == R.id.nav_manage) {
 
-            Intent intent = new Intent(getApplicationContext(), SPCounterBidActivity.class);
+            Intent intent = new Intent(getApplicationContext(), SPBidRecievedActivity.class);
             startActivity(intent);
             return true;
 
-        } else if (id == R.id.nav_TimeIn) {
+        }  else if (id == R.id.nav_test) {
+
+        Intent intent = new Intent(getApplicationContext(), SPCounterBidActivity.class);
+        startActivity(intent);
+        return true;
+
+    }
+
+        else if (id == R.id.nav_TimeIn) {
 
             ServiceProvider sp = Session.sharedInstance.getServiceProvider();
             String path = Utility.getPathForServiceNamed(sp.getCategoryName());

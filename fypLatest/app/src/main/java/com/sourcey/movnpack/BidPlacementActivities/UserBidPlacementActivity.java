@@ -33,12 +33,13 @@ import java.util.UUID;
 import butterknife.ButterKnife;
 
 import static android.R.attr.password;
+import static android.R.id.input;
 import static com.sourcey.movnpack.R.id.map;
 
 public class UserBidPlacementActivity extends Activity {
 
     public TextView categoryName;
-    public EditText inputName,inputBid;
+    public EditText inputMessage,inputBid,inputSubject;
     public Button submit;
 
     @Override
@@ -55,17 +56,54 @@ public class UserBidPlacementActivity extends Activity {
     public void initUI(){
 
         categoryName = (TextView) findViewById(R.id.category_name);
-        inputName = (EditText) findViewById(R.id.input_name);
+        inputMessage = (EditText) findViewById(R.id.input_name);
         inputBid = (EditText) findViewById(R.id.input_min_bid);
+        inputSubject = (EditText) findViewById(R.id.input_subject);
+
         submit = (Button) findViewById(R.id.btn_create_bid);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 User u = Session.getInstance().getUser();
-                new userBidPlacementTask("/topics/news",inputName.getText().toString(), UUID.randomUUID().toString(),"DATE", FirebaseInstanceId.getInstance().getToken(),u.getPhoneNumber(),u.getName(),inputBid.getText().toString()).execute();
+                new userBidPlacementTask("/topics/news",inputMessage.getText().toString(), UUID.randomUUID().toString(),"DATE", FirebaseInstanceId.getInstance().getToken(),u.getPhoneNumber(),u.getName(),inputBid.getText().toString()).execute();
             }
         });
+    }
+
+    public boolean validate(){
+
+        boolean valid = true;
+
+        String subject = inputSubject.getText().toString();
+        String message = inputMessage.getText().toString();
+        String bidAmount = inputBid.getText().toString();
+
+        if (subject.isEmpty()){
+            inputSubject.setError("Please Enter Subject");
+            valid = false;
+        }
+        else {
+            inputSubject.setError(null);
+        }
+        if (message.isEmpty()){
+            inputMessage.setError("Please Enter Subject");
+            valid = false;
+        }
+        else {
+            inputMessage.setError(null);
+        }
+        if (bidAmount.isEmpty()){
+            inputBid.setError("Please Enter Subject");
+            valid = false;
+        }
+        else {
+            inputBid.setError(null);
+        }
+
+        return valid;
+
+
     }
 
 
