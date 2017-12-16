@@ -1,5 +1,9 @@
 package com.sourcey.movnpack.Network;
 
+import android.util.Log;
+
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -40,6 +44,7 @@ public class HttpHandler {
             conn.setRequestMethod("POST");
             conn.setDoInput(true);
             conn.setDoOutput(true);
+            //conn.set
 
 
             OutputStream os = conn.getOutputStream();
@@ -85,5 +90,52 @@ public class HttpHandler {
         }
 
         return result.toString();
+    }
+
+    public String  performPostCallWithHeader(String requestURL,
+                                   HashMap<String, String> postDataParams) {
+
+        URL url;
+        String response = "";
+        try {
+            url = new URL(requestURL);
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Authorization","key=AAAAgKe796M:APA91bFHBbSZzc8_RxAWxjRaNknYp7f23v8Mkymx_RbZLyibDVH8GG8nMHIu9TcfVejd0PFYJNCHah7merSfb4eklNLzxyvROnH-kyVhLcNFJHCwYpRmrXs5LLVU2WMYeTxDKV7om2h_");
+            conn.setRequestProperty("Content-Type","application/json");
+
+
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            //writer.write(getPostDataString(postDataParams));
+            Log.i("Ali2",new JSONObject(postDataParams).toString());
+                writer.write(new JSONObject(postDataParams).toString());
+            writer.flush();
+            writer.close();
+            os.close();
+            int responseCode=conn.getResponseCode();
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line=br.readLine()) != null) {
+                    response+=line;
+                }
+            }
+            else {
+                response="";
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return response;
     }
 }

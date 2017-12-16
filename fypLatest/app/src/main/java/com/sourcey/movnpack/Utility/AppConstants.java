@@ -22,6 +22,8 @@ public class AppConstants  {
 
     public static String API_SP_Details= "https://androidfyp.000webhostapp.com/sp_model_return.php";
 
+    public static String API_BID_PLACEMENT= "https://fcm.googleapis.com/fcm/send";
+
 
 
     public static String SERVICE_PROVIDER = "service_provider";

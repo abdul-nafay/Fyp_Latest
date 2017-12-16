@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.sourcey.movnpack.Model.BaseModel;
+import com.sourcey.movnpack.Model.BidModel;
 import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.Model.User;
 
@@ -222,6 +223,25 @@ public class DatabaseManager extends DatabaseHandler {
             result=false;
         }
         return result;
+
+    }
+
+
+    public boolean addUserBid(BidModel bidModel){
+        SQLiteDatabase db = null;
+        try {
+            db = getDbForwrite();
+            Bid bid = new Bid();
+            long row = bid.insertData(db,bidModel);
+            return  row >0  ? true : false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally{
+            if(db!= null)
+                closeDb();
+        }
+        return false;
 
     }
 }
