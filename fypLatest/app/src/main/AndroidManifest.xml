@@ -54,13 +54,19 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <activity
             android:name=".UserServiceProviderCommunication.UserBidActivity"
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".BidPlacementActivities.SPBidRecievedActivity"
             android:theme="@style/AppTheme.Dark"/>
+
+        <service
+            android:name="com.sourcey.movnpack.Helpers.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

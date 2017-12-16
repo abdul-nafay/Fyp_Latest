@@ -1,5 +1,6 @@
 package com.sourcey.movnpack.Helpers;
 
+import com.sourcey.movnpack.Model.BidModel;
 import com.sourcey.movnpack.Model.LoginModel;
 import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.Model.SignupModel;
@@ -223,4 +224,8 @@ public class JsonParser {
     }
 
 
+    public BidModel parseBidResponse(String s) {
+
+        return null;
+    }
 }
