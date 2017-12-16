@@ -154,12 +154,14 @@ public class UserBidPlacementActivity extends Activity {
 
                 Gson gson = new Gson();
                 String dataStr = gson.toJson(data);
-                params.put("data",dataStr);
+                params.put("data",new JSONObject(data));
 
                 //Gson gson = new Gson();
                 String notificationStr = gson.toJson(notification);
 
-                params.put("notification", notificationStr);
+                params.put("notification", new JSONObject(notification));
+
+                Log.i("ALi",params.toString());
 
                 response = httpHandler.performPostCallWithHeader(AppConstants.API_BID_PLACEMENT, params);
 

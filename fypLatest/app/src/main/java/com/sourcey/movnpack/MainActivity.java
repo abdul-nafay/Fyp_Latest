@@ -74,8 +74,8 @@ public class MainActivity extends Activity {
             }
         }
         else {
-           //Intent intent = new Intent(this, LoginActivity.class);
-            Intent intent = new Intent(this, UserBidActivity.class);
+           Intent intent = new Intent(this, LoginActivity.class);
+            //Intent intent = new Intent(this, UserBidActivity.class);
 
             startActivity(intent);
             finish();

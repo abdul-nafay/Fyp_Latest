@@ -1,5 +1,9 @@
 package com.sourcey.movnpack.Network;
 
+import android.util.Log;
+
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -109,8 +113,9 @@ public class HttpHandler {
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
-            writer.write(getPostDataString(postDataParams));
-
+            //writer.write(getPostDataString(postDataParams));
+            Log.i("Ali2",new JSONObject(postDataParams).toString());
+                writer.write(new JSONObject(postDataParams).toString());
             writer.flush();
             writer.close();
             os.close();
