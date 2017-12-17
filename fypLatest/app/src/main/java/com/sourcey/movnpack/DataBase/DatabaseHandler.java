@@ -25,6 +25,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(Bid.SCHEMA);
         db.execSQL(BidRecievedTable.SCHEMA);
         db.execSQL(AcceptedBids.SCHEMA);
+        db.execSQL(SPBidCounterTable.SCHEMA);
+        db.execSQL(UserBidCounterTable.SCHEMA);
 
         //UserTable userTable = new UserTable();
         //userTable.insertData(db,new User());
@@ -39,5 +41,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + Bid.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + BidRecievedTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + AcceptedBids.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + SPBidCounterTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + UserBidCounterTable.TABLE_NAME);
     }
 }
