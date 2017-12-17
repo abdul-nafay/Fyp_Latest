@@ -100,7 +100,7 @@ public class BidRecievedTable extends Table {
 
     @Override
     protected String whereClauseForUpdate() {
-        return USER_TOKEN + "=?";
+        return BID_ID + "=?";
     }
 
     @Override

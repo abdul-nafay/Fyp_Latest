@@ -3,6 +3,7 @@ package com.sourcey.movnpack.DataBase;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.sourcey.movnpack.Model.AcceptedBidsModel;
 import com.sourcey.movnpack.Model.BaseModel;
 import com.sourcey.movnpack.Model.BidModel;
 import com.sourcey.movnpack.Model.BidRecievedModel;
@@ -246,12 +247,102 @@ public class DatabaseManager extends DatabaseHandler {
 
     }
 
+    public ArrayList<BaseModel> getBidsForUserId(){
+        SQLiteDatabase db = null;
+        ArrayList<BaseModel> data = null;
+        try {
+            db = getDbForRead();
+            Bid bid = new Bid();
+            data =bid.getData(db,null, null);
+
+            return data;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally{
+            if(db!= null)
+                closeDb();
+        }
+        return null;
+
+    }
+
     public boolean addBidRecieved(BidRecievedModel bidRecievedModel){
         SQLiteDatabase db = null;
         try {
             db = getDbForwrite();
             BidRecievedTable bidRecievedTable = new BidRecievedTable();
             long row = bidRecievedTable.insertData(db,bidRecievedModel);
+            return  row >0  ? true : false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally{
+            if(db!= null)
+                closeDb();
+        }
+        return false;
+
+    }
+
+    public ArrayList<BaseModel> getBidsRecieved(){
+        SQLiteDatabase db = null;
+        ArrayList<BaseModel> data = null;
+        try {
+            db = getDbForRead();
+            BidRecievedTable bid = new BidRecievedTable();
+            data =bid.getData(db,null, null);
+
+            return data;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally{
+            if(db!= null)
+                closeDb();
+        }
+        return null;
+
+    }
+
+    public long updateBidRecievedStatus(BidRecievedModel bidRecievedModel){
+
+        SQLiteDatabase db = null;
+        long result = 0;
+        try {
+            db = getDbForwrite();
+            BidRecievedTable bidRecievedTable=new BidRecievedTable() ;
+            String[] whereArgs = {String.valueOf(bidRecievedModel.getBidId())};
+            result = bidRecievedTable.updateData(db, bidRecievedModel, bidRecievedTable.whereClauseForUpdate(), whereArgs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally{
+            if(db!= null)
+                closeDb();
+        }
+        return result;
+    }
+
+    public boolean editBidRecieved(BidRecievedModel bidRecievedModel){
+        boolean result=false;
+        if(bidRecievedModel!=null) {
+            long x = updateBidRecievedStatus(bidRecievedModel);
+            result = x > 0;
+        }
+        else {
+            result=false;
+        }
+        return result;
+
+    }
+
+    public boolean addAcceptedBids(AcceptedBidsModel acceptedBidsModel){
+        SQLiteDatabase db = null;
+        try {
+            db = getDbForwrite();
+            AcceptedBids acceptedBids = new AcceptedBids();
+            long row = acceptedBids.insertData(db,acceptedBidsModel);
             return  row >0  ? true : false;
         } catch (Exception e) {
             e.printStackTrace();

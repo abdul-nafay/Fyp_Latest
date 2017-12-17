@@ -1,12 +1,19 @@
 package com.sourcey.movnpack.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by abdul on 12/17/17.
  */
 
-public class BidRecievedModel extends BaseModel {
+public class BidRecievedModel extends BaseModel implements Parcelable {
 
     String message,bidId,date,userToken,userId,userName,amount,categoryName,spId,status;
+
+    public BidRecievedModel(){
+        //super();
+    }
 
     public String getMessage() {
         return message;
@@ -86,5 +93,54 @@ public class BidRecievedModel extends BaseModel {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+        dest.writeString(message);
+        dest.writeString(bidId);
+        dest.writeString(date);
+        dest.writeString(userId);
+        dest.writeString(userName);
+        dest.writeString(userToken);
+        dest.writeString(amount);
+        dest.writeString(categoryName);
+        dest.writeString(status);
+        dest.writeString(spId);
+
+
+
+    }
+
+    public static final Parcelable.Creator<BidRecievedModel> CREATOR = new Parcelable.Creator<BidRecievedModel>() {
+
+        @Override
+        public BidRecievedModel createFromParcel(Parcel source) {
+            return new BidRecievedModel(source);
+        }
+
+        @Override
+        public BidRecievedModel[] newArray(int size) {
+            return new BidRecievedModel[size];
+        }
+    };
+
+    private BidRecievedModel(Parcel source) {
+        message = source.readString();
+        bidId = source.readString();
+        date = source.readString();
+        userId = source.readString();
+        userName = source.readString();
+        userToken = source.readString();
+        amount = source.readString();
+        categoryName = source.readString();
+        status = source.readString();
+        spId = source.readString();
     }
 }

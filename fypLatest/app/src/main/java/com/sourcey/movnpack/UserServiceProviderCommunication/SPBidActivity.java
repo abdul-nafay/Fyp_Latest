@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.Model.BaseModel;
 import com.sourcey.movnpack.Model.BidModel;
+import com.sourcey.movnpack.Model.BidRecievedModel;
 import com.sourcey.movnpack.R;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 public class SPBidActivity extends AppCompatActivity {
 
-    ArrayList<BidModel> dataModels;
+    ArrayList<BidRecievedModel> dataModels;
     ArrayList<BaseModel> bids;
     ListView listView;
     private static SPBidAdapter adapter;
@@ -28,12 +29,12 @@ public class SPBidActivity extends AppCompatActivity {
         setContentView(R.layout.activity_spbid);
 
         listView = (ListView)findViewById(R.id.list);
-        bids = DatabaseManager.getInstance(this).getBidsForUserId();
+        bids = DatabaseManager.getInstance(this).getBidsRecieved();
 
         dataModels = new ArrayList<>();
         if(bids!=null) {
             for (BaseModel bid : bids) {
-                dataModels.add((BidModel) bid);
+                dataModels.add((BidRecievedModel) bid);
             }
         }
         // dataModels= new ArrayList<>();
@@ -46,7 +47,7 @@ public class SPBidActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                BidModel dataModel= dataModels.get(position);
+                BidRecievedModel dataModel= dataModels.get(position);
 
 
                 Snackbar.make(view, dataModel.getCategoryName()+"\n"+dataModel.getMessage()+" date: "+dataModel.getDate(), Snackbar.LENGTH_LONG)

@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.sourcey.movnpack.Model.BidModel;
+import com.sourcey.movnpack.Model.BidRecievedModel;
 import com.sourcey.movnpack.R;
 
 import java.util.ArrayList;
@@ -18,9 +19,9 @@ import java.util.ArrayList;
  * Created by Abdul Nafay Waseem on 12/17/2017.
  */
 
-public class SPBidAdapter extends ArrayAdapter<BidModel> implements View.OnClickListener{
+public class SPBidAdapter extends ArrayAdapter<BidRecievedModel> implements View.OnClickListener{
 
-    private ArrayList<BidModel> dataSet;
+    private ArrayList<BidRecievedModel> dataSet;
     Context mContext;
 
     // View lookup cache
@@ -31,7 +32,7 @@ public class SPBidAdapter extends ArrayAdapter<BidModel> implements View.OnClick
 
     }
 
-    public SPBidAdapter(ArrayList<BidModel> data, Context context) {
+    public SPBidAdapter(ArrayList<BidRecievedModel> data, Context context) {
         super(context, R.layout.user_bid_items, data);
         this.dataSet = data;
         this.mContext=context;
@@ -43,7 +44,7 @@ public class SPBidAdapter extends ArrayAdapter<BidModel> implements View.OnClick
 
         int position=(Integer) v.getTag();
         Object object= getItem(position);
-        BidModel model =(BidModel)object;
+        BidRecievedModel model =(BidRecievedModel)object;
 
 
        /* switch (v.getId())
@@ -60,7 +61,7 @@ public class SPBidAdapter extends ArrayAdapter<BidModel> implements View.OnClick
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        BidModel dataModel = getItem(position);
+        BidRecievedModel dataModel = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
 

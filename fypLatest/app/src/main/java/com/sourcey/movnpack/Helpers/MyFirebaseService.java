@@ -9,16 +9,20 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.sourcey.movnpack.BidPlacementActivities.SPBidRecievedActivity;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.DrawerModule.DrawerActivity;
+import com.sourcey.movnpack.Model.AcceptedBidsModel;
 import com.sourcey.movnpack.Model.BidRecievedModel;
 import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.R;
+import com.sourcey.movnpack.UserServiceProviderCommunication.SPBidActivity;
 import com.sourcey.movnpack.Utility.MemorizerUtil;
 
 import java.util.HashMap;
@@ -27,6 +31,7 @@ import java.util.Map;
 import static android.R.attr.breakStrategy;
 import static android.R.attr.data;
 import static android.R.attr.defaultToDeviceProtectedStorage;
+import static com.google.android.gms.measurement.AppMeasurement.getInstance;
 
 /**
  * Created by abdul on 12/15/17.
@@ -73,7 +78,13 @@ public class MyFirebaseService extends FirebaseMessagingService{
 
                     boolean res = DatabaseManager.getInstance(this).addBidRecieved(bidRecievedModel);
                     if(res){
-                        //MemorizerUtil.displayToast(getApplicationContext(),"Data Inserted");
+                        //MemorizerUtil.displayToast(getApplicationContext(),"Data
+                        // Inserted");
+                        // Check if message contains a notification payload.
+                        if (remoteMessage.getNotification() != null) {
+                            Log.d("TAG", "Message Notification Body: " + remoteMessage.getNotification().getBody());
+                            sendNotification(remoteMessage.getNotification().getBody(),bidRecievedModel);
+                        }
                     }
                     else {
                         //MemorizerUtil.displayToast(getApplicationContext(),"Error in Insert");
@@ -83,6 +94,30 @@ public class MyFirebaseService extends FirebaseMessagingService{
 
                     //
                     break;
+
+                case "Bid_Accepted":
+
+                    //ServiceProvider sp = Session.getInstance().getServiceProvider();
+                    //String spID = sp.getPhoneNumber();
+                   // String spName = sp.getName();
+                    AcceptedBidsModel acceptedBidsModel = new AcceptedBidsModel();
+                    acceptedBidsModel.setBidId(data.get("bidId"));
+                    acceptedBidsModel.setSpId(data.get("spId"));
+                    acceptedBidsModel.setSpName(data.get("spName"));
+                    acceptedBidsModel.setDate(data.get("date"));
+
+                    boolean result = DatabaseManager.getInstance(this).addAcceptedBids(acceptedBidsModel);
+                    if (result){
+
+                        if (remoteMessage.getNotification() != null) {
+                            Log.d("TAG", "Message Notification Body: " + remoteMessage.getNotification().getBody());
+                            sendNotificationForAcceptedBids(remoteMessage.getNotification().getBody(),acceptedBidsModel);
+                        }
+                    }
+                    else {
+
+                    }
+
                 default:
                     break;
             }
@@ -97,18 +132,16 @@ public class MyFirebaseService extends FirebaseMessagingService{
 
         }
 
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d("TAG", "Message Notification Body: " + remoteMessage.getNotification().getBody());
-         sendNotification(remoteMessage.getNotification().getBody());
-        }
+
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
     }
-    private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, DrawerActivity.class);
+    private void sendNotification(String messageBody, BidRecievedModel bidRecievedModel) {
+        Intent intent = new Intent(this, SPBidRecievedActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("bidRecieved", (Parcelable) bidRecievedModel);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -119,6 +152,28 @@ public class MyFirebaseService extends FirebaseMessagingService{
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri).setContentIntent(pendingIntent).setPriority(Notification.PRIORITY_HIGH);
                 ;
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
+    private void sendNotificationForAcceptedBids(String messageBody, AcceptedBidsModel bidRecievedModel) {
+        Intent intent = new Intent(this, DrawerActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+       // intent.putExtra("bidRecieved", (Parcelable) bidRecievedModel);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("FCM Message")
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri).setContentIntent(pendingIntent).setPriority(Notification.PRIORITY_HIGH);
+        ;
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
