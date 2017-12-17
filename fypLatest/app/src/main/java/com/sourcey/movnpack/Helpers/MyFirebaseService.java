@@ -21,6 +21,7 @@ import com.sourcey.movnpack.DrawerModule.DrawerActivity;
 import com.sourcey.movnpack.Model.AcceptedBidsModel;
 import com.sourcey.movnpack.Model.BidRecievedModel;
 import com.sourcey.movnpack.Model.ServiceProvider;
+import com.sourcey.movnpack.Model.UserBidCounterModel;
 import com.sourcey.movnpack.R;
 import com.sourcey.movnpack.UserServiceProviderCommunication.SPBidActivity;
 import com.sourcey.movnpack.UserServiceProviderCommunication.UserBidConversationActivity;
@@ -119,12 +120,36 @@ public class MyFirebaseService extends FirebaseMessagingService{
 
                     }
                     break;
+
+
                 case "Bid_Counter":
-                    if (remoteMessage.getNotification() != null) {
-                        Log.d("TAG", "Message Notification Body: " + remoteMessage.getNotification().getBody());
-                        sendNotificationForCounterBids(remoteMessage.getNotification().getBody(),data.get("bidId"));
+
+                    UserBidCounterModel userBidCounterModel = new UserBidCounterModel();
+
+                    userBidCounterModel.setBidId(data.get("bidId"));
+                    userBidCounterModel.setSpId(data.get("spId"));
+                    userBidCounterModel.setSpName(data.get("spName"));
+                    userBidCounterModel.setDate(data.get("date"));
+                    userBidCounterModel.setSpToken(data.get("spToken"));
+                    userBidCounterModel.setMessage(data.get("message"));
+                    userBidCounterModel.setAmount(data.get("amount"));
+
+                    boolean resul = DatabaseManager.getInstance(this).addUserBidCounter(userBidCounterModel);
+
+                    if (resul) {
+
+
+                        if (remoteMessage.getNotification() != null) {
+                            Log.d("TAG", "Message Notification Body: " + remoteMessage.getNotification().getBody());
+                            sendNotificationForCounterBids(remoteMessage.getNotification().getBody(), data.get("bidId"));
+                        }
                     }
+                    else {
+
+                    }
+
                     break;
+
                 default:
                     break;
             }

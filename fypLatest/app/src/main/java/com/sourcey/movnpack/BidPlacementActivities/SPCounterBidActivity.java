@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.Helpers.Session;
 import com.sourcey.movnpack.Model.BidRecievedModel;
+import com.sourcey.movnpack.Model.SPBidCounterModel;
 import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.Network.HttpHandler;
 import com.sourcey.movnpack.R;
@@ -95,6 +96,22 @@ public class SPCounterBidActivity extends AppCompatActivity {
             boolean res = DatabaseManager.getInstance(getApplicationContext()).editBidRecieved(bidRecievedModel);
             if (res){
                 //emorizerUtil.displayToast(getApplicationContext(),"Update done");
+
+                SPBidCounterModel spBidCounterModel = new SPBidCounterModel();
+                spBidCounterModel.setBidId(bidId);
+                spBidCounterModel.setMessage(amount);
+                spBidCounterModel.setMessage(message);
+                spBidCounterModel.setDate(date);
+
+                boolean resu = DatabaseManager.getInstance(getApplicationContext()).addSPBidCounter(spBidCounterModel);
+
+                if (resu){
+                    MemorizerUtil.displayToast(getApplicationContext(),"Inserted");
+                }
+                else {
+                    MemorizerUtil.displayToast(getApplicationContext(),"Insert nahi howa");
+                }
+
                 finish();
             }
             else {
