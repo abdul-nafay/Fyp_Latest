@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class UserBidCounterTable extends Table {
 
     public static final String TABLE_NAME = "USER_BID_COUNTER";
-    public static final String SCHEMA = "CREATE TABLE IF NOT EXISTS USER_BID_COUNTER (BID_ID TEXT,SP_ID TEXT,SP_NAME TEXT,DATE TEXT,MESSAGE TEXT,AMOUNT TEXT)";
+    public static final String SCHEMA = "CREATE TABLE IF NOT EXISTS USER_BID_COUNTER (BID_ID TEXT,SP_ID TEXT,SP_NAME TEXT,DATE TEXT,MESSAGE TEXT,AMOUNT TEXT,SP_TOKEN TEXT)";
 
     //   private final String ID = "ID";
     public static final String MESSAGE = "MESSAGE";
@@ -26,6 +26,8 @@ public class UserBidCounterTable extends Table {
     public static final String AMOUNT  = "AMOUNT";
     public static final String SP_ID  = "SP_ID";
     public static final String SP_NAME  = "SP_NAME";
+    public static final String SP_TOKEN  = "SP_TOKEN";
+
 
 
 
@@ -46,6 +48,7 @@ public class UserBidCounterTable extends Table {
         contentValues.put(AMOUNT, ((UserBidCounterModel)data).getAmount());
         contentValues.put(SP_ID, ((UserBidCounterModel)data).getSpId());
         contentValues.put(SP_NAME, ((UserBidCounterModel)data).getSpName());
+        contentValues.put(SP_TOKEN, ((UserBidCounterModel)data).getSpToken());
 
         return contentValues;
     }
@@ -69,6 +72,7 @@ public class UserBidCounterTable extends Table {
                 bidModel.setAmount(cursor.getString(cursor.getColumnIndex(AMOUNT)));
                 bidModel.setSpId(cursor.getString(cursor.getColumnIndex(SP_ID)));
                 bidModel.setSpName(cursor.getString(cursor.getColumnIndex(SP_NAME)));
+                bidModel.setSpToken(cursor.getString(cursor.getColumnIndex(SP_TOKEN)));
 
                 bidArray.add(bidModel);
                 cursor.moveToNext();

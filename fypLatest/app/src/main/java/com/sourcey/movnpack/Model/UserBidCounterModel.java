@@ -6,7 +6,22 @@ package com.sourcey.movnpack.Model;
 
 public class UserBidCounterModel extends BaseModel {
 
-    String bidId,spId,spName,date,message,amount;
+    String bidId;
+    String spId;
+    String spName;
+    String date;
+    String message;
+    String amount;
+
+    public String getSpToken() {
+        return spToken;
+    }
+
+    public void setSpToken(String spToken) {
+        this.spToken = spToken;
+    }
+
+    String spToken;
 
     public String getBidId() {
         return bidId;
