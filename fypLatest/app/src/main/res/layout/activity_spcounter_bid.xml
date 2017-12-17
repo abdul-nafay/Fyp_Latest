@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<include android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    layout="@layout/header_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
+
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:layout_marginTop="50dp">
+
+
 
     <LinearLayout
         android:id="@+id/main_layout"
@@ -73,3 +87,5 @@
 
     </LinearLayout>
 </ScrollView>
+
+    </RelativeLayout>
