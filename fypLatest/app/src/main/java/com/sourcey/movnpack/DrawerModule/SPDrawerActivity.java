@@ -139,20 +139,20 @@ public class SPDrawerActivity extends AppCompatActivity
             return true;
         } else if (id == R.id.nav_slideshow) {
            // return true;
-            Intent intent = new Intent(getApplicationContext(), UserBidPlacementActivity.class);
-            startActivity(intent);
+            //Intent intent = new Intent(getApplicationContext(), UserBidPlacementActivity.class);
+           // startActivity(intent);
             return true;
 
         } else if (id == R.id.nav_manage) {
 
-            Intent intent = new Intent(getApplicationContext(), SPBidRecievedActivity.class);
+            Intent intent = new Intent(getApplicationContext(), SPBidActivity.class);
             startActivity(intent);
             return true;
 
         }  else if (id == R.id.nav_test) {
 
-        Intent intent = new Intent(getApplicationContext(), SPCounterBidActivity.class);
-        startActivity(intent);
+       // Intent intent = new Intent(getApplicationContext(), SPCounterBidActivity.class);
+       // startActivity(intent);
         return true;
 
     }

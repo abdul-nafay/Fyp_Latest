@@ -17,13 +17,15 @@ import java.util.ArrayList;
 public class AcceptedBids extends Table {
 
     public static final String TABLE_NAME = "ACCEPTEDBIDS";
-    public static final String SCHEMA = "CREATE TABLE IF NOT EXISTS ACCEPTEDBIDS (BID_ID TEXT,SP_ID TEXT,SP_NAME TEXT,DATE TEXT)";
+    public static final String SCHEMA = "CREATE TABLE IF NOT EXISTS ACCEPTEDBIDS (BID_ID TEXT,SP_ID TEXT,SP_NAME TEXT,DATE TEXT,SP_TOKEN TEXT)";
 
     //   private final String ID = "ID";
     public static final String BID_ID = "BID_ID";
     public static final String SP_ID = "SP_ID";
     public static final String SP_NAME = "SP_NAME";
     public static final String DATE = "DATE";
+    public static final String SP_TOKEN = "SP_TOKEN";
+
 
     public AcceptedBids(){
 
@@ -38,6 +40,7 @@ public class AcceptedBids extends Table {
         contentValues.put(SP_ID, ((AcceptedBidsModel) data).getSpId());
         contentValues.put(SP_NAME, ((AcceptedBidsModel) data).getSpName());
         contentValues.put(DATE, ((AcceptedBidsModel)data).getDate());
+        contentValues.put(SP_TOKEN, ((AcceptedBidsModel)data).getSpToken());
 
 
         return contentValues;
@@ -61,6 +64,7 @@ public class AcceptedBids extends Table {
                 bidModel.setSpName(cursor.getString(cursor.getColumnIndex(SP_NAME)));
 
                 bidModel.setDate(cursor.getString(cursor.getColumnIndex(DATE)));
+                bidModel.setSpToken(cursor.getString(cursor.getColumnIndex(SP_TOKEN)));
 
                 bidArray.add(bidModel);
                 cursor.moveToNext();
@@ -91,6 +95,8 @@ public class AcceptedBids extends Table {
 
     @Override
     protected String whereClauseForData() {
-        return null;
+        return BID_ID + "=?";
     }
+
+
 }

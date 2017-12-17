@@ -1,5 +1,6 @@
 package com.sourcey.movnpack.UserServiceProviderCommunication;
 
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -49,6 +50,9 @@ public class UserBidActivity extends AppCompatActivity {
 
                 BidModel dataModel= dataModels.get(position);
 
+                Intent intent = new Intent(UserBidActivity.this,UserBidConversationActivity.class);
+                intent.putExtra("bidId",dataModel.getBidId());
+                startActivity(intent);
 
                 Snackbar.make(view, dataModel.getCategoryName()+"\n"+dataModel.getMessage()+" date: "+dataModel.getDate(), Snackbar.LENGTH_LONG)
                         .setAction("No action", null).show();

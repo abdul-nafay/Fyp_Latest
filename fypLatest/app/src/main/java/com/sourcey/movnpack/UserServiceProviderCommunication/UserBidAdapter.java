@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 
+import com.sourcey.movnpack.DataBase.DatabaseManager;
+import com.sourcey.movnpack.Model.BaseModel;
 import com.sourcey.movnpack.Model.BidModel;
 import com.sourcey.movnpack.R;
 
@@ -29,7 +31,7 @@ public class UserBidAdapter extends ArrayAdapter<BidModel> implements View.OnCli
         TextView titleTextView;
         TextView messageInitialsTextView;
         TextView dateTextView;
-
+        TextView acceptedCountTextView;
     }
 
     public UserBidAdapter(ArrayList<BidModel> data, Context context) {
@@ -75,7 +77,7 @@ public class UserBidAdapter extends ArrayAdapter<BidModel> implements View.OnCli
             viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.title_textview);
             viewHolder.messageInitialsTextView = (TextView) convertView.findViewById(R.id.message_initials_textview);
             viewHolder.dateTextView = (TextView) convertView.findViewById(R.id.date_textview);
-
+            viewHolder.acceptedCountTextView = (TextView) convertView.findViewById(R.id.count_accepted);
             result=convertView;
 
             convertView.setTag(viewHolder);
@@ -91,7 +93,14 @@ public class UserBidAdapter extends ArrayAdapter<BidModel> implements View.OnCli
         viewHolder.titleTextView.setText(dataModel.getCategoryName());
         viewHolder.messageInitialsTextView.setText(dataModel.getMessage());
         viewHolder.dateTextView.setText(dataModel.getDate());
-
+        ArrayList<BaseModel> m = DatabaseManager.getInstance(getContext()).getAcceptedBidId(dataModel.getBidId());
+        if (m!=null){
+            viewHolder.acceptedCountTextView.setText(m.size()+"");
+            viewHolder.acceptedCountTextView.setVisibility(View.VISIBLE);
+        }
+        else {
+            viewHolder.acceptedCountTextView.setVisibility(View.GONE);
+        }
         //viewHolder.info.setOnClickListener(this);
         //viewHolder.info.setTag(position);
         // Return the completed view to render on screen

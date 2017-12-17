@@ -30,4 +30,15 @@
         android:textColor="@android:color/black" />
 
 
+    <TextView
+        android:id="@+id/count_accepted"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/date_textview"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/texview_design"
+        android:gravity="center"
+        />
+
 </RelativeLayout>

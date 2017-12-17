@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.sourcey.movnpack.Model.BidModel;
+import com.sourcey.movnpack.Model.ConversationListViewModel;
 import com.sourcey.movnpack.R;
 
 import java.util.ArrayList;
@@ -19,9 +20,9 @@ import java.util.ArrayList;
  */
 
 
-public class UserBidConversationAdapter extends ArrayAdapter<BidModel> implements View.OnClickListener{
+public class UserBidConversationAdapter extends ArrayAdapter<ConversationListViewModel> implements View.OnClickListener{
 
-    private ArrayList<BidModel> dataSet;
+    private ArrayList<ConversationListViewModel> dataSet;
     Context mContext;
 
     // View lookup cache
@@ -31,7 +32,7 @@ public class UserBidConversationAdapter extends ArrayAdapter<BidModel> implement
         TextView dateTextView;
     }
 
-    public UserBidConversationAdapter(ArrayList<BidModel> data, Context context) {
+    public UserBidConversationAdapter(ArrayList<ConversationListViewModel> data, Context context) {
         super(context, R.layout.user_bid_conversation_item, data);
         this.dataSet = data;
         this.mContext=context;
@@ -43,7 +44,7 @@ public class UserBidConversationAdapter extends ArrayAdapter<BidModel> implement
 
         int position=(Integer) v.getTag();
         Object object= getItem(position);
-        BidModel model =(BidModel)object;
+        ConversationListViewModel model =(ConversationListViewModel)object;
 
 
        /* switch (v.getId())
@@ -60,7 +61,7 @@ public class UserBidConversationAdapter extends ArrayAdapter<BidModel> implement
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        BidModel dataModel = getItem(position);
+        ConversationListViewModel dataModel = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
 
@@ -75,7 +76,6 @@ public class UserBidConversationAdapter extends ArrayAdapter<BidModel> implement
             viewHolder.messageInitialsTextView = (TextView) convertView.findViewById(R.id.message_initials_textview);
             viewHolder.dateTextView= (TextView) convertView.findViewById(R.id.date_text_view);
 
-
             result=convertView;
 
             convertView.setTag(viewHolder);
@@ -88,7 +88,7 @@ public class UserBidConversationAdapter extends ArrayAdapter<BidModel> implement
         result.startAnimation(animation);
         lastPosition = position;
 
-        viewHolder.nameTextView.setText(dataModel.getDate());
+        viewHolder.nameTextView.setText(dataModel.getName());
         viewHolder.messageInitialsTextView.setText(dataModel.getMessage());
         viewHolder.dateTextView.setText(dataModel.getDate());
 

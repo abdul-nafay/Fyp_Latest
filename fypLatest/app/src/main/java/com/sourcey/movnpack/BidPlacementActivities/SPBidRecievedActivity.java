@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.Helpers.Session;
@@ -23,6 +24,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import static android.R.id.message;
+import static android.os.Build.VERSION_CODES.M;
 
 public class SPBidRecievedActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -58,6 +60,25 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
         messageTextView.setText(bidRecievedModel.getMessage());
         amountTextView.setText(bidRecievedModel.getAmount());
 
+        if (!bidRecievedModel.getStatus().equals("0")){
+
+            acceptBidButton.getBackground().setAlpha(100);
+            acceptBidButton.setEnabled(false);
+            rejectBidButton.getBackground().setAlpha(100);
+            rejectBidButton.setEnabled(false);
+            counterBidButton.getBackground().setAlpha(100);
+            counterBidButton.setEnabled(false);
+
+        }
+        else {
+            acceptBidButton.getBackground().setAlpha(255);
+            acceptBidButton.setEnabled(true);
+            rejectBidButton.getBackground().setAlpha(255);
+            rejectBidButton.setEnabled(true);
+            counterBidButton.getBackground().setAlpha(255);
+            counterBidButton.setEnabled(true);
+        }
+
         acceptBidButton.setOnClickListener((View.OnClickListener) this );
 
 
@@ -87,7 +108,8 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
             bidRecievedModel.setStatus("3");
             boolean res = DatabaseManager.getInstance(this).editBidRecieved(bidRecievedModel);
             if (res){
-                MemorizerUtil.displayToast(getApplicationContext(),"Update done");
+               // MemorizerUtil.displayToast(getApplicationContext(),"Update done");
+
             }
             else {
                 MemorizerUtil.displayToast(getApplicationContext(),"Update nahi howa");
@@ -141,7 +163,8 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
             bidRecievedModel.setStatus("1");
             boolean res = DatabaseManager.getInstance(getApplicationContext()).editBidRecieved(bidRecievedModel);
             if (res){
-                MemorizerUtil.displayToast(getApplicationContext(),"Update done");
+                //emorizerUtil.displayToast(getApplicationContext(),"Update done");
+                finish();
             }
             else {
                 MemorizerUtil.displayToast(getApplicationContext(),"Update nahi howa");
@@ -165,7 +188,7 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
                 data.put("spId", spId);
                 data.put("spName", spName);
                 data.put("date",date);
-
+                data.put("spToken", FirebaseInstanceId.getInstance().getToken());
                 //data.put("userToken",userToken);
                 //data.put("userId",userId);
                 //data.put("userName",userName);

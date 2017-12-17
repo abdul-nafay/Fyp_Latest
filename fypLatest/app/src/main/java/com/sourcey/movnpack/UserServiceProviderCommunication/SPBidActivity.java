@@ -1,5 +1,7 @@
 package com.sourcey.movnpack.UserServiceProviderCommunication;
 
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.sourcey.movnpack.BidPlacementActivities.SPBidRecievedActivity;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.Model.BaseModel;
 import com.sourcey.movnpack.Model.BidModel;
@@ -49,11 +52,35 @@ public class SPBidActivity extends AppCompatActivity {
 
                 BidRecievedModel dataModel= dataModels.get(position);
 
+                Intent intent = new Intent(SPBidActivity.this,SPBidRecievedActivity.class);
+                intent.putExtra("bidRecieved", (Parcelable) dataModel);
+                startActivity(intent);
 
                 Snackbar.make(view, dataModel.getCategoryName()+"\n"+dataModel.getMessage()+" date: "+dataModel.getDate(), Snackbar.LENGTH_LONG)
                         .setAction("No action", null).show();
             }
         });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        bids = DatabaseManager.getInstance(this).getBidsRecieved();
+
+        dataModels = new ArrayList<>();
+        if(bids!=null) {
+            for (BaseModel bid : bids) {
+                dataModels.add((BidRecievedModel) bid);
+            }
+        }
+        // dataModels= new ArrayList<>();
+
+
+        adapter= new SPBidAdapter(dataModels,getApplicationContext());
+
+        listView.setAdapter(adapter);
 
     }
 }

@@ -354,4 +354,27 @@ public class DatabaseManager extends DatabaseHandler {
         return false;
 
     }
+
+
+    public ArrayList<BaseModel> getAcceptedBidId(String bidId){
+        SQLiteDatabase db = null;
+        ArrayList<BaseModel> data = null;
+        try {
+            db = getDbForRead();
+            AcceptedBids acceptedBids = new AcceptedBids();
+            String[] whereArgs = {String.valueOf(bidId)};
+            data =acceptedBids.getData(db, acceptedBids.whereClause(), whereArgs);
+            return  data;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally{
+            if(db!= null)
+                closeDb();
+        }
+        return null;
+
+    }
+
+
 }

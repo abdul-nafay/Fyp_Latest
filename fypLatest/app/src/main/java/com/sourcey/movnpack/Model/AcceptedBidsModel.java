@@ -6,7 +6,7 @@ package com.sourcey.movnpack.Model;
 
 public class AcceptedBidsModel extends BaseModel {
 
-    String bidId,spId,spName,date;
+    String bidId,spId,spName,date,spToken;
 
     public String getBidId() {
         return bidId;
@@ -38,5 +38,13 @@ public class AcceptedBidsModel extends BaseModel {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getSpToken() {
+        return spToken;
+    }
+
+    public void setSpToken(String spToken) {
+        this.spToken = spToken;
     }
 }

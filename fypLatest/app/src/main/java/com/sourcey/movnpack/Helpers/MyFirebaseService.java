@@ -23,6 +23,7 @@ import com.sourcey.movnpack.Model.BidRecievedModel;
 import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.R;
 import com.sourcey.movnpack.UserServiceProviderCommunication.SPBidActivity;
+import com.sourcey.movnpack.UserServiceProviderCommunication.UserBidConversationActivity;
 import com.sourcey.movnpack.Utility.MemorizerUtil;
 
 import java.util.HashMap;
@@ -105,7 +106,7 @@ public class MyFirebaseService extends FirebaseMessagingService{
                     acceptedBidsModel.setSpId(data.get("spId"));
                     acceptedBidsModel.setSpName(data.get("spName"));
                     acceptedBidsModel.setDate(data.get("date"));
-
+                    acceptedBidsModel.setSpToken(data.get("spToken"));
                     boolean result = DatabaseManager.getInstance(this).addAcceptedBids(acceptedBidsModel);
                     if (result){
 
@@ -160,10 +161,10 @@ public class MyFirebaseService extends FirebaseMessagingService{
     }
 
     private void sendNotificationForAcceptedBids(String messageBody, AcceptedBidsModel bidRecievedModel) {
-        Intent intent = new Intent(this, DrawerActivity.class);
+        Intent intent = new Intent(this, UserBidConversationActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
        // intent.putExtra("bidRecieved", (Parcelable) bidRecievedModel);
-
+        intent.putExtra("bidId",bidRecievedModel.getBidId());
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

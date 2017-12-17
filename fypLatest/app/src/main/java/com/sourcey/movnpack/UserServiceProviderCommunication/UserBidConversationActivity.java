@@ -9,8 +9,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.sourcey.movnpack.DataBase.DatabaseManager;
+import com.sourcey.movnpack.Model.AcceptedBidsModel;
 import com.sourcey.movnpack.Model.BaseModel;
 import com.sourcey.movnpack.Model.BidModel;
+import com.sourcey.movnpack.Model.ConversationListViewModel;
 import com.sourcey.movnpack.R;
 
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public class UserBidConversationActivity extends AppCompatActivity {
    // TextView messageTextView;
     TextView amountTextView;
 
-    ArrayList<BidModel> dataModels;
+    ArrayList<ConversationListViewModel> dataModels;
     ArrayList<BaseModel> bids;
     ListView listView;
     private static UserBidConversationAdapter adapter;
@@ -33,17 +35,21 @@ public class UserBidConversationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_bid_conversation);
 
 
+        String bidId = getIntent().getStringExtra("bidId");
+
        // subjectTextView = (TextView) findViewById(R.id.subject_text_view);
        // messageTextView = (TextView) findViewById(R.id.message_text_view);
         amountTextView  = (TextView) findViewById(R.id.bid_amount_text_view);
 
         listView = (ListView)findViewById(R.id.list);
-        bids = DatabaseManager.getInstance(this).getBidsForUserId();
+        bids = DatabaseManager.getInstance(this).getAcceptedBidId(bidId);
+
 
         dataModels = new ArrayList<>();
         if(bids!=null) {
             for (BaseModel bid : bids) {
-                dataModels.add((BidModel) bid);
+                AcceptedBidsModel a = (AcceptedBidsModel) bid;
+                dataModels.add( new ConversationListViewModel(a.getSpName(),"Accepted your offer",a.getDate(),"1",""));
             }
         }
         // dataModels= new ArrayList<>();
@@ -56,10 +62,10 @@ public class UserBidConversationActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                BidModel dataModel= dataModels.get(position);
+                ConversationListViewModel dataModel= dataModels.get(position);
 
 
-                Snackbar.make(view, dataModel.getCategoryName()+"\n"+dataModel.getMessage()+" date: "+dataModel.getDate(), Snackbar.LENGTH_LONG)
+                Snackbar.make(view, dataModel.getName()+"\n"+dataModel.getMessage()+" date: "+dataModel.getDate(), Snackbar.LENGTH_LONG)
                         .setAction("No action", null).show();
             }
         });
