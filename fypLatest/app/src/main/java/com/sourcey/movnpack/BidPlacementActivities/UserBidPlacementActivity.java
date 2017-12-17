@@ -184,7 +184,7 @@ public class UserBidPlacementActivity extends Activity {
                 data.put("userId",userId);
                 data.put("userName",userName);
                 data.put("amount",amount);
-
+                data.put("Bid_Type","Bid_Received");
                 notification.put("body","YOu have just Received a new work offer");
                 notification.put("title","New Work Offer");
 
