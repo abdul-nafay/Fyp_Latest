@@ -71,7 +71,7 @@ public class SPBidAdapter extends ArrayAdapter<BidRecievedModel> implements View
 
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.user_bid_items, parent, false);
+            convertView = inflater.inflate(R.layout.sp_bid_items, parent, false);
             viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.title_textview);
             viewHolder.messageInitialsTextView = (TextView) convertView.findViewById(R.id.message_initials_textview);
             viewHolder.dateTextView = (TextView) convertView.findViewById(R.id.date_textview);

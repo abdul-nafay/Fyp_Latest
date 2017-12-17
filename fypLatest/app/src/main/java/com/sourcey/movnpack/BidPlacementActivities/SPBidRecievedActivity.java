@@ -1,6 +1,8 @@
 package com.sourcey.movnpack.BidPlacementActivities;
 
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -80,7 +82,7 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
         }
 
         acceptBidButton.setOnClickListener((View.OnClickListener) this );
-
+        counterBidButton.setOnClickListener((View.OnClickListener)this);
 
     }
 
@@ -105,6 +107,7 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
             }
         }
         else if (counterBidButton.getId() == v.getId()){
+            /*
             bidRecievedModel.setStatus("3");
             boolean res = DatabaseManager.getInstance(this).editBidRecieved(bidRecievedModel);
             if (res){
@@ -114,6 +117,10 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
             else {
                 MemorizerUtil.displayToast(getApplicationContext(),"Update nahi howa");
             }
+            */
+            Intent intent = new Intent(SPBidRecievedActivity.this,SPCounterBidActivity.class);
+            intent.putExtra("bidReceived", (Parcelable) bidRecievedModel);
+            startActivity(intent);
         }
     }
 
@@ -219,5 +226,7 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
             return response;
 
         }
-    }
+
+
+}
 
