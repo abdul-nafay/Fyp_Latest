@@ -1,5 +1,6 @@
 package com.sourcey.movnpack.Model;
 
+import static com.sourcey.movnpack.R.id.amount;
 import static com.sourcey.movnpack.R.style.AppTheme;
 
 /**
@@ -14,12 +15,23 @@ public class ConversationListViewModel {
     String status;
     String spToken;
     String bidID;
-    public ConversationListViewModel(String name, String message, String date, String status, String spToken) {
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    String amount;
+    public ConversationListViewModel(String name, String message, String date, String status, String spToken, String amount) {
         this.name = name;
         this.message = message;
         this.date = date;
         this.status = status;
         this.spToken = spToken;
+        this.amount = amount;
     }
 
     public String getName() {

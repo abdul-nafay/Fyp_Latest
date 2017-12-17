@@ -30,6 +30,7 @@ public class UserBidConversationAdapter extends ArrayAdapter<ConversationListVie
         TextView nameTextView;
         TextView messageInitialsTextView;
         TextView dateTextView;
+        TextView amountTextView;
     }
 
     public UserBidConversationAdapter(ArrayList<ConversationListViewModel> data, Context context) {
@@ -75,7 +76,7 @@ public class UserBidConversationAdapter extends ArrayAdapter<ConversationListVie
             viewHolder.nameTextView = (TextView) convertView.findViewById(R.id.name_text_view);
             viewHolder.messageInitialsTextView = (TextView) convertView.findViewById(R.id.message_initials_textview);
             viewHolder.dateTextView= (TextView) convertView.findViewById(R.id.date_text_view);
-
+            viewHolder.amountTextView = (TextView) convertView.findViewById(R.id.amount_text_view);
             result=convertView;
 
             convertView.setTag(viewHolder);
@@ -91,7 +92,13 @@ public class UserBidConversationAdapter extends ArrayAdapter<ConversationListVie
         viewHolder.nameTextView.setText(dataModel.getName());
         viewHolder.messageInitialsTextView.setText(dataModel.getMessage());
         viewHolder.dateTextView.setText(dataModel.getDate());
-
+        if (dataModel.getStatus().equals("1")) {
+            viewHolder.amountTextView.setVisibility(View.GONE);
+        }
+        else {
+            viewHolder.amountTextView.setVisibility(View.VISIBLE);
+            viewHolder.amountTextView.setText(dataModel.getAmount());
+        }
 
         //viewHolder.info.setOnClickListener(this);
         //viewHolder.info.setTag(position);

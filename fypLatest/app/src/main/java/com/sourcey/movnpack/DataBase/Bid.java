@@ -98,6 +98,6 @@ public class Bid  extends Table {
 
     @Override
     protected String whereClauseForData() {
-        return null;
+        return " WHERE "+ BID_ID + "=?";
     }
 }

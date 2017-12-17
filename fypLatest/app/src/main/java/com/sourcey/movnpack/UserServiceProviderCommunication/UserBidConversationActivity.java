@@ -42,11 +42,15 @@ public class UserBidConversationActivity extends AppCompatActivity {
        // subjectTextView = (TextView) findViewById(R.id.subject_text_view);
        // messageTextView = (TextView) findViewById(R.id.message_text_view);
         amountTextView  = (TextView) findViewById(R.id.bid_amount_text_view);
-
+        BidModel bidModel = (BidModel) DatabaseManager.getInstance(this).getBidById(bidId).get(0);
+        amountTextView.setText(bidModel.getAmount());
         listView = (ListView)findViewById(R.id.list);
         bids = DatabaseManager.getInstance(this).getAcceptedBidId(bidId);
         ArrayList<BaseModel> counterBids = DatabaseManager.getInstance(this).getUserBidCounterById(bidId);
         if (counterBids != null){
+            if (bids == null) {
+                bids = new ArrayList<>();
+            }
             bids.addAll(counterBids);
         }
 
@@ -55,11 +59,11 @@ public class UserBidConversationActivity extends AppCompatActivity {
             for (BaseModel bid : bids) {
                 if (bid instanceof AcceptedBidsModel) {
                     AcceptedBidsModel a = (AcceptedBidsModel) bid;
-                    dataModels.add( new ConversationListViewModel(a.getSpName(),"Accepted your offer",a.getDate(),"1",""));
+                    dataModels.add( new ConversationListViewModel(a.getSpName(),"Accepted your offer",a.getDate(),"1",a.getSpToken(),""));
                 }
                 else {
                     UserBidCounterModel u = (UserBidCounterModel) bid;
-                    dataModels.add(new ConversationListViewModel(u.getSpName(),"Countered YOur Offer",u.getDate(),"2",""));
+                    dataModels.add(new ConversationListViewModel(u.getSpName(),"Countered YOur Offer",u.getDate(),"2",u.getSpToken(),u.getAmount()));
                 }
 
             }
