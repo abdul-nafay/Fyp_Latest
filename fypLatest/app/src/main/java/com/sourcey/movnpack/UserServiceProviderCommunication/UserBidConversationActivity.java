@@ -8,11 +8,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.sourcey.movnpack.DataBase.AcceptedBids;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.Model.AcceptedBidsModel;
 import com.sourcey.movnpack.Model.BaseModel;
 import com.sourcey.movnpack.Model.BidModel;
 import com.sourcey.movnpack.Model.ConversationListViewModel;
+import com.sourcey.movnpack.Model.UserBidCounterModel;
 import com.sourcey.movnpack.R;
 
 import java.util.ArrayList;
@@ -43,13 +45,23 @@ public class UserBidConversationActivity extends AppCompatActivity {
 
         listView = (ListView)findViewById(R.id.list);
         bids = DatabaseManager.getInstance(this).getAcceptedBidId(bidId);
-
+        ArrayList<BaseModel> counterBids = DatabaseManager.getInstance(this).getUserBidCounterById(bidId);
+        if (counterBids != null){
+            bids.addAll(counterBids);
+        }
 
         dataModels = new ArrayList<>();
         if(bids!=null) {
             for (BaseModel bid : bids) {
-                AcceptedBidsModel a = (AcceptedBidsModel) bid;
-                dataModels.add( new ConversationListViewModel(a.getSpName(),"Accepted your offer",a.getDate(),"1",""));
+                if (bid instanceof AcceptedBidsModel) {
+                    AcceptedBidsModel a = (AcceptedBidsModel) bid;
+                    dataModels.add( new ConversationListViewModel(a.getSpName(),"Accepted your offer",a.getDate(),"1",""));
+                }
+                else {
+                    UserBidCounterModel u = (UserBidCounterModel) bid;
+                    dataModels.add(new ConversationListViewModel(u.getSpName(),"Countered YOur Offer",u.getDate(),"2",""));
+                }
+
             }
         }
         // dataModels= new ArrayList<>();
