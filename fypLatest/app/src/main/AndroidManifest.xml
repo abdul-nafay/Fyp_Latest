@@ -36,7 +36,7 @@
         <activity
             android:name=".DrawerModule.DrawerActivity"
             android:label="@string/title_activity_drawer"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".DrawerModule.SPDrawerActivity"
             android:label="@string/title_activity_drawer"
@@ -71,7 +71,12 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".UserServiceProviderCommunication.SPBidActivity"></activity>
+        <activity
+            android:name=".UserServiceProviderCommunication.SPBidActivity"
+            android:theme="@style/AppTheme.Dark"/>
+        <activity
+            android:name=".UserServiceProviderCommunication.UserBidConversationActivity"
+            android:theme="@style/AppTheme.Dark"/>
     </application>
 
 </manifest>

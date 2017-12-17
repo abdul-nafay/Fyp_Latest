@@ -17,6 +17,7 @@ import com.sourcey.movnpack.LoginModule.LoginActivity;
 import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.Model.User;
 import com.sourcey.movnpack.UserServiceProviderCommunication.UserBidActivity;
+import com.sourcey.movnpack.UserServiceProviderCommunication.UserBidConversationActivity;
 
 import java.util.HashMap;
 
@@ -49,7 +50,8 @@ public class MainActivity extends Activity {
                 if (user != null) {
                     //Intent intent = new Intent(this, HomeMapActivity.class);
                     Session.getInstance().setUser(user);
-                    Intent intent = new Intent(this, DrawerActivity.class);
+                   // Intent intent = new Intent(this, UserBidConversationActivity.class);
+                   Intent intent = new Intent(this, DrawerActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
@@ -74,10 +76,9 @@ public class MainActivity extends Activity {
             }
         }
         else {
-           Intent intent = new Intent(this, LoginActivity.class);
+          Intent intent = new Intent(this, LoginActivity.class);
           // activity test Area
-          //  Intent intent = new Intent(this, UserBidActivity.class);
-
+           //Intent intent = new Intent(this, UserBidConversationActivity.class);
             startActivity(intent);
             finish();
         }

@@ -24,6 +24,7 @@ import com.sourcey.movnpack.LoginModule.LoginActivity;
 import com.sourcey.movnpack.Model.User;
 import com.sourcey.movnpack.R;
 import com.sourcey.movnpack.UserServiceProviderCommunication.UserBidActivity;
+import com.sourcey.movnpack.UserServiceProviderCommunication.UserBidConversationActivity;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HomeMapFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener {
@@ -133,10 +134,18 @@ public class DrawerActivity extends AppCompatActivity
             return true;
 
         } else if (id == R.id.nav_manage) {
+            Intent intent = new Intent(getApplicationContext(), UserBidConversationActivity.class);
+            startActivity(intent);
             return true;
         } else if (id == R.id.nav_share) {
             return true;
-        } else if (id == R.id.nav_send) {
+        }else if (id == R.id.nav_test) {
+            Intent intent = new Intent(getApplicationContext(), UserBidConversationActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        else if (id == R.id.nav_send) {
 
             SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
