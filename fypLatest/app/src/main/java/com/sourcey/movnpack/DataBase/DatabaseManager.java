@@ -7,8 +7,10 @@ import com.sourcey.movnpack.Model.AcceptedBidsModel;
 import com.sourcey.movnpack.Model.BaseModel;
 import com.sourcey.movnpack.Model.BidModel;
 import com.sourcey.movnpack.Model.BidRecievedModel;
+import com.sourcey.movnpack.Model.SPBidCounterModel;
 import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.Model.User;
+import com.sourcey.movnpack.Model.UserBidCounterModel;
 
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
@@ -375,6 +377,85 @@ public class DatabaseManager extends DatabaseHandler {
         return null;
 
     }
+
+    public boolean addUserBidCounter(UserBidCounterModel userBidCounterModel){
+        SQLiteDatabase db = null;
+        try {
+            db = getDbForwrite();
+            UserBidCounterTable userBidCounterTable = new UserBidCounterTable();
+            long row = userBidCounterTable.insertData(db,userBidCounterModel);
+            return  row >0  ? true : false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally{
+            if(db!= null)
+                closeDb();
+        }
+        return false;
+
+    }
+
+    public ArrayList<BaseModel> getUserBidCounterById(String bidId){
+        SQLiteDatabase db = null;
+        ArrayList<BaseModel> data = null;
+        try {
+            db = getDbForRead();
+            UserBidCounterTable bidCounterTable = new UserBidCounterTable();
+            String[] whereArgs = {String.valueOf(bidId)};
+            data =bidCounterTable.getData(db, bidCounterTable.whereClause(), whereArgs);
+            return  data;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally{
+            if(db!= null)
+                closeDb();
+        }
+        return null;
+
+    }
+
+    public boolean addSPBidCounter(SPBidCounterModel spBidCounterModel){
+        SQLiteDatabase db = null;
+        try {
+            db = getDbForwrite();
+            SPBidCounterTable spBidCounterTable = new SPBidCounterTable();
+            long row = spBidCounterTable.insertData(db,spBidCounterModel);
+            return  row >0  ? true : false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally{
+            if(db!= null)
+                closeDb();
+        }
+        return false;
+
+    }
+
+
+    public ArrayList<BaseModel> getSPBidCounterById(String bidId){
+        SQLiteDatabase db = null;
+        ArrayList<BaseModel> data = null;
+        try {
+            db = getDbForRead();
+            SPBidCounterTable spBidCounterTable = new SPBidCounterTable();
+            String[] whereArgs = {String.valueOf(bidId)};
+            data =spBidCounterTable.getData(db, spBidCounterTable.whereClause(), whereArgs);
+            return  data;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally{
+            if(db!= null)
+                closeDb();
+        }
+        return null;
+
+    }
+
+
 
 
 }
