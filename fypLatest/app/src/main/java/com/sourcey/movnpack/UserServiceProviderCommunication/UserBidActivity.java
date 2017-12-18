@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.sourcey.movnpack.DataBase.DatabaseManager;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 
 public class UserBidActivity extends AppCompatActivity {
 
-
+    Button backBtn;
     ArrayList<BidModel> dataModels;
     ArrayList<BaseModel> bids;
     ListView listView;
@@ -29,6 +30,7 @@ public class UserBidActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_bid);
 
+        backBtn = (Button) findViewById(R.id.btn_back_activity);
         listView = (ListView)findViewById(R.id.list);
         bids = DatabaseManager.getInstance(this).getBidsForUserId();
 
@@ -56,6 +58,13 @@ public class UserBidActivity extends AppCompatActivity {
 
                 Snackbar.make(view, dataModel.getCategoryName()+"\n"+dataModel.getMessage()+" date: "+dataModel.getDate(), Snackbar.LENGTH_LONG)
                         .setAction("No action", null).show();
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 

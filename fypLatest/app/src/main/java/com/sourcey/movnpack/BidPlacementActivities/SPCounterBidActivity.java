@@ -1,5 +1,6 @@
 package com.sourcey.movnpack.BidPlacementActivities;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,7 +32,10 @@ public class SPCounterBidActivity extends AppCompatActivity {
     EditText amountEditText;
 
     Button counterBidButton;
+    Button backBtn;
+
     BidRecievedModel bidRecievedModel;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,7 @@ public class SPCounterBidActivity extends AppCompatActivity {
 
         messageEditText = (EditText) findViewById(R.id.input_message);
         amountEditText = (EditText) findViewById(R.id.input_propose_amount);
-
+        backBtn = (Button) findViewById(R.id.btn_back_activity);
         counterBidButton = (Button) findViewById(R.id.btn_counter_bid);
 
         counterBidButton.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +53,13 @@ public class SPCounterBidActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ServiceProvider s = Session.getInstance().getServiceProvider();
                 new SPCounterBidTask(bidRecievedModel.getUserToken(),bidRecievedModel.getBidId(),"",s.getPhoneNumber(),s.getName(),"DATE",messageEditText.getText().toString(),amountEditText.getText().toString()).execute();
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -73,6 +84,13 @@ public class SPCounterBidActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            progressDialog = new ProgressDialog(SPCounterBidActivity.this,
+                    R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Loading...");
+            progressDialog.show();
+
+
         }
 
         @Override
@@ -91,6 +109,10 @@ public class SPCounterBidActivity extends AppCompatActivity {
             super.onPostExecute(s);
 
             //BidModel bidModel = JsonParser.getInstance().parseBidResponse(s);
+
+            if (progressDialog != null){
+                progressDialog.dismiss();
+            }
 
             bidRecievedModel.setStatus("2");
             boolean res = DatabaseManager.getInstance(getApplicationContext()).editBidRecieved(bidRecievedModel);
@@ -117,6 +139,8 @@ public class SPCounterBidActivity extends AppCompatActivity {
             else {
                 MemorizerUtil.displayToast(getApplicationContext(),"Update nahi howa");
             }
+
+
         }
 
     }

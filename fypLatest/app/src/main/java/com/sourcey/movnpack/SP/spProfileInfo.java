@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.sourcey.movnpack.Helpers.JsonParser;
@@ -34,6 +36,7 @@ public class spProfileInfo extends Activity {
     TextView _spCategory;
     @Bind(R.id.sp_registration_number)
     TextView _spRegistrationNumber;
+    Button backBtn;
 
     ProgressDialog progressDialog;
 
@@ -44,6 +47,8 @@ public class spProfileInfo extends Activity {
         _spName = (TextView) findViewById(R.id.sp_name);
         _spCategory = (TextView) findViewById(R.id.sp_category);
         _spMobileNumber = (TextView) findViewById(R.id.sp_mobile);
+        backBtn = (Button) findViewById(R.id.btn_back_activity);
+
 /*
         progressDialog = new ProgressDialog(this,
                 R.style.AppTheme_Dark_Dialog);
@@ -51,6 +56,13 @@ public class spProfileInfo extends Activity {
         progressDialog.setMessage("Verifying details...");
         progressDialog.show();
 */
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         String number = (String) getIntent().getExtras().get("number");
         new SP_ProfileInfo(number).execute();

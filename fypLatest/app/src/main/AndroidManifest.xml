@@ -40,7 +40,7 @@
         <activity
             android:name=".DrawerModule.SPDrawerActivity"
             android:label="@string/title_activity_drawer"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.Dark"/>
         <activity
             android:name=".SP.spProfileInfo"
             android:theme="@style/AppTheme.Dark" />

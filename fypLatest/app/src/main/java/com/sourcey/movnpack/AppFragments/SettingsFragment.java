@@ -196,6 +196,7 @@ public class SettingsFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -429,24 +430,6 @@ public class SettingsFragment extends Fragment {
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

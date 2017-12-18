@@ -1,5 +1,6 @@
 package com.sourcey.movnpack.BidPlacementActivities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Parcelable;
@@ -37,8 +38,10 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
     Button acceptBidButton;
     Button rejectBidButton;
     Button counterBidButton;
+    Button backBtn;
 
     BidRecievedModel bidRecievedModel;
+    ProgressDialog progressDialog;
 
 
 
@@ -57,6 +60,7 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
         acceptBidButton = (Button) findViewById(R.id.btn_accept_bid);
         rejectBidButton = (Button) findViewById(R.id.btn_reject_bid);
         counterBidButton = (Button) findViewById(R.id.btn_counter_bid);
+        backBtn = (Button) findViewById(R.id.btn_back_activity);
 
         subjectTextView.setText("Work Offer Dummy Text Need to Change");
         messageTextView.setText(bidRecievedModel.getMessage());
@@ -83,7 +87,7 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
 
         acceptBidButton.setOnClickListener((View.OnClickListener) this );
         counterBidButton.setOnClickListener((View.OnClickListener)this);
-
+        backBtn.setOnClickListener((View.OnClickListener) this);
     }
 
 
@@ -122,6 +126,11 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
             intent.putExtra("bidReceived", (Parcelable) bidRecievedModel);
             startActivity(intent);
         }
+        else if (backBtn.getId() == v.getId()){
+
+            finish();
+
+        }
     }
 
 
@@ -148,6 +157,12 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
+            progressDialog = new ProgressDialog(SPBidRecievedActivity.this,
+                    R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Loading...");
+            progressDialog.show();
         }
 
         @Override
@@ -166,6 +181,9 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
             super.onPostExecute(s);
 
             //BidModel bidModel = JsonParser.getInstance().parseBidResponse(s);
+            if (progressDialog != null){
+                progressDialog.dismiss();
+            }
 
             bidRecievedModel.setStatus("1");
             boolean res = DatabaseManager.getInstance(getApplicationContext()).editBidRecieved(bidRecievedModel);

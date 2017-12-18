@@ -1,6 +1,7 @@
 package com.sourcey.movnpack.BidPlacementActivities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +23,7 @@ import com.sourcey.movnpack.Model.BidModel;
 import com.sourcey.movnpack.Model.User;
 import com.sourcey.movnpack.Network.HttpHandler;
 import com.sourcey.movnpack.R;
+import com.sourcey.movnpack.SP.spProfileInfo;
 import com.sourcey.movnpack.Utility.AppConstants;
 import com.sourcey.movnpack.Utility.MemorizerUtil;
 
@@ -40,7 +42,8 @@ public class UserBidPlacementActivity extends Activity {
 
     public TextView categoryName;
     public EditText inputMessage,inputBid,inputSubject;
-    public Button submit;
+    public Button submit, backButton;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,7 @@ public class UserBidPlacementActivity extends Activity {
         inputBid = (EditText) findViewById(R.id.input_min_bid);
         inputSubject = (EditText) findViewById(R.id.input_subject);
 
+        backButton = (Button) findViewById(R.id.btn_back_activity);
         submit = (Button) findViewById(R.id.btn_create_bid);
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +71,13 @@ public class UserBidPlacementActivity extends Activity {
             public void onClick(View v) {
                 User u = Session.getInstance().getUser();
                 new userBidPlacementTask("/topics/news",inputMessage.getText().toString(), UUID.randomUUID().toString(),"DATE", FirebaseInstanceId.getInstance().getToken(),u.getPhoneNumber(),u.getName(),inputBid.getText().toString()).execute();
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -127,6 +138,13 @@ public class UserBidPlacementActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
+            progressDialog = new ProgressDialog(UserBidPlacementActivity.this,
+                    R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Loading...");
+            progressDialog.show();
+
         }
 
         @Override
@@ -146,6 +164,10 @@ public class UserBidPlacementActivity extends Activity {
 
             //BidModel bidModel = JsonParser.getInstance().parseBidResponse(s);
 
+            if (progressDialog != null){
+                progressDialog.dismiss();
+            }
+
             BidModel bidModel = new BidModel();
             bidModel.setMessage(message);
             bidModel.setBidId(bidId);
@@ -164,6 +186,7 @@ public class UserBidPlacementActivity extends Activity {
             else {
                 MemorizerUtil.displayToast(getApplicationContext(),"Error Inserting data");
             }
+
 
 
         }

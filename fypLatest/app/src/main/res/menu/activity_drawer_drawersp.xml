@@ -6,26 +6,26 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_camera"
             android:title="Home" />
-        <item
+        <!--<item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Gallery" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:title="Slideshow" />-->
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_bid_history"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Bid History" />
 
-        <item
+        <!--<item
             android:id="@+id/nav_test"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Test" />
+            android:title="Test" />-->
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Jobs">
         <menu>
             <item
                 android:id="@+id/nav_TimeIn"
@@ -35,11 +35,13 @@
                 android:id="@+id/nav_TimeOut"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Time Out" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Log Out" />
+
         </menu>
     </item>
+
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/ic_menu_send"
+        android:title="Log Out" />
 
 </menu>

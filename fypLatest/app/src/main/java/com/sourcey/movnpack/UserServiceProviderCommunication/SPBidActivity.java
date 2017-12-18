@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.sourcey.movnpack.BidPlacementActivities.SPBidRecievedActivity;
@@ -24,6 +25,7 @@ public class SPBidActivity extends AppCompatActivity {
     ArrayList<BidRecievedModel> dataModels;
     ArrayList<BaseModel> bids;
     ListView listView;
+    Button backBtn;
     private static SPBidAdapter adapter;
 
     @Override
@@ -31,7 +33,9 @@ public class SPBidActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spbid);
 
-        listView = (ListView)findViewById(R.id.list);
+        backBtn = (Button) findViewById(R.id.btn_back_activity);
+        listView = (ListView) findViewById(R.id.list);
+
         bids = DatabaseManager.getInstance(this).getBidsRecieved();
 
         dataModels = new ArrayList<>();
@@ -40,8 +44,6 @@ public class SPBidActivity extends AppCompatActivity {
                 dataModels.add((BidRecievedModel) bid);
             }
         }
-        // dataModels= new ArrayList<>();
-
 
         adapter= new SPBidAdapter(dataModels,getApplicationContext());
 
@@ -60,6 +62,14 @@ public class SPBidActivity extends AppCompatActivity {
                         .setAction("No action", null).show();
             }
         });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
     }
 

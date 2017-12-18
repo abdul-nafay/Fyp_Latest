@@ -33,7 +33,7 @@ public class SPBidAdapter extends ArrayAdapter<BidRecievedModel> implements View
     }
 
     public SPBidAdapter(ArrayList<BidRecievedModel> data, Context context) {
-        super(context, R.layout.user_bid_items, data);
+        super(context, R.layout.sp_bid_items, data);
         this.dataSet = data;
         this.mContext=context;
 

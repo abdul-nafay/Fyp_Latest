@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ public class UserBidConversationActivity extends AppCompatActivity {
    // TextView subjectTextView;
    // TextView messageTextView;
     TextView amountTextView;
+    Button backBtn;
 
     ArrayList<ConversationListViewModel> dataModels;
     ArrayList<BaseModel> bids;
@@ -36,6 +38,7 @@ public class UserBidConversationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_bid_conversation);
 
+        backBtn = (Button) findViewById(R.id.btn_back_activity);
 
         String bidId = getIntent().getStringExtra("bidId");
 
@@ -86,7 +89,12 @@ public class UserBidConversationActivity extends AppCompatActivity {
             }
         });
 
-
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
     }

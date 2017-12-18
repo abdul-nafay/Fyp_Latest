@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -134,7 +135,7 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
     private Button packingButton;
     private Button plumberButton;
     private Button electricianButton;
-    private Button messageButton;
+    private FloatingActionButton messageButton;
     private TextView userNameTextView;
     private TextView userNumberTextView;
     public HomeMapFragment() {
@@ -197,7 +198,7 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
         plumberButton = (Button) getView().findViewById(R.id.plumberBtn);
         electricianButton = (Button) getView().findViewById(R.id.electricianBtn);
 
-        messageButton = (Button) getView().findViewById(R.id.message_button);
+        messageButton = (FloatingActionButton) getView().findViewById(R.id.message_button);
 
         cargoButton.setOnClickListener((View.OnClickListener) this);
         mandiButton.setOnClickListener((View.OnClickListener) this);

@@ -87,7 +87,15 @@ public class SPDrawerActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        setupUIForDrawer();
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupUIForDrawer();
     }
 
     @Override
@@ -115,9 +123,9 @@ public class SPDrawerActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -132,30 +140,17 @@ public class SPDrawerActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             fragmentClass = SPHomeMapFragment.class;
-        } else if (id == R.id.nav_settings) {
-           // fragmentClass = SettingsFragment.class;
-            Intent intent = new Intent(getApplicationContext(), SPBidActivity.class);
-            startActivity(intent);
-            return true;
-        } else if (id == R.id.nav_slideshow) {
-           // return true;
-            //Intent intent = new Intent(getApplicationContext(), UserBidPlacementActivity.class);
-           // startActivity(intent);
-            return true;
+        } /*else if (id == R.id.nav_settings) {
+           //fragmentClass = SettingsFragment.class;
 
-        } else if (id == R.id.nav_manage) {
+        }*/
+        else if (id == R.id.nav_bid_history) {
 
             Intent intent = new Intent(getApplicationContext(), SPBidActivity.class);
             startActivity(intent);
             return true;
 
-        }  else if (id == R.id.nav_test) {
-
-       // Intent intent = new Intent(getApplicationContext(), SPCounterBidActivity.class);
-       // startActivity(intent);
-        return true;
-
-    }
+        }
 
         else if (id == R.id.nav_TimeIn) {
 
@@ -194,7 +189,7 @@ public class SPDrawerActivity extends AppCompatActivity
 
 
         }
-        else if (id == R.id.nav_send){
+        else if (id == R.id.nav_logout){
 
             // Logout and TimeOut setting 0,0 Location
             timeOutForSP();
@@ -233,7 +228,8 @@ public class SPDrawerActivity extends AppCompatActivity
 
     public void setupUIForDrawer() {
         User user = Session.getInstance().getUser();
-        if (user != null) { // User cannot be null
+        ServiceProvider s = Session.getInstance().getServiceProvider();
+        if (s != null) { // User cannot be null
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             View header=navigationView.getHeaderView(0);
 /*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
@@ -241,8 +237,8 @@ public class SPDrawerActivity extends AppCompatActivity
             userNameTextView = (TextView)header.findViewById(R.id.drawer_username);
             userNumberTextView = (TextView)header.findViewById(R.id.drawer_usernumber);
 
-            userNameTextView.setText(user.getName());
-            userNumberTextView.setText(user.getPhoneNumber());
+            userNameTextView.setText(s.getName());
+            userNumberTextView.setText(s.getPhoneNumber());
 
         }
     }

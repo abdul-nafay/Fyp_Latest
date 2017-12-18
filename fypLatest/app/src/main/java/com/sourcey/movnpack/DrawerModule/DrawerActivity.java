@@ -109,9 +109,9 @@ public class DrawerActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -125,27 +125,34 @@ public class DrawerActivity extends AppCompatActivity
         Class fragmentClass = null;
 
         if (id == R.id.nav_home) {
+
             fragmentClass = HomeMapFragment.class;
-        } else if (id == R.id.nav_settings) {
+
+        } else if (id == R.id.nav_update_profile) {
+
            fragmentClass = SettingsFragment.class;
-        } else if (id == R.id.nav_slideshow) {
+
+        } /*else if (id == R.id.nav_slideshow) {
             Intent intent = new Intent(getApplicationContext(), UserBidActivity.class);
             startActivity(intent);
             return true;
 
-        } else if (id == R.id.nav_manage) {
-            Intent intent = new Intent(getApplicationContext(), UserBidConversationActivity.class);
+        }*/ else if (id == R.id.nav_bid_history) {
+
+            Intent intent = new Intent(getApplicationContext(), UserBidActivity.class);
             startActivity(intent);
             return true;
-        } else if (id == R.id.nav_share) {
-            return true;
-        }else if (id == R.id.nav_test) {
+
+        }
+
+        /*
+        else if (id == R.id.nav_test) {
             Intent intent = new Intent(getApplicationContext(), UserBidConversationActivity.class);
             startActivity(intent);
             return true;
         }
-
-        else if (id == R.id.nav_send) {
+*/
+        else if (id == R.id.nav_logout) {
 
             SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();

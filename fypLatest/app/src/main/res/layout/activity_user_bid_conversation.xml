@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<RelativeLayout android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <include android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/header_layout"
+        android:id="@+id/header"
+        xmlns:android="http://schemas.android.com/apk/res/android" />
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_below="@+id/header"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.sourcey.movnpack.UserServiceProviderCommunication.UserBidActivity"
     tools:showIn="@layout/activity_main">
@@ -64,4 +74,5 @@
 
 
 </RelativeLayout>
+    </RelativeLayout>
 

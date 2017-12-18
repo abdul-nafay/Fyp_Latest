@@ -9,7 +9,9 @@ import android.view.MenuItem;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sourcey.movnpack.BidPlacementActivities.SPCounterBidActivity;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
+import com.sourcey.movnpack.DataBase.SPBidCounterTable;
 import com.sourcey.movnpack.DrawerModule.DrawerActivity;
 import com.sourcey.movnpack.DrawerModule.SPDrawerActivity;
 import com.sourcey.movnpack.Helpers.Session;
@@ -50,7 +52,7 @@ public class MainActivity extends Activity {
                 if (user != null) {
                     //Intent intent = new Intent(this, HomeMapActivity.class);
                     Session.getInstance().setUser(user);
-                   // Intent intent = new Intent(this, UserBidConversationActivity.class);
+                   // Intent intent = new Intent(this,SPCounterBidActivity.class);
                    Intent intent = new Intent(this, DrawerActivity.class);
                     startActivity(intent);
                     finish();
@@ -66,6 +68,7 @@ public class MainActivity extends Activity {
 
                     Session.getInstance().setServiceProvider(serviceProvider);
                     Intent intent = new Intent(this, SPDrawerActivity.class);
+                   // Intent intent = new Intent(this,SPBidCounterTable.class);
                     startActivity(intent);
                     finish();
                 } else {
@@ -100,9 +103,9 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
