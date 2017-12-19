@@ -5,7 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <include android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         layout="@layout/header_layout"
         android:id="@+id/header"
         xmlns:android="http://schemas.android.com/apk/res/android" />
@@ -24,7 +24,7 @@
 
     !-- Reply to Bid Button -->
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_reject_bid"
+        android:id="@+id/btn_view_bid_detail"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/yellow"
@@ -41,7 +41,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:orientation="horizontal"
-            android:layout_below="@+id/btn_reject_bid">
+            android:layout_below="@+id/btn_view_bid_detail">
 
             <TextView
                 android:id="@+id/amount"

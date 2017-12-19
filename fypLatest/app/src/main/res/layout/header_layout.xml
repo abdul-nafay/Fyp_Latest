@@ -3,16 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:background="@color/primary_dark"
-    android:theme="@style/AppTheme.Dark"
-    >
+    android:theme="@style/AppTheme.AppBarOverlay">
+    <!--android:theme="@style/AppTheme.Dark"-->
+
 
     <Button
         android:id="@+id/btn_back_activity"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_marginLeft="8dp"
+        android:layout_width="40dp"
+        android:layout_height="33dp"
         android:background="@drawable/back_btn"
         />
 
@@ -20,14 +21,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:gravity="center_vertical|center_horizontal"
-        android:text="Mov N Pack"
-        android:textSize="20dp"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@+id/btn_back_activity"
+        android:textColor="@color/white"
+        android:text="MovNPack"
+        android:textSize="20dp"/>
 
 
-        />
-
-
+    <!--android:gravity="center_vertical|center_horizontal"-->
 
 
 

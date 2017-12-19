@@ -5,11 +5,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <include android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         layout="@layout/header_layout"
-        android:layout_marginTop="10dp"
         android:id="@+id/header"
         xmlns:android="http://schemas.android.com/apk/res/android" />
+
+    <!--android:layout_marginTop="10dp"-->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
@@ -81,7 +82,8 @@
                 android:id="@+id/input_min_bid"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Minimum Bid " />
+                android:hint="Minimum Bid "
+                android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Minimum Bid Amount Label -->
