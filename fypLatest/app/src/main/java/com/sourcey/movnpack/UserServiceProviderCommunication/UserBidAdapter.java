@@ -90,7 +90,7 @@ public class UserBidAdapter extends ArrayAdapter<BidModel> implements View.OnCli
         result.startAnimation(animation);
         lastPosition = position;
 
-        viewHolder.titleTextView.setText(dataModel.getCategoryName());
+        viewHolder.titleTextView.setText(dataModel.getSubject());
         viewHolder.messageInitialsTextView.setText(dataModel.getMessage());
         viewHolder.dateTextView.setText(dataModel.getDate());
         ArrayList<BaseModel> m = DatabaseManager.getInstance(getContext()).getAcceptedBidId(dataModel.getBidId());

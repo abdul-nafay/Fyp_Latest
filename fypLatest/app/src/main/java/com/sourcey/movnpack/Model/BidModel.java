@@ -6,7 +6,15 @@ package com.sourcey.movnpack.Model;
 
 public class BidModel extends BaseModel {
 
-    String message,bidId,date,userToken,userId,userName,amount,categoryName;
+    String message,bidId,date,userToken,userId,userName,amount,categoryName ,Subject;
+
+    public String getSubject() {
+        return Subject;
+    }
+
+    public void setSubject(String subject) {
+        Subject = subject;
+    }
 
     public String getMessage() {
         return message;

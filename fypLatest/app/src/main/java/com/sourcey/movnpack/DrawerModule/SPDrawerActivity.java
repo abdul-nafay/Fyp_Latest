@@ -145,15 +145,16 @@ public class SPDrawerActivity extends AppCompatActivity
 
         }*/
         else if (id == R.id.nav_bid_history) {
-
+            closeDrawer();
             Intent intent = new Intent(getApplicationContext(), SPBidActivity.class);
             startActivity(intent);
+            item.setChecked(false);
             return true;
 
         }
 
         else if (id == R.id.nav_TimeIn) {
-
+            closeDrawer();
             ServiceProvider sp = Session.sharedInstance.getServiceProvider();
             String path = Utility.getPathForServiceNamed(sp.getCategoryName());
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference(path);
@@ -183,6 +184,7 @@ public class SPDrawerActivity extends AppCompatActivity
             return true ;
         } else if (id == R.id.nav_TimeOut) {
 
+            closeDrawer();
             timeOutForSP();
             return true;
             //Logout COmmented
@@ -190,7 +192,7 @@ public class SPDrawerActivity extends AppCompatActivity
 
         }
         else if (id == R.id.nav_logout){
-
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(Utility.getCategoryNameFromServiceCategory(Session.getInstance().getServiceProvider().getCategory()));
             // Logout and TimeOut setting 0,0 Location
             timeOutForSP();
             SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
@@ -202,7 +204,7 @@ public class SPDrawerActivity extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
             startActivity(intent);
             finish();
-            FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
+
             return true;
 
 
@@ -220,6 +222,12 @@ public class SPDrawerActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void closeDrawer() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+    }
+
 
     @Override
     public void onFragmentInteraction(Uri uri) {

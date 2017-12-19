@@ -9,10 +9,18 @@ import android.os.Parcelable;
 
 public class BidRecievedModel extends BaseModel implements Parcelable {
 
-    String message,bidId,date,userToken,userId,userName,amount,categoryName,spId,status;
+    String message,bidId,date,userToken,userId,userName,amount,categoryName,spId,status , subject;
 
     public BidRecievedModel(){
         //super();
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public String getMessage() {

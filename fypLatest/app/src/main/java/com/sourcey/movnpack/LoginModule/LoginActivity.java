@@ -36,6 +36,7 @@ import com.sourcey.movnpack.R;
 import com.sourcey.movnpack.SP.SPSignUpActivity;
 import com.sourcey.movnpack.Utility.AppConstants;
 import com.sourcey.movnpack.Utility.MemorizerUtil;
+import com.sourcey.movnpack.Utility.Utility;
 //import com.sourcey.materiallogindemo.Utility.MemorizerUtils;
 
 import java.util.HashMap;
@@ -393,7 +394,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                         Session session = Session.getInstance();
                         session.setServiceProvider(serviceProvider);
                         //session.setUser(serviceProvider);
-                        FirebaseMessaging.getInstance().subscribeToTopic("news");
+                        FirebaseMessaging.getInstance().subscribeToTopic(Utility.getCategoryNameFromServiceCategory(serviceProvider.getCategory()));
                         ServiceProvider userDB = DatabaseManager.getInstance(getApplicationContext()).getServiceProvider(serviceProvider.getEmail());
                         if (userDB == null) {// Entry in DB
 

@@ -29,5 +29,13 @@
         android:layout_alignParentTop="true"
         android:textColor="@android:color/black" />
 
+    <TextView
+        android:id="@+id/sp_item_amountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:textColor="@android:color/white" />
+
 
 </RelativeLayout>

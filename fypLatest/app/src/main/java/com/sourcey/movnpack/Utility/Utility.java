@@ -1,5 +1,9 @@
 package com.sourcey.movnpack.Utility;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * Created by abdul on 10/22/17.
  */
@@ -70,4 +74,11 @@ public class Utility {
         }
         return null;
     }
+
+    public static String getCurrentDateString() {
+        SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+        String dateString = sdf2.format(new Date());
+        return dateString;
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.sourcey.movnpack.BidPlacementActivities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -59,6 +61,8 @@ public class SPCounterBidActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_CANCELED, returnIntent);
                 finish();
             }
         });
@@ -133,7 +137,9 @@ public class SPCounterBidActivity extends AppCompatActivity {
                 else {
                     MemorizerUtil.displayToast(getApplicationContext(),"Insert nahi howa");
                 }
-
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("result",true);
+                setResult(Activity.RESULT_OK,returnIntent);
                 finish();
             }
             else {

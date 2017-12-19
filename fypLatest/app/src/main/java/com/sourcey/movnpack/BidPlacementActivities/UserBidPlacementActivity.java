@@ -26,10 +26,14 @@ import com.sourcey.movnpack.R;
 import com.sourcey.movnpack.SP.spProfileInfo;
 import com.sourcey.movnpack.Utility.AppConstants;
 import com.sourcey.movnpack.Utility.MemorizerUtil;
+import com.sourcey.movnpack.Utility.Utility;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.UUID;
 
 import butterknife.ButterKnife;
@@ -44,12 +48,13 @@ public class UserBidPlacementActivity extends Activity {
     public EditText inputMessage,inputBid,inputSubject;
     public Button submit, backButton;
     ProgressDialog progressDialog;
-
+    public String catName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_bid_placement);
 
+        catName = getIntent().getStringExtra("categoryName");
         initUI();
 
 
@@ -69,8 +74,11 @@ public class UserBidPlacementActivity extends Activity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User u = Session.getInstance().getUser();
-                new userBidPlacementTask("/topics/news",inputMessage.getText().toString(), UUID.randomUUID().toString(),"DATE", FirebaseInstanceId.getInstance().getToken(),u.getPhoneNumber(),u.getName(),inputBid.getText().toString()).execute();
+                if (validate()){
+                    User u = Session.getInstance().getUser();
+                    String dateString = Utility.getCurrentDateString();
+                    new userBidPlacementTask("/topics/"+catName,inputMessage.getText().toString(), UUID.randomUUID().toString(),dateString, FirebaseInstanceId.getInstance().getToken(),u.getPhoneNumber(),u.getName(),inputBid.getText().toString(),inputSubject.getText().toString()).execute();
+                }
             }
         });
 
@@ -80,6 +88,9 @@ public class UserBidPlacementActivity extends Activity {
                 finish();
             }
         });
+
+
+        categoryName.setText(catName + " Service");
     }
 
     public boolean validate(){
@@ -98,14 +109,14 @@ public class UserBidPlacementActivity extends Activity {
             inputSubject.setError(null);
         }
         if (message.isEmpty()){
-            inputMessage.setError("Please Enter Subject");
+            inputMessage.setError("Please Enter message");
             valid = false;
         }
         else {
             inputMessage.setError(null);
         }
         if (bidAmount.isEmpty()){
-            inputBid.setError("Please Enter Subject");
+            inputBid.setError("Please Enter amount");
             valid = false;
         }
         else {
@@ -120,9 +131,9 @@ public class UserBidPlacementActivity extends Activity {
 
     public class userBidPlacementTask extends AsyncTask<String, Void, String>{
 
-        String message,bidId,date,userToken,userId,userName,amount,categoryName;
+        String message,bidId,date,userToken,userId,userName,amount,categoryName ,subject;
 
-       public userBidPlacementTask(String categoryName,String message,String bidId,String date,String userToken,String userId,String userName,String amount){
+       public userBidPlacementTask(String categoryName,String message,String bidId,String date,String userToken,String userId,String userName,String amount , String subject){
 
             this.categoryName = categoryName;
             this.message = message;
@@ -132,8 +143,8 @@ public class UserBidPlacementActivity extends Activity {
             this.userId = userId;
             this.userName = userName;
             this.amount = amount;
-
-        }
+            this.subject = subject;
+       }
 
         @Override
         protected void onPreExecute() {
@@ -151,7 +162,7 @@ public class UserBidPlacementActivity extends Activity {
         protected String doInBackground(String... params) {
             String response = "";
             try {
-                response = userBidPlacementApi(categoryName,message,bidId,date,userToken,userId,userName,amount);
+                response = userBidPlacementApi(categoryName,message,bidId,date,userToken,userId,userName,amount,subject);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -177,6 +188,7 @@ public class UserBidPlacementActivity extends Activity {
             bidModel.setUserName(userName);
             bidModel.setAmount(amount);
             bidModel.setCategoryName(categoryName);
+            bidModel.setSubject(subject);
             boolean result;
             result = DatabaseManager.getInstance(getApplicationContext()).addUserBid(bidModel);
 
@@ -191,7 +203,7 @@ public class UserBidPlacementActivity extends Activity {
 
         }
 
-        public String userBidPlacementApi(String categoryName,String message,String bidId,String date,String userToken,String userId,String userName,String amount) {
+        public String userBidPlacementApi(String categoryName,String message,String bidId,String date,String userToken,String userId,String userName,String amount , String subject) {
             String response = "";
             try {
 
@@ -208,6 +220,7 @@ public class UserBidPlacementActivity extends Activity {
                 data.put("userName",userName);
                 data.put("amount",amount);
                 data.put("Bid_Type","Bid_Received");
+                data.put("subject",subject);
                 notification.put("body","YOu have just Received a new work offer");
                 notification.put("title","New Work Offer");
 

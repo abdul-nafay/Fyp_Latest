@@ -92,7 +92,7 @@ class CategoryButtonsUI extends Object {
 
         if (previousButton != null) {
             //CategoryButtonsUI.previousButton.setBackgroundColor(Color.parseColor("#6ec6ff"));
-            CategoryButtonsUI.previousButton.setTextColor(Color.BLACK);
+            CategoryButtonsUI.previousButton.setTextColor(Color.WHITE);
             CategoryButtonsUI.previousButton.setSelected(true);
         }
         //CategoryButtonsUI.currentButton.setBackgroundColor(Color.RED);
@@ -207,6 +207,8 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
         packingButton.setOnClickListener((View.OnClickListener) this);
         plumberButton.setOnClickListener((View.OnClickListener) this);
         electricianButton.setOnClickListener((View.OnClickListener) this);
+
+        cargoButton.performClick();
 
         messageButton.setOnClickListener((View.OnClickListener) this);
         // mapFragment.getMapAsync(this);
@@ -340,6 +342,7 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
 
         if (messageButton.getId() == v.getId()){
             Intent intent = new Intent(getContext(), UserBidPlacementActivity.class);
+            intent.putExtra("categoryName",CategoryButtonsUI.currentButton.getText().toString());
             startActivity(intent);
         }
 

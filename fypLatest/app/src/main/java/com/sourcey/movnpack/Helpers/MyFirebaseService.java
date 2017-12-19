@@ -74,7 +74,7 @@ public class MyFirebaseService extends FirebaseMessagingService{
                     bidRecievedModel.setUserName(data.get("userName"));
                     bidRecievedModel.setAmount(data.get("amount"));
                     bidRecievedModel.setCategoryName(data.get("to"));
-
+                    bidRecievedModel.setSubject(data.get("subject"));
                     bidRecievedModel.setStatus("0");
                     bidRecievedModel.setSpId(spId);
 
@@ -173,7 +173,7 @@ public class MyFirebaseService extends FirebaseMessagingService{
         Intent intent = new Intent(this, SPBidRecievedActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("bidRecieved", (Parcelable) bidRecievedModel);
-
+        intent.putExtra("bidID",bidRecievedModel.getBidId());
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

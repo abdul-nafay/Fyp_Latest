@@ -5,6 +5,8 @@ import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -26,6 +28,8 @@ public class SPBidActivity extends AppCompatActivity {
     ArrayList<BaseModel> bids;
     ListView listView;
     Button backBtn;
+    AppCompatImageView emptySPImageView;
+    AppCompatTextView emptySPTextView;
     private static SPBidAdapter adapter;
 
     @Override
@@ -35,11 +39,14 @@ public class SPBidActivity extends AppCompatActivity {
 
         backBtn = (Button) findViewById(R.id.btn_back_activity);
         listView = (ListView) findViewById(R.id.list);
-
+        emptySPImageView = (AppCompatImageView) findViewById(R.id.empty_sp_bid);
+        emptySPTextView = (AppCompatTextView) findViewById(R.id.empty_sp_bid_textView);
         bids = DatabaseManager.getInstance(this).getBidsRecieved();
 
         dataModels = new ArrayList<>();
         if(bids!=null) {
+            emptySPImageView.setVisibility(View.GONE);
+            emptySPTextView.setVisibility(View.GONE);
             for (BaseModel bid : bids) {
                 dataModels.add((BidRecievedModel) bid);
             }
@@ -56,6 +63,7 @@ public class SPBidActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(SPBidActivity.this,SPBidRecievedActivity.class);
                 intent.putExtra("bidRecieved", (Parcelable) dataModel);
+                intent.putExtra("bidID",dataModel.getBidId());
                 startActivity(intent);
 
                 Snackbar.make(view, dataModel.getCategoryName()+"\n"+dataModel.getMessage()+" date: "+dataModel.getDate(), Snackbar.LENGTH_LONG)
@@ -63,12 +71,13 @@ public class SPBidActivity extends AppCompatActivity {
             }
         });
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
+       /* backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+*/
 
 
     }

@@ -1,6 +1,8 @@
 package com.sourcey.movnpack.UserServiceProviderCommunication;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +25,12 @@ public class SPBidAdapter extends ArrayAdapter<BidRecievedModel> implements View
 
     private ArrayList<BidRecievedModel> dataSet;
     Context mContext;
-
     // View lookup cache
     private static class ViewHolder {
         TextView titleTextView;
         TextView messageInitialsTextView;
         TextView dateTextView;
-
+        TextView amountTextView;
     }
 
     public SPBidAdapter(ArrayList<BidRecievedModel> data, Context context) {
@@ -75,7 +76,7 @@ public class SPBidAdapter extends ArrayAdapter<BidRecievedModel> implements View
             viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.title_textview);
             viewHolder.messageInitialsTextView = (TextView) convertView.findViewById(R.id.message_initials_textview);
             viewHolder.dateTextView = (TextView) convertView.findViewById(R.id.date_textview);
-
+            viewHolder.amountTextView = (TextView) convertView.findViewById(R.id.sp_item_amountTextView);
             result=convertView;
 
             convertView.setTag(viewHolder);
@@ -88,10 +89,10 @@ public class SPBidAdapter extends ArrayAdapter<BidRecievedModel> implements View
         result.startAnimation(animation);
         lastPosition = position;
 
-        viewHolder.titleTextView.setText(dataModel.getCategoryName());
+        viewHolder.titleTextView.setText(dataModel.getSubject());
         viewHolder.messageInitialsTextView.setText(dataModel.getMessage());
         viewHolder.dateTextView.setText(dataModel.getDate());
-
+        viewHolder.amountTextView.setText(dataModel.getAmount());
         //viewHolder.info.setOnClickListener(this);
         //viewHolder.info.setTag(position);
         // Return the completed view to render on screen

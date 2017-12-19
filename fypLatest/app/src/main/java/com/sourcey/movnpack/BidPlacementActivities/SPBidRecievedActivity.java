@@ -1,5 +1,6 @@
 package com.sourcey.movnpack.BidPlacementActivities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -15,6 +16,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.Helpers.Session;
+import com.sourcey.movnpack.Model.BaseModel;
 import com.sourcey.movnpack.Model.BidModel;
 import com.sourcey.movnpack.Model.BidRecievedModel;
 import com.sourcey.movnpack.Network.HttpHandler;
@@ -24,6 +26,7 @@ import com.sourcey.movnpack.Utility.MemorizerUtil;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static android.R.id.message;
@@ -51,8 +54,11 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_spbid_recieved);
 
         bidRecievedModel = getIntent().getParcelableExtra("bidRecieved");
-
-
+        String bidID = getIntent().getStringExtra("bidID");
+        ArrayList<BaseModel> model = DatabaseManager.getInstance(this).getBidReceivedById(bidID);
+        if (model != null && model.size() > 0){
+            bidRecievedModel = (BidRecievedModel) model.get(0);
+        }
         subjectTextView = (TextView) findViewById(R.id.subject_text_view);
         messageTextView = (TextView) findViewById(R.id.message_text_view);
         amountTextView  = (TextView) findViewById(R.id.bid_amount_text_view);
@@ -62,7 +68,7 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
         counterBidButton = (Button) findViewById(R.id.btn_counter_bid);
         backBtn = (Button) findViewById(R.id.btn_back_activity);
 
-        subjectTextView.setText("Work Offer Dummy Text Need to Change");
+        subjectTextView.setText(bidRecievedModel.getSubject());
         messageTextView.setText(bidRecievedModel.getMessage());
         amountTextView.setText(bidRecievedModel.getAmount());
 
@@ -123,8 +129,10 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
             }
             */
             Intent intent = new Intent(SPBidRecievedActivity.this,SPCounterBidActivity.class);
+
             intent.putExtra("bidReceived", (Parcelable) bidRecievedModel);
-            startActivity(intent);
+            //startActivity(intent);
+            startActivityForResult(intent,1);
         }
         else if (backBtn.getId() == v.getId()){
 
@@ -133,7 +141,18 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                finish();
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }
     public class SPBidRecievedTask extends AsyncTask<String, Void, String> {
 
         String userToken,bidId,bidType,date,spId,spName;
@@ -247,4 +266,5 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
 
 
 }
+
 

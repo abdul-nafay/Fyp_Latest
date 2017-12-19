@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -23,6 +25,8 @@ public class UserBidActivity extends AppCompatActivity {
     ArrayList<BidModel> dataModels;
     ArrayList<BaseModel> bids;
     ListView listView;
+    AppCompatImageView emptyUserImageView;
+    AppCompatTextView emptyUserTextView;
     private static UserBidAdapter adapter;
 
     @Override
@@ -32,13 +36,20 @@ public class UserBidActivity extends AppCompatActivity {
 
         backBtn = (Button) findViewById(R.id.btn_back_activity);
         listView = (ListView)findViewById(R.id.list);
+        emptyUserImageView = (AppCompatImageView) findViewById(R.id.empty_user_bid);
+        emptyUserTextView = (AppCompatTextView) findViewById(R.id.empty_user_bid_textView);
         bids = DatabaseManager.getInstance(this).getBidsForUserId();
 
         dataModels = new ArrayList<>();
         if(bids!=null) {
+            emptyUserImageView.setVisibility(View.GONE);
+            emptyUserTextView.setVisibility(View.GONE);
             for (BaseModel bid : bids) {
                 dataModels.add((BidModel) bid);
             }
+        }
+        else {
+
         }
        // dataModels= new ArrayList<>();
 

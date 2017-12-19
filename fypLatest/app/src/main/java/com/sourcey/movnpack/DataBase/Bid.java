@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class Bid  extends Table {
 
     public static final String TABLE_NAME = "BID";
-    public static final String SCHEMA = "CREATE TABLE IF NOT EXISTS BID (MESSAGE TEXT, BID_ID TEXT,DATE TEXT,USER_TOKEN TEXT,USER_ID TEXT,USER_NAME TEXT,AMOUNT TEXT)";
+    public static final String SCHEMA = "CREATE TABLE IF NOT EXISTS BID (MESSAGE TEXT, BID_ID TEXT,DATE TEXT,USER_TOKEN TEXT,USER_ID TEXT,USER_NAME TEXT,AMOUNT TEXT,SUBJECT TEXT)";
 
     //   private final String ID = "ID";
     public static final String MESSAGE = "MESSAGE";
@@ -27,6 +27,7 @@ public class Bid  extends Table {
     public static final String USER_ID  = "USER_ID";
     public static final String USER_NAME  = "USER_NAME";
     public static final String AMOUNT  = "AMOUNT";
+    public static final String SUBJECT  = "SUBJECT";
 
     public Bid(){
 
@@ -44,7 +45,7 @@ public class Bid  extends Table {
         contentValues.put(USER_ID, ((BidModel)data).getUserId());
         contentValues.put(USER_NAME, ((BidModel)data).getUserName());
         contentValues.put(AMOUNT, ((BidModel)data).getAmount());
-
+        contentValues.put(SUBJECT, ((BidModel)data).getSubject());
 
         return contentValues;
 
@@ -69,6 +70,7 @@ public class Bid  extends Table {
                 bidModel.setUserId(cursor.getString(cursor.getColumnIndex(USER_ID)));
                 bidModel.setUserName(cursor.getString(cursor.getColumnIndex(USER_NAME)));
                 bidModel.setAmount(cursor.getString(cursor.getColumnIndex(AMOUNT)));
+                bidModel.setSubject(cursor.getString(cursor.getColumnIndex(SUBJECT)));
                 bidArray.add(bidModel);
                 cursor.moveToNext();
                 i++;

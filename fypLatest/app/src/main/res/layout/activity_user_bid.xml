@@ -23,4 +23,19 @@ tools:showIn="@layout/activity_main">
     android:layout_below="@+id/header"
     />
 
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/empty_bid_image"
+            android:id="@+id/empty_user_bid"
+            android:layout_centerInParent="true"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/empty_user_bid_textView"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/empty_user_bid"
+            android:text="You dont have any bids."/>
+
 </RelativeLayout>
