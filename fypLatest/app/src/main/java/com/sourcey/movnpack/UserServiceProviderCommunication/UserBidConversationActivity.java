@@ -1,15 +1,19 @@
 package com.sourcey.movnpack.UserServiceProviderCommunication;
 
+import android.content.Context;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.sourcey.movnpack.DataBase.AcceptedBids;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.Model.AcceptedBidsModel;
 import com.sourcey.movnpack.Model.BaseModel;
@@ -21,12 +25,20 @@ import com.sourcey.movnpack.R;
 import java.util.ArrayList;
 
 
-public class UserBidConversationActivity extends AppCompatActivity {
+public class UserBidConversationActivity extends AppCompatActivity{
 
-   // TextView subjectTextView;
-   // TextView messageTextView;
+
     TextView amountTextView;
     Button backBtn;
+
+    Button viewBidDetailBtn;
+    RelativeLayout mRelativeLayout;
+    PopupWindow mPopupWindow;
+    View customView;
+    LayoutInflater inflater;
+
+    String message,date,amount;
+
 
     ArrayList<ConversationListViewModel> dataModels;
     ArrayList<BaseModel> bids;
@@ -40,13 +52,24 @@ public class UserBidConversationActivity extends AppCompatActivity {
 
         backBtn = (Button) findViewById(R.id.btn_back_activity);
 
+        viewBidDetailBtn = (Button) findViewById(R.id.btn_view_bid_detail);
+        mRelativeLayout = (RelativeLayout) findViewById(R.id.rl_custom_layout);
+
+
         String bidId = getIntent().getStringExtra("bidId");
 
-       // subjectTextView = (TextView) findViewById(R.id.subject_text_view);
-       // messageTextView = (TextView) findViewById(R.id.message_text_view);
+
+
+
         amountTextView  = (TextView) findViewById(R.id.bid_amount_text_view);
+
         BidModel bidModel = (BidModel) DatabaseManager.getInstance(this).getBidById(bidId).get(0);
         amountTextView.setText(bidModel.getAmount());
+
+        message = bidModel.getMessage();
+       // date = bidModel.getDate();
+        //amount = bidModel.getAmount();
+
         listView = (ListView)findViewById(R.id.list);
         bids = DatabaseManager.getInstance(this).getAcceptedBidId(bidId);
         ArrayList<BaseModel> counterBids = DatabaseManager.getInstance(this).getUserBidCounterById(bidId);
@@ -97,5 +120,68 @@ public class UserBidConversationActivity extends AppCompatActivity {
         });
 
 
+        /////////
+
+
+        viewBidDetailBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                initiatePopupWindow(v);
+            }
+        });
+
+        ////////
+
+
     }
+
+
+    ////////////////
+
+
+
+
+    private void initiatePopupWindow(View v) {
+
+
+
+       // mRelativeLayout = (LinearLayout) findViewById(R.id.linearLayoutPopUp);
+        //mRelativeLayout.setVisibility(View.GONE);
+
+        try {
+            //We need to get the instance of the LayoutInflater, use the context of this activity
+           inflater = (LayoutInflater) UserBidConversationActivity.this
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            //Inflate the view from a predefined XML layout
+            // Inflate the custom layout/view
+            customView = inflater.inflate(R.layout.view_bid_detail_popup,null);
+
+
+
+            // create a 300px width and 470px height PopupWindow
+            mPopupWindow = new PopupWindow(customView,600,800, true);
+            // display the popup in the center
+            mPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+           TextView dateTextView = (TextView) findViewById(R.id.date_text_view_popup);
+            TextView messageTextView = (TextView) findViewById(R.id.message_text_view_popup);
+            TextView scrollerAmountTextView = (TextView) findViewById(R.id.amount_text_view_popup);
+
+
+            messageTextView.setText(message);
+            //dateTextView.setText("Date: "+ date);
+            //scrollerAmountTextView.setText("Amount: "+ amount);
+            //Button cancelButton = (Button) layout.findViewById(R.id.end_data_send_button);
+            //cancelButton.setOnClickListener(cancel_button_click_listener);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+    //////////////////////
 }

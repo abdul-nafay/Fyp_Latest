@@ -5,7 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <include android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         layout="@layout/header_layout"
         android:id="@+id/header"
         xmlns:android="http://schemas.android.com/apk/res/android" />
@@ -104,7 +104,7 @@
                 android:id="@+id/registration_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Registration No :"
+                android:text="Reg No :"
                 android:textSize="25dp" />
 
             <TextView
@@ -148,7 +148,7 @@
 
         <!-- rating bar -->
 
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -175,16 +175,26 @@
                 android:stepSize="1" />
 
         </LinearLayout>
-
+-->
         <!-- Call Image -->
 
-        <ImageView
+
+        <!-- Create Bid Button -->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_offer_bid"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="24dp"
+            android:padding="12dp"
+            android:text="Place Offer" />
+        <!--<ImageView
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
             android:src="@drawable/call2" />
-
+-->
     </LinearLayout>
 </ScrollView>
 </RelativeLayout>
