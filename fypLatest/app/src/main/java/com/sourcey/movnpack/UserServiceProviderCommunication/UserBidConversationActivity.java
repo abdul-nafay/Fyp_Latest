@@ -1,14 +1,22 @@
 package com.sourcey.movnpack.UserServiceProviderCommunication;
 
+
+
+import android.app.Dialog;
 import android.content.Context;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -22,10 +30,14 @@ import com.sourcey.movnpack.Model.ConversationListViewModel;
 import com.sourcey.movnpack.Model.UserBidCounterModel;
 import com.sourcey.movnpack.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 
-public class UserBidConversationActivity extends AppCompatActivity{
+
+
+public class UserBidConversationActivity extends AppCompatActivity {
 
 
     TextView amountTextView;
@@ -33,9 +45,7 @@ public class UserBidConversationActivity extends AppCompatActivity{
 
     Button viewBidDetailBtn;
     RelativeLayout mRelativeLayout;
-    PopupWindow mPopupWindow;
-    View customView;
-    LayoutInflater inflater;
+
 
     String message,date,amount;
 
@@ -56,6 +66,7 @@ public class UserBidConversationActivity extends AppCompatActivity{
         mRelativeLayout = (RelativeLayout) findViewById(R.id.rl_custom_layout);
 
 
+
         String bidId = getIntent().getStringExtra("bidId");
 
 
@@ -67,8 +78,11 @@ public class UserBidConversationActivity extends AppCompatActivity{
         amountTextView.setText(bidModel.getAmount());
 
         message = bidModel.getMessage();
-       // date = bidModel.getDate();
-        //amount = bidModel.getAmount();
+        date = bidModel.getDate();
+        amount = bidModel.getAmount();
+
+
+
 
         listView = (ListView)findViewById(R.id.list);
         bids = DatabaseManager.getInstance(this).getAcceptedBidId(bidId);
@@ -89,7 +103,7 @@ public class UserBidConversationActivity extends AppCompatActivity{
                 }
                 else {
                     UserBidCounterModel u = (UserBidCounterModel) bid;
-                    dataModels.add(new ConversationListViewModel(u.getSpName(),"Countered YOur Offer",u.getDate(),"2",u.getSpToken(),u.getAmount()));
+                    dataModels.add(new ConversationListViewModel(u.getSpName(),"Countered Your Offer",u.getDate(),"2",u.getSpToken(),u.getAmount()));
                 }
 
             }
@@ -120,58 +134,53 @@ public class UserBidConversationActivity extends AppCompatActivity{
         });
 
 
-        /////////
+
 
 
         viewBidDetailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                initiatePopupWindow(v);
+                dialogBox(v);
             }
         });
 
-        ////////
+
 
 
     }
-
-
-    ////////////////
-
 
 
 
     private void initiatePopupWindow(View v) {
 
 
-
-       // mRelativeLayout = (LinearLayout) findViewById(R.id.linearLayoutPopUp);
-        //mRelativeLayout.setVisibility(View.GONE);
-
         try {
             //We need to get the instance of the LayoutInflater, use the context of this activity
-           inflater = (LayoutInflater) UserBidConversationActivity.this
+            LayoutInflater inflater = (LayoutInflater) UserBidConversationActivity.this
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //Inflate the view from a predefined XML layout
-            // Inflate the custom layout/view
-            customView = inflater.inflate(R.layout.view_bid_detail_popup,null);
-
-
-
+            View customView = inflater.inflate(R.layout.view_bid_detail_popup,null);
             // create a 300px width and 470px height PopupWindow
-            mPopupWindow = new PopupWindow(customView,600,800, true);
+            final PopupWindow mPopupWindow = new PopupWindow(customView, 600, 800, true);
             // display the popup in the center
             mPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+            mPopupWindow.setOutsideTouchable(true);
 
-           TextView dateTextView = (TextView) findViewById(R.id.date_text_view_popup);
-            TextView messageTextView = (TextView) findViewById(R.id.message_text_view_popup);
-            TextView scrollerAmountTextView = (TextView) findViewById(R.id.amount_text_view_popup);
+            // Set an elevation value for popup window
+            // Call requires API level 21
+            if(Build.VERSION.SDK_INT>=21){
+                mPopupWindow.setElevation(5.0f);
+            }
 
 
+            TextView messageTextView = (TextView) customView.findViewById(R.id.message_text_view_popup);
             messageTextView.setText(message);
-            //dateTextView.setText("Date: "+ date);
-            //scrollerAmountTextView.setText("Amount: "+ amount);
-            //Button cancelButton = (Button) layout.findViewById(R.id.end_data_send_button);
+            TextView dateTextView = (TextView) customView.findViewById(R.id.date_text_view_popup);
+            dateTextView.setText("Date: "+ date);
+            TextView amountTextViewPopup = (TextView) customView.findViewById(R.id.amount_text_view_popup);
+            amountTextViewPopup.setText("Amount: "+ amount);
+
+           // Button cancelButton = (Button) layout.findViewById(R.id.end_data_send_button);
             //cancelButton.setOnClickListener(cancel_button_click_listener);
 
         } catch (Exception e) {
@@ -179,9 +188,28 @@ public class UserBidConversationActivity extends AppCompatActivity{
         }
     }
 
+    private void dialogBox(View v){
+
+        try {
+            final Dialog dialog = new Dialog(this);
+            dialog.setContentView(R.layout.view_bid_detail_popup);
+           // dialog.setTitle("Bid Details");
+            dialog.setCanceledOnTouchOutside(true);
+            
+            TextView messageTextView = (TextView) dialog.findViewById(R.id.message_text_view_popup);
+            messageTextView.setText(message);
+            TextView dateTextView = (TextView) dialog.findViewById(R.id.date_text_view_popup);
+            dateTextView.setText("Date: "+ date);
+            TextView amountTextViewPopup = (TextView) dialog.findViewById(R.id.amount_text_view_popup);
+            amountTextViewPopup.setText("Amount: "+ amount);
+
+            dialog.show();
 
 
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
-
-    //////////////////////
 }

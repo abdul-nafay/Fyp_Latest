@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Date Goes Here"
-        android:layout_marginLeft="10dp"
+
         android:background="@color/base"
         android:textSize="20dp"/>
 
@@ -24,31 +24,31 @@
         android:layout_below="@+id/date_text_view_popup"
         android:layout_above="@+id/amount_text_view_popup">
 
-   <!-- <Button
-        android:id="@+id/ib_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Close"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:background="@color/green"
-        />
-   --> <!--android:src="@drawable/ic_close_white_24dp"-->
-    <TextView
-        android:id="@+id/message_text_view_popup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="No Message content"
+        <!-- <Button
+             android:id="@+id/ib_close"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Close"
+             android:layout_alignParentEnd="true"
+             android:layout_alignParentRight="true"
+             android:background="@color/green"
+             />
+        --> <!--android:src="@drawable/ic_close_white_24dp"-->
+        <TextView
+            android:id="@+id/message_text_view_popup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Message content"
 
-        android:padding="25sp"
-        />
+            android:padding="25sp"
+            />
     </ScrollView>
     <TextView
         android:id="@+id/amount_text_view_popup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Amount Goes Here"
-        android:layout_marginLeft="10dp"
+
         android:layout_alignParentBottom="true"
         android:background="@color/base"
         android:textSize="20dp"
