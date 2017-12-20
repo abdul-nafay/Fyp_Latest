@@ -44,6 +44,7 @@ public class SPDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SPHomeMapFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener {
     private TextView userNameTextView;
     private TextView userNumberTextView;
+    private TextView spCategoryTextView;
     private GeoFire geoFire;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -244,9 +245,13 @@ public class SPDrawerActivity extends AppCompatActivity
             ///
             userNameTextView = (TextView)header.findViewById(R.id.drawer_username);
             userNumberTextView = (TextView)header.findViewById(R.id.drawer_usernumber);
+            spCategoryTextView = (TextView)header.findViewById(R.id.drawer_sp_category);
 
             userNameTextView.setText(s.getName());
-            userNumberTextView.setText(s.getPhoneNumber());
+            userNumberTextView.setText("0"+s.getPhoneNumber());
+            spCategoryTextView.setText(s.getCategoryName() +" Services");
+
+
 
         }
     }

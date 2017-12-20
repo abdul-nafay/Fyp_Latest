@@ -1,0 +1,9 @@
+diff a/fypLatest/app/src/main/res/drawable/dialog.xml b/fypLatest/app/src/main/res/drawable/dialog.xml	(rejected hunks)
+@@ -0,6 +0,7 @@
+ 
+     <corners
+         android:bottomLeftRadius="5dp"
++        android:bottomRightRadius="5dp"
+         android:topLeftRadius="5dp"
+         android:topRightRadius="5dp" />
+ 

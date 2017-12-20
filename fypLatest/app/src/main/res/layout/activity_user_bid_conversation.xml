@@ -27,7 +27,7 @@
         android:id="@+id/btn_view_bid_detail"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/yellow"
+        android:background="@color/primary"
         android:padding="12dp"
         android:text="View Bid Details" />
 
@@ -46,6 +46,7 @@
             <TextView
                 android:id="@+id/amount"
                 android:layout_width="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_height="wrap_content"
                 android:text="Amount :"
                 android:textSize="25dp" />
