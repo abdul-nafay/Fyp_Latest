@@ -36,8 +36,8 @@
         android:id="@+id/sp_item_amountTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/status_image_view"
         android:layout_below="@+id/date_text_view"
-        
         android:text="50000 rs"
         android:textColor="@android:color/white" />
     <!--  android:layout_alignParentRight="true"

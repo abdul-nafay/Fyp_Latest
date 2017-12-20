@@ -4,6 +4,8 @@ package com.sourcey.movnpack.UserServiceProviderCommunication;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -14,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -34,7 +38,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-
+import static android.view.WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
 
 
 public class UserBidConversationActivity extends AppCompatActivity {
@@ -151,7 +155,7 @@ public class UserBidConversationActivity extends AppCompatActivity {
 
 
 
-    private void initiatePopupWindow(View v) {
+    /*private void initiatePopupWindow(View v) {
 
 
         try {
@@ -165,6 +169,8 @@ public class UserBidConversationActivity extends AppCompatActivity {
             // display the popup in the center
             mPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
             mPopupWindow.setOutsideTouchable(true);
+
+            mPopupWindow.setBackgroundDrawable(new ColorDrawable());
 
             // Set an elevation value for popup window
             // Call requires API level 21
@@ -187,15 +193,17 @@ public class UserBidConversationActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
+*/
     private void dialogBox(View v){
 
         try {
             final Dialog dialog = new Dialog(this);
             dialog.setContentView(R.layout.view_bid_detail_popup);
-           // dialog.setTitle("Bid Details");
+
+            dialog.setTitle("Bid Details");
             dialog.setCanceledOnTouchOutside(true);
-            
+            dialog.getWindow().setBackgroundDrawableResource(R.color.primary_dark);
+
             TextView messageTextView = (TextView) dialog.findViewById(R.id.message_text_view_popup);
             messageTextView.setText(message);
             TextView dateTextView = (TextView) dialog.findViewById(R.id.date_text_view_popup);
