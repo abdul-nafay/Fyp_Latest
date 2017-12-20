@@ -31,6 +31,7 @@ public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HomeMapFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener {
     private TextView userNameTextView;
     private TextView userNumberTextView;
+    private TextView spCategoryTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -195,9 +196,11 @@ public class DrawerActivity extends AppCompatActivity
             ///
             userNameTextView = (TextView)header.findViewById(R.id.drawer_username);
             userNumberTextView = (TextView)header.findViewById(R.id.drawer_usernumber);
+            spCategoryTextView = (TextView)header.findViewById(R.id.drawer_sp_category);
 
             userNameTextView.setText(user.getName());
-            userNumberTextView.setText(user.getPhoneNumber());
+            userNumberTextView.setText("0"+user.getPhoneNumber());
+            spCategoryTextView.setVisibility(View.GONE);
 
         }
     }

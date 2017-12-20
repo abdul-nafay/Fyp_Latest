@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sourcey.movnpack.Model.BidModel;
@@ -31,6 +32,7 @@ public class SPBidAdapter extends ArrayAdapter<BidRecievedModel> implements View
         TextView messageInitialsTextView;
         TextView dateTextView;
         TextView amountTextView;
+        ImageView statusImageView;
     }
 
     public SPBidAdapter(ArrayList<BidRecievedModel> data, Context context) {
@@ -77,6 +79,7 @@ public class SPBidAdapter extends ArrayAdapter<BidRecievedModel> implements View
             viewHolder.messageInitialsTextView = (TextView) convertView.findViewById(R.id.message_initials_textview);
             viewHolder.dateTextView = (TextView) convertView.findViewById(R.id.date_textview);
             viewHolder.amountTextView = (TextView) convertView.findViewById(R.id.sp_item_amountTextView);
+            viewHolder.statusImageView = (ImageView) convertView.findViewById(R.id.status_image_view);
             result=convertView;
 
             convertView.setTag(viewHolder);
@@ -93,6 +96,16 @@ public class SPBidAdapter extends ArrayAdapter<BidRecievedModel> implements View
         viewHolder.messageInitialsTextView.setText(dataModel.getMessage());
         viewHolder.dateTextView.setText(dataModel.getDate());
         viewHolder.amountTextView.setText(dataModel.getAmount());
+
+        if (dataModel.getStatus().equals("1")){
+            viewHolder.statusImageView.setImageResource(R.drawable.tick);
+        }
+        if (dataModel.getStatus().equals("2")){
+            viewHolder.statusImageView.setImageResource(R.drawable.question_mark);
+        }
+        if (dataModel.getStatus().equals("3")){
+            viewHolder.statusImageView.setImageResource(R.drawable.cross);
+        }
         //viewHolder.info.setOnClickListener(this);
         //viewHolder.info.setTag(position);
         // Return the completed view to render on screen

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="Date Goes Here"
 
-        android:background="@color/base"
+        android:background="@color/primary"
         android:textSize="20dp"/>
 
     <ScrollView
@@ -50,7 +50,7 @@
         android:text="Amount Goes Here"
 
         android:layout_alignParentBottom="true"
-        android:background="@color/base"
+        android:background="@color/primary"
         android:textSize="20dp"
         />
 </RelativeLayout>

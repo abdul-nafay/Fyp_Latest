@@ -24,6 +24,7 @@
         android:layout_marginLeft="8dp"
         android:layout_toRightOf="@+id/btn_back_activity"
         android:textColor="@color/white"
+        android:textStyle="bold"
         android:text="MovNPack"
         android:textSize="20dp"/>
 
