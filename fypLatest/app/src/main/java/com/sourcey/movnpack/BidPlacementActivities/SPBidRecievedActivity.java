@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static android.R.id.message;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
 import static android.os.Build.VERSION_CODES.M;
 
 public class SPBidRecievedActivity extends AppCompatActivity implements View.OnClickListener {
@@ -94,6 +95,8 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
         acceptBidButton.setOnClickListener((View.OnClickListener) this );
         counterBidButton.setOnClickListener((View.OnClickListener)this);
         backBtn.setOnClickListener((View.OnClickListener) this);
+        rejectBidButton.setOnClickListener((View.OnClickListener)this);
+
     }
 
 
@@ -107,10 +110,11 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
             new SPBidRecievedTask(bidRecievedModel.getUserToken(), bidRecievedModel.getBidId(), "Bid_Accepted", s.getServiceProvider().getPhoneNumber(), s.getServiceProvider().getName(), "DATE").execute();
         }
         else if (rejectBidButton.getId() == v.getId()){
-            bidRecievedModel.setStatus("2");
+            bidRecievedModel.setStatus("3");
             boolean res = DatabaseManager.getInstance(this).editBidRecieved(bidRecievedModel);
             if (res){
                 MemorizerUtil.displayToast(getApplicationContext(),"Update done");
+                finish();
             }
             else {
                 MemorizerUtil.displayToast(getApplicationContext(),"Update nahi howa");
