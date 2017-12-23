@@ -4,6 +4,7 @@ package com.sourcey.movnpack.UserServiceProviderCommunication;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -27,10 +28,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sourcey.movnpack.DataBase.DatabaseManager;
+import com.sourcey.movnpack.LoginModule.SignupActivity;
 import com.sourcey.movnpack.Model.AcceptedBidsModel;
 import com.sourcey.movnpack.Model.BaseModel;
 import com.sourcey.movnpack.Model.BidModel;
 import com.sourcey.movnpack.Model.ConversationListViewModel;
+import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.Model.UserBidCounterModel;
 import com.sourcey.movnpack.R;
 
@@ -51,7 +54,7 @@ public class UserBidConversationActivity extends AppCompatActivity {
     RelativeLayout mRelativeLayout;
 
 
-    String message,date,amount;
+    String message,date,amount,counterMessage;
 
 
     ArrayList<ConversationListViewModel> dataModels;
@@ -123,6 +126,8 @@ public class UserBidConversationActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 ConversationListViewModel dataModel= dataModels.get(position);
+                counterMessage=dataModel.getMessage();
+                dialogBoxAccepted(view);
 
 
                 Snackbar.make(view, dataModel.getName()+"\n"+dataModel.getMessage()+" date: "+dataModel.getDate(), Snackbar.LENGTH_LONG)
@@ -219,5 +224,48 @@ public class UserBidConversationActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    ///
+
+    private void dialogBoxAccepted(View v){
+
+        try {
+            final Dialog dialog = new Dialog(this);
+            dialog.setContentView(R.layout.sp_bid_response_user_counter);
+
+            dialog.setTitle("Bid Details");
+            dialog.setCanceledOnTouchOutside(true);
+            dialog.getWindow().setBackgroundDrawableResource(R.color.primary_dark);
+
+            TextView messageTextView = (TextView) dialog.findViewById(R.id.message_text_view);
+            messageTextView.setText(counterMessage);
+         /*   TextView dateTextView = (TextView) dialog.findViewById(R.id.date_text_view_popup);
+            dateTextView.setText("Date: "+ date);
+            TextView amountTextViewPopup = (TextView) dialog.findViewById(R.id.amount_text_view_popup);
+            amountTextViewPopup.setText("Amount: "+ amount);
+
+            */
+
+          Button confirmServiceButton = (Button) dialog.findViewById(R.id.btn_confirm) ;
+
+            confirmServiceButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), ServiceConfirmationActivity.class);
+                    startActivity(intent);
+                }
+            });
+            dialog.show();
+
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    ////
+
+
+
 
 }

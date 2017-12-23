@@ -40,7 +40,7 @@
         <activity
             android:name=".DrawerModule.SPDrawerActivity"
             android:label="@string/title_activity_drawer"
-            android:theme="@style/AppTheme.Dark"/>
+            android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".SP.spProfileInfo"
             android:theme="@style/AppTheme.Dark" />
@@ -73,10 +73,13 @@
 
         <activity
             android:name=".UserServiceProviderCommunication.SPBidActivity"
-            android:theme="@style/AppTheme.Dark"/>
+            android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".UserServiceProviderCommunication.UserBidConversationActivity"
-            android:theme="@style/AppTheme.Dark"/>
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".UserServiceProviderCommunication.ServiceConfirmationActivity"
+            android:theme="@style/AppTheme.Dark" />
     </application>
 
 </manifest>
