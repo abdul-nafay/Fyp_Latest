@@ -16,6 +16,23 @@ public class ConversationListViewModel {
     String spToken;
     String bidID;
 
+    public String getBidID() {
+        return bidID;
+    }
+
+    public void setBidID(String bidID) {
+        this.bidID = bidID;
+    }
+
+    public AcceptedBidsModel getA() {
+        return a;
+    }
+
+    public void setA(AcceptedBidsModel a) {
+        this.a = a;
+    }
+
+    public AcceptedBidsModel a;
     public String getAmount() {
         return amount;
     }

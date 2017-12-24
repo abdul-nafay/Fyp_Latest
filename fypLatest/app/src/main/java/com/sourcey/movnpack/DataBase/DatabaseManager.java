@@ -7,6 +7,7 @@ import com.sourcey.movnpack.Model.AcceptedBidsModel;
 import com.sourcey.movnpack.Model.BaseModel;
 import com.sourcey.movnpack.Model.BidModel;
 import com.sourcey.movnpack.Model.BidRecievedModel;
+import com.sourcey.movnpack.Model.ConfirmBidModel;
 import com.sourcey.movnpack.Model.SPBidCounterModel;
 import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.Model.User;
@@ -422,6 +423,24 @@ public class DatabaseManager extends DatabaseHandler {
             db = getDbForwrite();
             SPBidCounterTable spBidCounterTable = new SPBidCounterTable();
             long row = spBidCounterTable.insertData(db,spBidCounterModel);
+            return  row >0  ? true : false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally{
+            if(db!= null)
+                closeDb();
+        }
+        return false;
+
+    }
+
+    public boolean addConfirmBidUser(ConfirmBidModel confirmBidModel){
+        SQLiteDatabase db = null;
+        try {
+            db = getDbForwrite();
+            Confirmed_Bids confirmBidTable = new Confirmed_Bids();
+            long row = confirmBidTable.insertData(db,confirmBidModel);
             return  row >0  ? true : false;
         } catch (Exception e) {
             e.printStackTrace();

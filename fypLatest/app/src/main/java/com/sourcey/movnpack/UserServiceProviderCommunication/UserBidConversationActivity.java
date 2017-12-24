@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -61,6 +62,7 @@ public class UserBidConversationActivity extends AppCompatActivity {
     ArrayList<BaseModel> bids;
     ListView listView;
     private static UserBidConversationAdapter adapter;
+    AcceptedBidsModel selectedBidModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +108,10 @@ public class UserBidConversationActivity extends AppCompatActivity {
             for (BaseModel bid : bids) {
                 if (bid instanceof AcceptedBidsModel) {
                     AcceptedBidsModel a = (AcceptedBidsModel) bid;
-                    dataModels.add( new ConversationListViewModel(a.getSpName(),"Accepted your offer",a.getDate(),"1",a.getSpToken(),""));
+                    ConversationListViewModel c =  new ConversationListViewModel(a.getSpName(),"Accepted your offer",a.getDate(),"1",a.getSpToken(),"");
+                    c.a = a;
+                    c.setBidID(a.getBidId());
+                    dataModels.add(c);
                 }
                 else {
                     UserBidCounterModel u = (UserBidCounterModel) bid;
@@ -127,6 +132,7 @@ public class UserBidConversationActivity extends AppCompatActivity {
 
                 ConversationListViewModel dataModel= dataModels.get(position);
                 counterMessage=dataModel.getMessage();
+                selectedBidModel = dataModel.getA();
                 dialogBoxAccepted(view);
 
 
@@ -230,6 +236,7 @@ public class UserBidConversationActivity extends AppCompatActivity {
     private void dialogBoxAccepted(View v){
 
         try {
+
             final Dialog dialog = new Dialog(this);
             dialog.setContentView(R.layout.sp_bid_response_user_counter);
 
@@ -252,6 +259,9 @@ public class UserBidConversationActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(), ServiceConfirmationActivity.class);
+
+                    intent.putExtra("acceptedBid",(Parcelable) selectedBidModel);
+                    intent.putExtra("bidId",selectedBidModel.getBidId());
                     startActivity(intent);
                 }
             });
