@@ -11,32 +11,57 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_below="@+id/header">
+    android:layout_below="@+id/header"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_marginLeft="93dp"
+    android:layout_marginStart="93dp"
+    android:layout_marginTop="60dp">
 
 
-    <!--  Location Label -->
-    <android.support.design.widget.TextInputLayout
+
+    <!-- Location Label -->
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
-        <EditText android:id="@+id/location_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:hint="Enter Location" />
-    </android.support.design.widget.TextInputLayout>
 
-    <!-- Confirm Button -->
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_location"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="24dp"
-        android:background="@color/yellow"
-        android:padding="12dp"
-        android:text="Confirm Location" />
+        >
+
+        <TextView
+            android:id="@+id/location_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="Location: "
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/location_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select your Location"
+            android:textSize="10dp"
+            android:layout_alignBottom="@+id/location_label"
+            android:layout_toRightOf="@+id/location_label"
+            />
+
+        <!-- location Button -->
+        <Button
+            android:id="@+id/btn_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           android:layout_alignParentRight="true"
+            android:background="@drawable/search_location"
+
+            />
+
+    </RelativeLayout>
+
+
+
+
+
 
     <!--  Service Time Label -->
     <android.support.design.widget.TextInputLayout
