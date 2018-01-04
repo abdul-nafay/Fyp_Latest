@@ -14,18 +14,18 @@
     android:layout_below="@+id/header"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"
-    android:layout_marginLeft="93dp"
-    android:layout_marginStart="93dp"
-    android:layout_marginTop="60dp">
+
+    android:layout_marginTop="20dp">
 
 
 
     <!-- Location Label -->
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:orientation="horizontal"
+        android:weightSum="1"
         >
 
         <TextView
@@ -34,29 +34,28 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:text="Location: "
-            android:textSize="25dp" />
+            android:textSize="25dp"
+            android:layout_weight="0.3"/>
 
         <TextView
             android:id="@+id/location_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select your Location"
+            android:hint="Select Your Location"
             android:textSize="10dp"
-            android:layout_alignBottom="@+id/location_label"
-            android:layout_toRightOf="@+id/location_label"
+            android:layout_weight="0.3"
             />
 
         <!-- location Button -->
         <Button
             android:id="@+id/btn_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-           android:layout_alignParentRight="true"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:background="@drawable/search_location"
 
             />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
 

@@ -56,7 +56,7 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
     ProgressDialog progressDialog;
     int PLACE_PICKER_REQUEST = 1;
     Place selectedPlace;
-
+    TextView locationTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +74,7 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
         cancelServiceButton = (Button) findViewById(R.id.btn_reject_bid);
 
         amountTextView = (TextView) findViewById(R.id.confirmed_amount_text_view);
-
+        locationTextView =  (TextView) findViewById(R.id.location_text_view);
         serviceTimeInput = (EditText) findViewById(R.id.servivce_time_text_view);
 
         doneButton.setOnClickListener(this);
@@ -102,9 +102,10 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, this);
-                String toastMsg = String.format("Place: %s", place.getName());
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                selectedPlace = PlacePicker.getPlace(data, this);
+                String toastMsg = String.format("Place: %s", selectedPlace.getName());
+               // Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                locationTextView.setText(toastMsg);
             }
         }
     }
