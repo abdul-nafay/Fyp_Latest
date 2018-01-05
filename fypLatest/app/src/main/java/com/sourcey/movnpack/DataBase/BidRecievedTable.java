@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class BidRecievedTable extends Table {
 
     public static final String TABLE_NAME = "BID_RECIEVED";
-    public static final String SCHEMA = "CREATE TABLE IF NOT EXISTS BID_RECIEVED (MESSAGE TEXT, BID_ID TEXT,DATE TEXT,USER_TOKEN TEXT,USER_ID TEXT,USER_NAME TEXT,AMOUNT TEXT,SP_ID TEXt,STATUS TEXT , SUBJECT TEXT)";
+    public static final String SCHEMA = "CREATE TABLE IF NOT EXISTS BID_RECIEVED (MESSAGE TEXT, BID_ID TEXT,DATE TEXT,USER_TOKEN TEXT,USER_ID TEXT,USER_NAME TEXT,AMOUNT TEXT,SP_ID TEXt,STATUS TEXT , SUBJECT TEXT , LOCK INTEGER)";
 
     //   private final String ID = "ID";
     public static final String MESSAGE = "MESSAGE";
@@ -30,7 +30,7 @@ public class BidRecievedTable extends Table {
     public static final String SP_ID  = "SP_ID";
     public static final String STATUS  = "STATUS";
     public static final String SUBJECT  = "SUBJECT";
-
+    public static  final String LOCK = "LOCK";
     public BidRecievedTable(){
 
         super(TABLE_NAME);
@@ -50,7 +50,7 @@ public class BidRecievedTable extends Table {
         contentValues.put(SP_ID, ((BidRecievedModel)data).getSpId());
         contentValues.put(STATUS, ((BidRecievedModel)data).getStatus());
         contentValues.put(SUBJECT, ((BidRecievedModel)data).getSubject());
-
+        contentValues.put(LOCK, ((BidRecievedModel)data).getLock());
 
         return contentValues;
 
@@ -78,6 +78,7 @@ public class BidRecievedTable extends Table {
                 bidModel.setSpId(cursor.getString(cursor.getColumnIndex(SP_ID)));
                 bidModel.setStatus(cursor.getString(cursor.getColumnIndex(STATUS)));
                 bidModel.setSubject(cursor.getString(cursor.getColumnIndex(SUBJECT)));
+                bidModel.setLock(cursor.getInt(cursor.getColumnIndex(LOCK)));
                 bidArray.add(bidModel);
                 cursor.moveToNext();
                 i++;

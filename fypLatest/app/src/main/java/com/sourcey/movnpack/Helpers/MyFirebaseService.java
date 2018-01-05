@@ -16,10 +16,14 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.sourcey.movnpack.BidPlacementActivities.SPBidRecievedActivity;
+import com.sourcey.movnpack.DataBase.Bid;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.DrawerModule.DrawerActivity;
 import com.sourcey.movnpack.Model.AcceptedBidsModel;
+import com.sourcey.movnpack.Model.AssignedTasksModel;
+import com.sourcey.movnpack.Model.BidModel;
 import com.sourcey.movnpack.Model.BidRecievedModel;
+import com.sourcey.movnpack.Model.ConfirmBidModel;
 import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.Model.UserBidCounterModel;
 import com.sourcey.movnpack.R;
@@ -77,7 +81,7 @@ public class MyFirebaseService extends FirebaseMessagingService{
                     bidRecievedModel.setSubject(data.get("subject"));
                     bidRecievedModel.setStatus("0");
                     bidRecievedModel.setSpId(spId);
-
+                    bidRecievedModel.setLock(0);
                     boolean res = DatabaseManager.getInstance(this).addBidRecieved(bidRecievedModel);
                     if(res){
                         //MemorizerUtil.displayToast(getApplicationContext(),"Data
@@ -119,6 +123,7 @@ public class MyFirebaseService extends FirebaseMessagingService{
                     else {
 
                     }
+
                     break;
 
 
@@ -147,9 +152,44 @@ public class MyFirebaseService extends FirebaseMessagingService{
                     else {
 
                     }
-
                     break;
+                case "Bid_Confirm_Single":
+                    AssignedTasksModel localBid = new AssignedTasksModel();
+                    localBid.setID(data.get("ID"));
+                    localBid.setMessage(data.get("message"));
+                    localBid.setBidId(data.get("bidId"));
+                    BidModel bid = (BidModel) DatabaseManager.getInstance(this).getBidById(localBid.getBidId()).get(0);
+                    localBid.setUserId(data.get(bid.getUserId()));
+                    localBid.setSpId(data.get(Session.getInstance().getServiceProvider().getPhoneNumber()));
+                    localBid.setUserToken(data.get(bid.getUserToken()));
+                    localBid.setLat(data.get("lat"));
+                    localBid.setLongi(data.get("long"));
+                    localBid.setDate(data.get("date"));
+                    if( DatabaseManager.getInstance(this).addAssignedTasks(localBid)) {
 
+                        if (remoteMessage.getNotification() != null) {
+                            Log.d("TAG", "Message Notification Body: " + remoteMessage.getNotification().getBody());
+                            //sendNotificationForCounterBids(remoteMessage.getNotification().getBody(), data.get("bidId"));
+                            sendNotificationForAssignedTask(remoteMessage.getNotification().getBody(), localBid);
+                        }
+                    }
+                    else {
+                        MemorizerUtil.displayToast(this,"Unable to Store in DB");
+                    }
+                    break;
+                case "Bid_Lock":
+                    String assignedTo = data.get("assignedTo");
+                    String bidID = data.get("bidId");
+                    BidRecievedModel bidRec = (BidRecievedModel) DatabaseManager.getInstance(this).getBidReceivedById(bidID).get(0);
+                    if (assignedTo.equals(Session.sharedInstance.getServiceProvider().getPhoneNumber())) {
+                        // Task has been assigned to ME
+                        bidRec.setLock(1);
+                        DatabaseManager.getInstance(this).updateBidRecievedStatus(bidRec);
+                    }
+                    else {
+                        bidRec.setLock(2);
+                        DatabaseManager.getInstance(this).updateBidRecievedStatus(bidRec);
+                    }
                 default:
                     break;
             }
@@ -234,5 +274,24 @@ public class MyFirebaseService extends FirebaseMessagingService{
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
+    private void sendNotificationForAssignedTask(String messageBody, AssignedTasksModel assignedTasksModel) {
+       /* Intent intent = new Intent(this, SPBidRecievedActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("bidID",assignedTasksModel.getBidId());
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent,
+                PendingIntent.FLAG_ONE_SHOT);*/
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Mov N Pack")
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)/*.setContentIntent(pendingIntent)*/.setPriority(Notification.PRIORITY_HIGH);
+        ;
 
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
 }

@@ -10,6 +10,15 @@ import android.os.Parcelable;
 public class BidRecievedModel extends BaseModel implements Parcelable {
 
     String message,bidId,date,userToken,userId,userName,amount,categoryName,spId,status , subject;
+    int lock ;
+
+    public int getLock() {
+        return lock;
+    }
+
+    public void setLock(int lock) {
+        this.lock = lock;
+    }
 
     public BidRecievedModel(){
         //super();

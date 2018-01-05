@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.sourcey.movnpack.Model.AcceptedBidsModel;
+import com.sourcey.movnpack.Model.AssignedTasksModel;
 import com.sourcey.movnpack.Model.BaseModel;
 import com.sourcey.movnpack.Model.BidModel;
 import com.sourcey.movnpack.Model.BidRecievedModel;
@@ -385,6 +386,24 @@ public class DatabaseManager extends DatabaseHandler {
             db = getDbForwrite();
             UserBidCounterTable userBidCounterTable = new UserBidCounterTable();
             long row = userBidCounterTable.insertData(db,userBidCounterModel);
+            return  row >0  ? true : false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally{
+            if(db!= null)
+                closeDb();
+        }
+        return false;
+
+    }
+
+    public boolean addAssignedTasks(AssignedTasksModel assignedTasksModel){
+        SQLiteDatabase db = null;
+        try {
+            db = getDbForwrite();
+            Assigned_Tasks assignedTasksTable = new Assigned_Tasks();
+            long row = assignedTasksTable.insertData(db,assignedTasksModel);
             return  row >0  ? true : false;
         } catch (Exception e) {
             e.printStackTrace();

@@ -40,6 +40,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 
 public class ServiceConfirmationActivity extends AppCompatActivity implements MessageAsyncInterface , View.OnClickListener {
@@ -102,6 +103,7 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
+
                 selectedPlace = PlacePicker.getPlace(data, this);
                 String toastMsg = String.format("Place: %s", selectedPlace.getName());
                // Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
@@ -114,14 +116,16 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
     public void didCompleteWithTask(HashMap<String, String> data, API_TYPE apiType) {
 
         if (apiType == API_TYPE.confirmBidBroadcast) {
-
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+                finish();
+            }
         }
         else if (apiType == API_TYPE.confirmBidSIngle) {
                 if (DatabaseManager.getInstance(this).addConfirmBidUser(localBid)) {
                     Log.d("ALI","Added");
-                    if (progressDialog != null) {
-                        progressDialog.dismiss();
-                    }
+
+                    new MessageAsyncTask(prepareParamsForBroadcastOfConfirmation(),AppConstants.API_BID_PLACEMENT,this,API_TYPE.confirmBidBroadcast);
                 }
                 else {
                     Log.d("ALI","Failed To ADD");
@@ -159,22 +163,23 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
         localBid.setUserId(Session.sharedInstance.getUser().getPhoneNumber());
         localBid.setSpId(((AcceptedBidsModel) bidResponseToConfirm).getSpId());
         localBid.setSpToken(((AcceptedBidsModel) bidResponseToConfirm).getSpToken());
-        localBid.setLat("10.7");
-        localBid.setLongi("10.7");
+        localBid.setLat(selectedPlace.getLatLng().latitude +"");
+        localBid.setLongi(selectedPlace.getLatLng().longitude +"");
         localBid.setDate(serviceTimeInput.getText().toString());
 
         HashMap params =   new HashMap<>();
         HashMap<String, String> data = new HashMap<>();
         HashMap<String, String> notification = new HashMap<>();
         //data.put("to",categoryName);
+        data.put("ID", UUID.randomUUID().toString());
         data.put("message", "Dummy Message");
         data.put("bidId", bid.getBidId());
         data.put("date", serviceTimeInput.getText().toString());
         data.put("amount",amountTextView.getText().toString());
         data.put("Bid_Type","Bid_Confirm_Single");
         data.put("serviceTime",serviceTimeInput.getText().toString());
-        data.put("lat","10.7");
-        data.put("long","10.7");
+        data.put("lat",selectedPlace.getLatLng().latitude +"");
+        data.put("long",selectedPlace.getLatLng().longitude +"");
         notification.put("body","You have just assigned a new task.");
         notification.put("title","Congratulations!!");
 
@@ -191,4 +196,21 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
 
        return params;
     }
+    private HashMap<String,String> prepareParamsForBroadcastOfConfirmation() {
+        HashMap params =   new HashMap<>();
+        HashMap<String, String> data = new HashMap<>();
+        //data.put("to",categoryName);
+        data.put("Bid_Type","Bid_Lock");
+        data.put("bidId", bid.getBidId());
+        data.put("assignedTo",((AcceptedBidsModel) bidResponseToConfirm).getSpId());
+//("/topics/"+catName
+        params.put("to","/topics/"+bid.getCategoryName());
+
+        Gson gson = new Gson();
+        String dataStr = gson.toJson(data);
+        params.put("data",new JSONObject(data));
+
+        return params;
+    }
+
 }
