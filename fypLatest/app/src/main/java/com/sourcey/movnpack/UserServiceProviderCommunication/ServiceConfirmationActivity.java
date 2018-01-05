@@ -125,7 +125,7 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
                 if (DatabaseManager.getInstance(this).addConfirmBidUser(localBid)) {
                     Log.d("ALI","Added");
 
-                    new MessageAsyncTask(prepareParamsForBroadcastOfConfirmation(),AppConstants.API_BID_PLACEMENT,this,API_TYPE.confirmBidBroadcast);
+                    new MessageAsyncTask(prepareParamsForBroadcastOfConfirmation(),AppConstants.API_BID_PLACEMENT,this,API_TYPE.confirmBidBroadcast).execute();
                 }
                 else {
                     Log.d("ALI","Failed To ADD");

@@ -189,6 +189,7 @@ public class UserBidPlacementActivity extends Activity {
             bidModel.setAmount(amount);
             bidModel.setCategoryName(categoryName);
             bidModel.setSubject(subject);
+            bidModel.setCategoryName(catName);
             boolean result;
             result = DatabaseManager.getInstance(getApplicationContext()).addUserBid(bidModel);
 
