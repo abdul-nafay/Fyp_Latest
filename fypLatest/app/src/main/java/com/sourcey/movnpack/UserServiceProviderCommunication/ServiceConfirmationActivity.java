@@ -1,14 +1,19 @@
 package com.sourcey.movnpack.UserServiceProviderCommunication;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -39,6 +44,7 @@ import com.google.android.gms.location.places.*;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -48,16 +54,25 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
     Button locationButton;
     Button doneButton;
     Button cancelServiceButton;
-    BidModel bid ;
+
     TextView amountTextView;
+    TextView locationTextView;
     String spToken;
     EditText serviceTimeInput;
+
+    BidModel bid ;
     AcceptedBidsModel bidResponseToConfirm;
     ConfirmBidModel localBid;
     ProgressDialog progressDialog;
     int PLACE_PICKER_REQUEST = 1;
     Place selectedPlace;
-    TextView locationTextView;
+
+    private TimePicker timePicker1;
+
+    private DatePicker datePicker;
+    private Calendar calendar;
+    private int year, month, day;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +91,19 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
 
         amountTextView = (TextView) findViewById(R.id.confirmed_amount_text_view);
         locationTextView =  (TextView) findViewById(R.id.location_text_view);
-        serviceTimeInput = (EditText) findViewById(R.id.servivce_time_text_view);
+        //serviceTimeInput = (EditText) findViewById(R.id.servivce_time_text_view);
+
+        timePicker1 = (TimePicker) findViewById(R.id.timePicker1);
+
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+       // showDate(year, month+1, day);
+
+
+
 
         doneButton.setOnClickListener(this);
 
@@ -99,13 +126,41 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
 
     }
 
+    @SuppressWarnings("deprecation")
+    public void setDate(View view) {
+        showDialog(999);
+        Toast.makeText(getApplicationContext(), "ca", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        // TODO Auto-generated method stub
+        if (id == 999) {
+            return new DatePickerDialog(this, myDateListener, year, month, day);
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener myDateListener = new
+            DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker arg0, int arg1, int arg2, int arg3) {
+                    // TODO Auto-generated method stub
+                    // arg1 = year
+                    // arg2 = month
+                    // arg3 = day
+                    //showDate(arg1, arg2+1, arg3);
+                }
+            };
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
 
                 selectedPlace = PlacePicker.getPlace(data, this);
-                String toastMsg = String.format("Place: %s", selectedPlace.getName());
+                String toastMsg = String.format("%s", selectedPlace.getName());
                // Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
                 locationTextView.setText(toastMsg);
             }
