@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,11 +18,13 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.Helpers.Session;
+import com.sourcey.movnpack.LoginModule.SignupActivity;
 import com.sourcey.movnpack.Model.BaseModel;
 import com.sourcey.movnpack.Model.BidModel;
 import com.sourcey.movnpack.Model.BidRecievedModel;
 import com.sourcey.movnpack.Network.HttpHandler;
 import com.sourcey.movnpack.R;
+import com.sourcey.movnpack.UserServiceProviderCommunication.SPAssignedTaskActivity;
 import com.sourcey.movnpack.Utility.AppConstants;
 import com.sourcey.movnpack.Utility.MemorizerUtil;
 
@@ -38,6 +42,7 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
     TextView subjectTextView;
     TextView messageTextView;
     TextView amountTextView;
+    TextView bidStatusTextView;
 
     Button acceptBidButton;
     Button rejectBidButton;
@@ -63,6 +68,7 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
         subjectTextView = (TextView) findViewById(R.id.subject_text_view);
         messageTextView = (TextView) findViewById(R.id.message_text_view);
         amountTextView  = (TextView) findViewById(R.id.bid_amount_text_view);
+        bidStatusTextView  = (TextView) findViewById(R.id.task_status_text_view);
 
         acceptBidButton = (Button) findViewById(R.id.btn_accept_bid);
         rejectBidButton = (Button) findViewById(R.id.btn_reject_bid);
@@ -96,6 +102,33 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
         counterBidButton.setOnClickListener((View.OnClickListener)this);
         backBtn.setOnClickListener((View.OnClickListener) this);
         rejectBidButton.setOnClickListener((View.OnClickListener)this);
+
+        if(bidRecievedModel.getLock()==0){
+            bidStatusTextView.setVisibility(View.GONE);
+        }
+
+        if(bidRecievedModel.getLock()==1){
+            String mystring=new String("Task has been assigned to you click her to view details");
+            SpannableString content = new SpannableString(mystring);
+            content.setSpan(new UnderlineSpan(), 0, mystring.length(), 0);
+            bidStatusTextView.setText(content);
+
+            bidStatusTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), SPAssignedTaskActivity.class);
+                    startActivity(intent);
+
+                }
+            });
+
+
+        }
+
+        if(bidRecievedModel.getLock()==2){
+            bidStatusTextView.setText("Task has been already assigned");
+        }
+
 
     }
 

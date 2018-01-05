@@ -120,6 +120,19 @@
             android:text="Reject" />
 
 
+        <TextView
+            android:id="@+id/task_status_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Task has been assigned or not status"
+
+            android:textSize="14dp"/>
+
+
+
+
     </LinearLayout>
 </ScrollView>
     </RelativeLayout>
