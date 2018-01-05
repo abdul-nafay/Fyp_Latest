@@ -5,7 +5,26 @@ package com.sourcey.movnpack.Model;
  */
 
 public class AssignedTasksModel extends  BaseModel {
-    String ID,message,bidId,date,userId,userToken,amount,spId,lat,longi;
+    String ID;
+    String message;
+    String bidId;
+    String date;
+    String userId;
+    String userToken;
+    String amount;
+    String spId;
+    String lat;
+    String longi;
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    String time;
 
     public String getMessage() {
         return message;

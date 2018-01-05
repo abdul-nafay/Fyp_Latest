@@ -43,10 +43,13 @@ import com.google.android.gms.location.places.*;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.UUID;
+
+import static android.R.attr.format;
 
 
 public class ServiceConfirmationActivity extends AppCompatActivity implements MessageAsyncInterface , View.OnClickListener {
@@ -72,7 +75,7 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
     private DatePicker datePicker;
     private Calendar calendar;
     private int year, month, day;
-
+    String formattedDate = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,11 +98,6 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
 
         timePicker1 = (TimePicker) findViewById(R.id.timePicker1);
 
-        calendar = Calendar.getInstance();
-        year = calendar.get(Calendar.YEAR);
-
-        month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
        // showDate(year, month+1, day);
 
 
@@ -150,6 +148,15 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
                     // arg2 = month
                     // arg3 = day
                     //showDate(arg1, arg2+1, arg3);
+                    int   day  = arg0.getDayOfMonth();
+                    int   month= arg0.getMonth();
+                    int   year = arg0.getYear();
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(year, month, day);
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                    formattedDate = sdf.format(calendar.getTime());
+                    Log.d("ALI",formattedDate);
                 }
             };
 
@@ -211,7 +218,7 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
 
     private HashMap<String,String> prepareParamsForConfirmationSingle() {
         String token = "";
-
+        String timeString = getTimeString(timePicker1.getCurrentHour(),timePicker1.getCurrentMinute());
         localBid = new ConfirmBidModel();
         localBid.setMessage("Dummy Message");
         localBid.setBidId(bid.getBidId());
@@ -220,7 +227,7 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
         localBid.setSpToken(((AcceptedBidsModel) bidResponseToConfirm).getSpToken());
         localBid.setLat(selectedPlace.getLatLng().latitude +"");
         localBid.setLongi(selectedPlace.getLatLng().longitude +"");
-        localBid.setDate(serviceTimeInput.getText().toString());
+        localBid.setDate(formattedDate);
 
         HashMap params =   new HashMap<>();
         HashMap<String, String> data = new HashMap<>();
@@ -229,10 +236,10 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
         data.put("ID", UUID.randomUUID().toString());
         data.put("message", "Dummy Message");
         data.put("bidId", bid.getBidId());
-        data.put("date", serviceTimeInput.getText().toString());
+        data.put("date",formattedDate);
         data.put("amount",amountTextView.getText().toString());
         data.put("Bid_Type","Bid_Confirm_Single");
-        data.put("serviceTime",serviceTimeInput.getText().toString());
+        data.put("serviceTime",timeString);
         data.put("lat",selectedPlace.getLatLng().latitude +"");
         data.put("long",selectedPlace.getLatLng().longitude +"");
         notification.put("body","You have just assigned a new task.");
@@ -267,5 +274,24 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
 
         return params;
     }
+
+    public String getTimeString(int hour , int minute)
+    {
+        String format = "";
+        if (hour == 0) {
+            hour += 12;
+            format = "AM";
+        } else if (hour == 12) {
+            format = "PM";
+        } else if (hour > 12) {
+            hour -= 12;
+            format = "PM";
+        } else {
+            format = "AM";
+        }
+        return hour + ":" + minute + " " + format;
+
+    }
+
 
 }

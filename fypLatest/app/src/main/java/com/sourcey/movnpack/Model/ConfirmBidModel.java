@@ -5,7 +5,25 @@ package com.sourcey.movnpack.Model;
  */
 
 public class ConfirmBidModel extends BaseModel{
-    String message,bidId,date,userId,amount,spId,spToken,lat,longi;
+    String message;
+    String bidId;
+    String date;
+    String userId;
+    String amount;
+    String spId;
+    String spToken;
+    String lat;
+    String longi;
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    String time;
 
     public String getMessage() {
         return message;

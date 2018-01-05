@@ -27,6 +27,7 @@ import com.sourcey.movnpack.Model.ConfirmBidModel;
 import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.Model.UserBidCounterModel;
 import com.sourcey.movnpack.R;
+import com.sourcey.movnpack.UserServiceProviderCommunication.SPAssignedTaskActivity;
 import com.sourcey.movnpack.UserServiceProviderCommunication.SPBidActivity;
 import com.sourcey.movnpack.UserServiceProviderCommunication.UserBidConversationActivity;
 import com.sourcey.movnpack.Utility.MemorizerUtil;
@@ -158,6 +159,7 @@ public class MyFirebaseService extends FirebaseMessagingService{
                     localBid.setID(data.get("ID"));
                     localBid.setMessage(data.get("message"));
                     localBid.setBidId(data.get("bidId"));
+                    localBid.setTime(data.get("serviceTime"));
                    // BidRecievedModel bid = (BidRecievedModel) DatabaseManager.getInstance(this).getBidById(localBid.getBidId()).get(0);
                     BidRecievedModel bid = (BidRecievedModel) DatabaseManager.getInstance(this).getBidReceivedById(localBid.getBidId()).get(0);
                     localBid.setUserId(data.get(bid.getUserId()));
@@ -166,6 +168,7 @@ public class MyFirebaseService extends FirebaseMessagingService{
                     localBid.setLat(data.get("lat"));
                     localBid.setLongi(data.get("long"));
                     localBid.setDate(data.get("date"));
+
                     if( DatabaseManager.getInstance(this).addAssignedTasks(localBid)) {
 
                         if (remoteMessage.getNotification() != null) {
@@ -276,18 +279,18 @@ public class MyFirebaseService extends FirebaseMessagingService{
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
     private void sendNotificationForAssignedTask(String messageBody, AssignedTasksModel assignedTasksModel) {
-       /* Intent intent = new Intent(this, SPBidRecievedActivity.class);
+        Intent intent = new Intent(this, SPAssignedTaskActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("bidID",assignedTasksModel.getBidId());
+        intent.putExtra("bidId",assignedTasksModel.getBidId());
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent,
-                PendingIntent.FLAG_ONE_SHOT);*/
+                PendingIntent.FLAG_ONE_SHOT);
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Mov N Pack")
                 .setContentText(messageBody)
                 .setAutoCancel(true)
-                .setSound(defaultSoundUri)/*.setContentIntent(pendingIntent)*/.setPriority(Notification.PRIORITY_HIGH);
+                .setSound(defaultSoundUri).setContentIntent(pendingIntent).setPriority(Notification.PRIORITY_HIGH);
         ;
 
         NotificationManager notificationManager =

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class Assigned_Tasks extends Table {
     public static final String TABLE_NAME = "Assigned_Tasks";
-    public static final String SCHEMA = "CREATE TABLE IF NOT EXISTS Assigned_Tasks (ID TEXT,MESSAGE TEXT, BID_ID TEXT,DATE TEXT,USER_ID TEXT,USER_TOKEN,AMOUNT TEXT,SP_ID TEXT,LAT TEXT,LONG TEXT)";
+    public static final String SCHEMA = "CREATE TABLE IF NOT EXISTS Assigned_Tasks (ID TEXT,MESSAGE TEXT, BID_ID TEXT,DATE TEXT,USER_ID TEXT,USER_TOKEN,AMOUNT TEXT,SP_ID TEXT,LAT TEXT,LONG TEXT,TIME TEXT)";
 
     private final String ID = "ID";
     public static final String MESSAGE = "MESSAGE";
@@ -28,7 +28,7 @@ public class Assigned_Tasks extends Table {
     public static final String SP_ID  = "SP_ID";
     public static final String LAT = "LAT";
     public static final String LONG = "LONG";
-
+    public static final String TIME = "TIME";
     public Assigned_Tasks(){
 
         super(TABLE_NAME);
@@ -48,6 +48,7 @@ public class Assigned_Tasks extends Table {
         contentValues.put(AMOUNT, ((AssignedTasksModel)data).getAmount());
         contentValues.put(LAT, ((AssignedTasksModel)data).getLat());
         contentValues.put(LONG, ((AssignedTasksModel)data).getLongi());
+        contentValues.put(TIME, ((AssignedTasksModel)data).getTime());
         return contentValues;
 
     }
@@ -74,6 +75,7 @@ public class Assigned_Tasks extends Table {
                 bidModel.setAmount(cursor.getString(cursor.getColumnIndex(AMOUNT)));
                 bidModel.setLat(cursor.getString(cursor.getColumnIndex(LAT)));
                 bidModel.setLongi(cursor.getString(cursor.getColumnIndex(LONG)));
+                bidModel.setTime(cursor.getString(cursor.getColumnIndex(TIME)));
                 bidArray.add(bidModel);
                 cursor.moveToNext();
                 i++;
@@ -103,6 +105,6 @@ public class Assigned_Tasks extends Table {
 
     @Override
     protected String whereClauseForData() {
-        return " WHERE "+ ID + "=?";
+        return " WHERE "+ BID_ID + "=?";
     }
 }

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class Confirmed_Bids extends Table {
         public static final String TABLE_NAME = "Confirmed_Bids";
-        public static final String SCHEMA = "CREATE TABLE IF NOT EXISTS Confirmed_Bids (MESSAGE TEXT, BID_ID TEXT,DATE TEXT,USER_ID TEXT,AMOUNT TEXT,SP_ID TEXT,SP_TOKEN TEXT,LAT TEXT,LONG TEXT)";
+        public static final String SCHEMA = "CREATE TABLE IF NOT EXISTS Confirmed_Bids (MESSAGE TEXT, BID_ID TEXT,DATE TEXT,USER_ID TEXT,AMOUNT TEXT,SP_ID TEXT,SP_TOKEN TEXT,LAT TEXT,LONG TEXT,TIME TEXT)";
 
         //   private final String ID = "ID";
         public static final String MESSAGE = "MESSAGE";
@@ -28,7 +28,7 @@ public class Confirmed_Bids extends Table {
         public static final String SP_TOKEN  = "SP_TOKEN";
         public static final String LAT = "LAT";
         public static final String LONG = "LONG";
-
+        public static final String TIME = "TIME";
         public Confirmed_Bids(){
 
             super(TABLE_NAME);
@@ -47,6 +47,7 @@ public class Confirmed_Bids extends Table {
             contentValues.put(AMOUNT, ((ConfirmBidModel)data).getAmount());
             contentValues.put(LAT, ((ConfirmBidModel)data).getLat());
             contentValues.put(LONG, ((ConfirmBidModel)data).getLongi());
+            contentValues.put(TIME, ((ConfirmBidModel)data).getTime());
             return contentValues;
 
         }
@@ -72,6 +73,7 @@ public class Confirmed_Bids extends Table {
                     bidModel.setAmount(cursor.getString(cursor.getColumnIndex(AMOUNT)));
                     bidModel.setLat(cursor.getString(cursor.getColumnIndex(LAT)));
                     bidModel.setLongi(cursor.getString(cursor.getColumnIndex(LONG)));
+                    bidModel.setTime(cursor.getString(cursor.getColumnIndex(TIME)));
                     bidArray.add(bidModel);
                     cursor.moveToNext();
                     i++;
