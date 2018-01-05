@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <include android:layout_width="match_parent"
+        android:layout_height="55dp"
+        layout="@layout/header_layout"
+        android:id="@+id/header"
+        xmlns:android="http://schemas.android.com/apk/res/android" />
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/header"
+        android:layout_marginTop="10dp"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:id="@+id/main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="24dp">
+
+
+            <!-- Location Label -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/location_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location : Tap to view Locaton"
+                    android:textSize="20dp" />
+
+                   <!-- location Button -->
+                <Button
+                    android:id="@+id/btn_location"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/search_location"/>
+
+            </LinearLayout>
+
+
+            <!-- Time of Service Label -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/time_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Time :"
+                    android:textSize="25dp" />
+
+                <TextView
+                    android:id="@+id/time_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00 : 00 AM"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="25dp"/>
+
+            </LinearLayout>
+
+            <!-- Date of Service Label -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/date_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date :"
+                    android:textSize="25dp" />
+
+                <TextView
+                    android:id="@+id/date_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00/00/2000"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="25dp"/>
+
+            </LinearLayout>
+
+            <!-- Amount Label -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/amount_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Amount :"
+                    android:textSize="25dp" />
+
+                <TextView
+                    android:id="@+id/amount_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="250000 rs"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="25dp"/>
+
+            </LinearLayout>
+
+
+
+
+
+            <!-- View Orignal Bid Button -->
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_view_orignal_bid"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="50dp"
+                android:background="@color/green"
+                android:padding="12dp"
+                android:text="View Orignal Bid" />
+
+            <!-- Confirm Button
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_confirm_service"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:background="@color/yellow"
+                android:padding="12dp"
+                android:text="Confirm Service" />
+
+            Reject Button
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_reject_service"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/red"
+                android:padding="12dp"
+                android:text="Reject" />-->
+
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
