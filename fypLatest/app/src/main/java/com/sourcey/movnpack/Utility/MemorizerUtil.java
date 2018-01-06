@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 public class MemorizerUtil {
 
-    public static void displayToast(View.OnClickListener context, String message)
+    public static void displayToast(Context context, String message)
     {
         Toast t = Toast.makeText(context, message, Toast.LENGTH_SHORT);
         t.setGravity(Gravity.CENTER, 0, 0);

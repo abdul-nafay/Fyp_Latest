@@ -1,5 +1,10 @@
 package com.sourcey.movnpack.Model;
 
+import android.app.Application;
+
+import com.sourcey.movnpack.DataBase.DatabaseManager;
+import com.sourcey.movnpack.Helpers.ApplicationContextProvider;
+
 /**
  * Created by abdul on 12/16/17.
  */
@@ -79,4 +84,20 @@ public class BidModel extends BaseModel {
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
+
+    public boolean isConfirmed() {
+        ConfirmBidModel confirmBidModel = (ConfirmBidModel) DatabaseManager.getInstance(ApplicationContextProvider.getContext()).getConfirmedBid(this.getBidId());
+        if (confirmBidModel!= null) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public ConfirmBidModel getConfirmedBidModel() {
+        ConfirmBidModel confirmBidModel = (ConfirmBidModel) DatabaseManager.getInstance(ApplicationContextProvider.getContext()).getConfirmedBid(this.getBidId());
+        return confirmBidModel;
+    }
+
 }

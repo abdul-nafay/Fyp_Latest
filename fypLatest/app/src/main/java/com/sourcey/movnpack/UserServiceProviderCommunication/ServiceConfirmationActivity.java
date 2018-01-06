@@ -93,6 +93,7 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
         cancelServiceButton = (Button) findViewById(R.id.btn_reject_bid);
 
         amountTextView = (TextView) findViewById(R.id.confirmed_amount_text_view);
+        amountTextView.setText(bid.getAmount()+" RS");
         locationTextView =  (TextView) findViewById(R.id.location_text_view);
         //serviceTimeInput = (EditText) findViewById(R.id.servivce_time_text_view);
 
@@ -237,7 +238,7 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
         data.put("message", "Dummy Message");
         data.put("bidId", bid.getBidId());
         data.put("date",formattedDate);
-        data.put("amount",amountTextView.getText().toString());
+        data.put("amount",bid.getAmount());
         data.put("Bid_Type","Bid_Confirm_Single");
         data.put("serviceTime",timeString);
         data.put("lat",selectedPlace.getLatLng().latitude +"");

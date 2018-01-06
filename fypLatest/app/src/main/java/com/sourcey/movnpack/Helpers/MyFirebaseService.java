@@ -160,6 +160,7 @@ public class MyFirebaseService extends FirebaseMessagingService{
                     localBid.setMessage(data.get("message"));
                     localBid.setBidId(data.get("bidId"));
                     localBid.setTime(data.get("serviceTime"));
+                    localBid.setAmount(data.get("amount"));
                    // BidRecievedModel bid = (BidRecievedModel) DatabaseManager.getInstance(this).getBidById(localBid.getBidId()).get(0);
                     BidRecievedModel bid = (BidRecievedModel) DatabaseManager.getInstance(this).getBidReceivedById(localBid.getBidId()).get(0);
                     localBid.setUserId(data.get(bid.getUserId()));

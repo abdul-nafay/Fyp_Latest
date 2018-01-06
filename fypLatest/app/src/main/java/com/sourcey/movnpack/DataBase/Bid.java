@@ -104,4 +104,6 @@ public class Bid  extends Table {
     protected String whereClauseForData() {
         return " WHERE "+ BID_ID + "=?";
     }
+
+
 }

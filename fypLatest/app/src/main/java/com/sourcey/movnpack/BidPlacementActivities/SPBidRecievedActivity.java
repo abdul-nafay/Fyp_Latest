@@ -117,8 +117,8 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(), SPAssignedTaskActivity.class);
+                    intent.putExtra("bidId",bidRecievedModel.getBidId());
                     startActivity(intent);
-
                 }
             });
 

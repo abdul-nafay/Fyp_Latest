@@ -64,7 +64,7 @@ public class SPAssignedTaskActivity extends AppCompatActivity {
                     }
                     catch(ActivityNotFoundException innerEx)
                     {
-                        MemorizerUtil.displayToast(this,"Please Install Google Map app ");
+                        MemorizerUtil.displayToast(getApplicationContext(),"Please Install Google Map app ");
                     }
                 }
             }

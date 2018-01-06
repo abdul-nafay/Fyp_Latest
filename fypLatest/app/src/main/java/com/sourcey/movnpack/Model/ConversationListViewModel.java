@@ -15,7 +15,8 @@ public class ConversationListViewModel {
     String status;
     String spToken;
     String bidID;
-
+    public boolean isAcceptedBid;
+    public boolean isConfirmed;
     public String getBidID() {
         return bidID;
     }
@@ -49,6 +50,7 @@ public class ConversationListViewModel {
         this.status = status;
         this.spToken = spToken;
         this.amount = amount;
+
     }
 
     public String getName() {

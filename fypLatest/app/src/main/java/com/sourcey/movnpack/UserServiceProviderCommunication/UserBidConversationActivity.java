@@ -33,10 +33,12 @@ import com.sourcey.movnpack.LoginModule.SignupActivity;
 import com.sourcey.movnpack.Model.AcceptedBidsModel;
 import com.sourcey.movnpack.Model.BaseModel;
 import com.sourcey.movnpack.Model.BidModel;
+import com.sourcey.movnpack.Model.ConfirmBidModel;
 import com.sourcey.movnpack.Model.ConversationListViewModel;
 import com.sourcey.movnpack.Model.ServiceProvider;
 import com.sourcey.movnpack.Model.UserBidCounterModel;
 import com.sourcey.movnpack.R;
+import com.sourcey.movnpack.SP.spProfileInfo;
 
 import org.w3c.dom.Text;
 
@@ -63,7 +65,7 @@ public class UserBidConversationActivity extends AppCompatActivity {
     ListView listView;
     private static UserBidConversationAdapter adapter;
     AcceptedBidsModel selectedBidModel;
-
+    BidModel bidModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +85,7 @@ public class UserBidConversationActivity extends AppCompatActivity {
 
         amountTextView  = (TextView) findViewById(R.id.bid_amount_text_view);
 
-        BidModel bidModel = (BidModel) DatabaseManager.getInstance(this).getBidById(bidId).get(0);
+        bidModel = (BidModel) DatabaseManager.getInstance(this).getBidById(bidId).get(0);
         amountTextView.setText(bidModel.getAmount());
 
         message = bidModel.getMessage();
@@ -109,8 +111,22 @@ public class UserBidConversationActivity extends AppCompatActivity {
                 if (bid instanceof AcceptedBidsModel) {
                     AcceptedBidsModel a = (AcceptedBidsModel) bid;
                     ConversationListViewModel c =  new ConversationListViewModel(a.getSpName(),"Accepted your offer",a.getDate(),"1",a.getSpToken(),"");
+                    if (bidModel.isConfirmed()) {
+                        ConfirmBidModel cbm = bidModel.getConfirmedBidModel();
+                        if (cbm.getSpId().equals(a.getSpId())) {
+                            c.isConfirmed = true;
+                        }
+                        else {
+                            c.isConfirmed = false;
+                        }
+                    }
+                    else {
+                        c.isConfirmed = false;
+                    }
                     c.a = a;
+
                     c.setBidID(a.getBidId());
+                    c.isAcceptedBid = true;
                     dataModels.add(c);
                 }
                 else {
@@ -133,7 +149,7 @@ public class UserBidConversationActivity extends AppCompatActivity {
                 ConversationListViewModel dataModel= dataModels.get(position);
                 counterMessage=dataModel.getMessage();
                 selectedBidModel = dataModel.getA();
-                dialogBoxAccepted(view);
+                dialogBoxAccepted(view ,dataModel);
 
 
                 Snackbar.make(view, dataModel.getName()+"\n"+dataModel.getMessage()+" date: "+dataModel.getDate(), Snackbar.LENGTH_LONG)
@@ -233,7 +249,7 @@ public class UserBidConversationActivity extends AppCompatActivity {
 
     ///
 
-    private void dialogBoxAccepted(View v){
+    private void dialogBoxAccepted(View v, final ConversationListViewModel c){
 
         try {
 
@@ -245,7 +261,17 @@ public class UserBidConversationActivity extends AppCompatActivity {
             dialog.getWindow().setBackgroundDrawableResource(R.color.primary_dark);
 
             TextView messageTextView = (TextView) dialog.findViewById(R.id.message_text_view);
+            TextView amountTextView = (TextView) dialog.findViewById(R.id.bid_amount_text_view);
             messageTextView.setText(counterMessage);
+            Button viewBidDetail = (Button) dialog.findViewById(R.id.btn_view_sp_profile);
+            viewBidDetail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), spProfileInfo.class);
+                    intent.putExtra("number",c.a.getSpId());
+                    startActivity(intent);
+                }
+            });
          /*   TextView dateTextView = (TextView) dialog.findViewById(R.id.date_text_view_popup);
             dateTextView.setText("Date: "+ date);
             TextView amountTextViewPopup = (TextView) dialog.findViewById(R.id.amount_text_view_popup);
@@ -254,7 +280,12 @@ public class UserBidConversationActivity extends AppCompatActivity {
             */
 
           Button confirmServiceButton = (Button) dialog.findViewById(R.id.btn_confirm) ;
-
+            if (bidModel.isConfirmed()) {
+                confirmServiceButton.setVisibility(View.GONE);
+            }
+            else {
+                confirmServiceButton.setVisibility(View.VISIBLE);
+            }
             confirmServiceButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -265,9 +296,14 @@ public class UserBidConversationActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+
+            if (!c.isAcceptedBid){
+                amountTextView.setText(c.getAmount());
+            }
+            else {
+                amountTextView.setText(bidModel.getAmount());
+            }
             dialog.show();
-
-
         }
         catch (Exception e){
             e.printStackTrace();
