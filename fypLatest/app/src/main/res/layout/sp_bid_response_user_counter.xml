@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:id="@+id/dialog"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    >
 
     <TextView
         android:layout_width="fill_parent"
@@ -9,6 +13,7 @@
         android:layout_marginBottom="24dp"
         android:gravity="center"
         android:text="Message"
+        android:padding="10dp"
         android:textSize="20dip" />
 
 
@@ -18,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:text="Message Goes Here!"
+        android:padding="10dp"
         android:textSize="18dip" />
 
 
@@ -28,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:padding="10dp"
         android:orientation="horizontal">
 
         <TextView
@@ -47,25 +54,33 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp">
     <!-- View Profile of Sp Button -->
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_view_sp_profile"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="3dp"
+        android:layout_marginLeft="5dp"
         android:background="@color/yellow"
         android:padding="12dp"
+        android:gravity="center|center_horizontal"
         android:text="View Profile" />
 
     <!-- Confirm Bid Button -->
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_confirm"
         android:layout_width="fill_parent"
+        android:layout_marginLeft="5dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="3dp"
-        android:layout_marginTop="24dp"
         android:background="@color/green"
         android:padding="12dp"
+        android:gravity="center|center_horizontal"
         android:text="Confirm" />
 
 
@@ -76,7 +91,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/red"
+        android:layout_marginLeft="5dp"
         android:padding="12dp"
+        android:gravity="center|center_horizontal"
         android:text="Reject" />
-
+    </LinearLayout>
 </LinearLayout>

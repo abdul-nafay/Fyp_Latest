@@ -3,6 +3,7 @@ package com.sourcey.movnpack.UserServiceProviderCommunication;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +36,7 @@ import com.sourcey.movnpack.Network.MessageAsyncInterface;
 import com.sourcey.movnpack.Network.MessageAsyncTask;
 import com.sourcey.movnpack.R;
 import com.sourcey.movnpack.Utility.AppConstants;
+import com.sourcey.movnpack.Utility.MemorizerUtil;
 import com.sourcey.movnpack.Utility.Utility;
 
 //
@@ -54,10 +56,10 @@ import static android.R.attr.format;
 
 public class ServiceConfirmationActivity extends AppCompatActivity implements MessageAsyncInterface , View.OnClickListener {
 
-    Button locationButton;
     Button doneButton;
     Button cancelServiceButton;
-
+    TextView setTimeTextView;
+    TextView setDateTextView;
     TextView amountTextView;
     TextView locationTextView;
     String spToken;
@@ -88,28 +90,38 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
             bid =(BidModel) b.get(0);
         }
 
-        locationButton = (Button) findViewById(R.id.btn_location);
         doneButton = (Button) findViewById(R.id.btn_confirm);
         cancelServiceButton = (Button) findViewById(R.id.btn_reject_bid);
 
         amountTextView = (TextView) findViewById(R.id.confirmed_amount_text_view);
-        amountTextView.setText(bid.getAmount()+" RS");
-        locationTextView =  (TextView) findViewById(R.id.location_text_view);
-        //serviceTimeInput = (EditText) findViewById(R.id.servivce_time_text_view);
+        setTimeTextView = (TextView) findViewById(R.id.time_set);
+        setDateTextView = (TextView) findViewById(R.id.date_set_text_view);
 
-        timePicker1 = (TimePicker) findViewById(R.id.timePicker1);
+        setTimeTextView.setOnClickListener(new View.OnClickListener() {
 
-       // showDate(year, month+1, day);
-
-
-
-
-        doneButton.setOnClickListener(this);
-
-        locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(ServiceConfirmationActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        setTimeTextView.setText(getTimeString(selectedHour,selectedMinute));
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
 
+            }
+        });
+        amountTextView.setText(bid.getAmount()+" RS");
+        locationTextView =  (TextView) findViewById(R.id.location_text_view);
+        locationTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
                 try {
@@ -121,6 +133,18 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
                 }
             }
         });
+        //serviceTimeInput = (EditText) findViewById(R.id.servivce_time_text_view);
+
+
+
+       // showDate(year, month+1, day);
+
+
+
+
+        doneButton.setOnClickListener(this);
+
+
 
 
     }
@@ -135,7 +159,18 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
     protected Dialog onCreateDialog(int id) {
         // TODO Auto-generated method stub
         if (id == 999) {
-            return new DatePickerDialog(this, myDateListener, year, month, day);
+
+            DatePickerDialog dp = new DatePickerDialog(this, myDateListener, year, month, day);
+            Calendar c = Calendar.getInstance();
+            int yy = c.get(Calendar.YEAR);
+            int mm = c.get(Calendar.MONTH);
+            int dd = c.get(Calendar.DAY_OF_MONTH);
+            c.set(Calendar.MONTH, mm);
+            c.set(Calendar.DAY_OF_MONTH, dd);
+            c.set(Calendar.YEAR, yy);
+            dp.getDatePicker().setMinDate(c.getTimeInMillis());
+
+            return  dp;
         }
         return null;
     }
@@ -157,6 +192,7 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
 
                     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                     formattedDate = sdf.format(calendar.getTime());
+                    setDateTextView.setText(formattedDate);
                     Log.d("ALI",formattedDate);
                 }
             };
@@ -205,7 +241,10 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
     public void onClick(View v) {
 
         if (v == doneButton) {
-
+            if (!validate()) {
+                MemorizerUtil.displayToast(this,"Please Enter all the Information");
+                return;
+            }
             progressDialog = new ProgressDialog(ServiceConfirmationActivity.this,
                     R.style.AppTheme_Dark_Dialog);
             progressDialog.setIndeterminate(true);
@@ -219,7 +258,8 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
 
     private HashMap<String,String> prepareParamsForConfirmationSingle() {
         String token = "";
-        String timeString = getTimeString(timePicker1.getCurrentHour(),timePicker1.getCurrentMinute());
+       // String timeString = getTimeString(timePicker1.getCurrentHour(),timePicker1.getCurrentMinute());
+        String timeString  =  setTimeTextView.getText().toString();
         localBid = new ConfirmBidModel();
         localBid.setMessage("Dummy Message");
         localBid.setBidId(bid.getBidId());
@@ -294,5 +334,12 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
 
     }
 
-
+    public boolean validate()
+    {
+        if (!(locationTextView.getText().toString().equals("") || setTimeTextView.getText().toString().equals("")
+            || setDateTextView.getText().equals(""))) {
+            return true;
+        }
+        return false;
+    }
 }

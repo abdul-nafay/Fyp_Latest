@@ -5,6 +5,7 @@ package com.sourcey.movnpack.UserServiceProviderCommunication;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -23,6 +24,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -44,6 +46,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static android.view.WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
 
 
@@ -152,8 +155,8 @@ public class UserBidConversationActivity extends AppCompatActivity {
                 dialogBoxAccepted(view ,dataModel);
 
 
-                Snackbar.make(view, dataModel.getName()+"\n"+dataModel.getMessage()+" date: "+dataModel.getDate(), Snackbar.LENGTH_LONG)
-                        .setAction("No action", null).show();
+               // Snackbar.make(view, dataModel.getName()+"\n"+dataModel.getMessage()+" date: "+dataModel.getDate(), Snackbar.LENGTH_LONG)
+                 //       .setAction("No action", null).show();
             }
         });
 
@@ -248,7 +251,9 @@ public class UserBidConversationActivity extends AppCompatActivity {
     }
 
     ///
-
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
     private void dialogBoxAccepted(View v, final ConversationListViewModel c){
 
         try {
@@ -259,7 +264,10 @@ public class UserBidConversationActivity extends AppCompatActivity {
             dialog.setTitle("Bid Details");
             dialog.setCanceledOnTouchOutside(true);
             dialog.getWindow().setBackgroundDrawableResource(R.color.primary_dark);
-
+            //LinearLayout ll = (LinearLayout) dialog.findViewById(R.id.dialog);
+            //LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int) (getScreenWidth() * 0.7),
+               //     LinearLayout.LayoutParams.WRAP_CONTENT);
+            //ll.setLayoutParams(lp);
             TextView messageTextView = (TextView) dialog.findViewById(R.id.message_text_view);
             TextView amountTextView = (TextView) dialog.findViewById(R.id.bid_amount_text_view);
             messageTextView.setText(counterMessage);

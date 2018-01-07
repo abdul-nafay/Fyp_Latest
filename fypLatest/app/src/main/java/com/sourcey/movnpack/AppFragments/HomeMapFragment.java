@@ -425,6 +425,12 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
             isLocationSet=true;
 
         }
+        else {
+            Location targetLocation = new Location("");//provider name is unnecessary
+            targetLocation.setLatitude(25.0700);//your coords of course
+            targetLocation.setLongitude(67.2848);
+            setCamera(targetLocation);
+        }
         mMap.setOnInfoWindowClickListener(this);
         // Add a marker in Sydney and move the camera
      /*  LatLng sydney = new LatLng(24.9349491, 67.0974638);
@@ -493,7 +499,7 @@ public class HomeMapFragment extends Fragment  implements OnMapReadyCallback, Lo
     public void setCamera(Location location){
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(location.getLatitude(), location.getLongitude()))
-                .zoom(5)
+                .zoom(7)
                 .build();
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 

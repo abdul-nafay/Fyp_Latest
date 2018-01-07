@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="1"
+        android:padding="10dp"
         >
 
         <TextView
@@ -41,18 +42,10 @@
             android:id="@+id/location_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text=""
             android:hint="Select Your Location"
             android:textSize="20dp"
-            android:layout_weight="0.3"
-            />
-
-        <!-- location Button -->
-        <Button
-            android:id="@+id/btn_location"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/search_location"
-
+            android:layout_weight="0.4"
             />
 
     </LinearLayout>
@@ -60,15 +53,13 @@
 
 
 
-
-
-    <!--  Service Time Label -->
+    <!-- Time Button Label-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp"
+        >
 
         <TextView
             android:id="@+id/time_label"
@@ -77,12 +68,18 @@
             android:text="Time:"
             android:textSize="25dp" />
 
-        <TimePicker
-            android:id="@+id/timePicker1"
+        <!-- Time Button -->
+        <TextView
+            android:id="@+id/time_set"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text=""
+            android:hint="Enter Time"
+            android:textSize="25dp" />
 
     </LinearLayout>
+
+
 
 
     <!-- datePicker Label -->
@@ -91,7 +88,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-
+        android:padding="10dp"
         >
 
         <TextView
@@ -103,17 +100,16 @@
             android:textSize="25dp"
             />
 
-
-
-        <!-- Date Button -->
-        <Button
-            android:id="@+id/btn_date_set"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@color/yellow"
-            android:text="Set Date"
+        <TextView
+            android:id="@+id/date_set_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:hint="Enter Date"
             android:onClick="setDate"
-            />
+            android:textSize="25dp" />
+
+
 
     </LinearLayout>
 
@@ -125,6 +121,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:padding="10dp"
         android:orientation="horizontal">
 
         <TextView
