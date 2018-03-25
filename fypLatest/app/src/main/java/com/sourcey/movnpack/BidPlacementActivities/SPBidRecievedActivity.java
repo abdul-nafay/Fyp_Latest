@@ -125,7 +125,7 @@ public class SPBidRecievedActivity extends AppCompatActivity implements View.OnC
 
         }
 
-        if(bidRecievedModel.getLock()==2){
+        else if(bidRecievedModel.getLock()==2){
             bidStatusTextView.setText("Task has been already assigned");
         }
 

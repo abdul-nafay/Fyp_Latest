@@ -26,12 +26,15 @@ import com.sourcey.movnpack.DataBase.AcceptedBids;
 import com.sourcey.movnpack.DataBase.Bid;
 import com.sourcey.movnpack.DataBase.Confirmed_Bids;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
+import com.sourcey.movnpack.DrawerModule.DrawerActivity;
 import com.sourcey.movnpack.Helpers.API_TYPE;
 import com.sourcey.movnpack.Helpers.Session;
+import com.sourcey.movnpack.Helpers.TaskScheduler;
 import com.sourcey.movnpack.Model.AcceptedBidsModel;
 import com.sourcey.movnpack.Model.BaseModel;
 import com.sourcey.movnpack.Model.BidModel;
 import com.sourcey.movnpack.Model.ConfirmBidModel;
+import com.sourcey.movnpack.Model.UserBidCounterModel;
 import com.sourcey.movnpack.Network.MessageAsyncInterface;
 import com.sourcey.movnpack.Network.MessageAsyncTask;
 import com.sourcey.movnpack.R;
@@ -45,9 +48,11 @@ import com.google.android.gms.location.places.*;
 
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -66,7 +71,7 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
     EditText serviceTimeInput;
 
     BidModel bid ;
-    AcceptedBidsModel bidResponseToConfirm;
+    BaseModel bidResponseToConfirm;
     ConfirmBidModel localBid;
     ProgressDialog progressDialog;
     int PLACE_PICKER_REQUEST = 1;
@@ -84,7 +89,7 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
         setContentView(R.layout.activity_service_confirmation);
 
         String bidId = getIntent().getStringExtra("bidId").toString();
-        bidResponseToConfirm = getIntent().getParcelableExtra("acceptedBid");
+        bidResponseToConfirm = getIntent().getParcelableExtra("bidResponse");
         ArrayList<BaseModel> b =  DatabaseManager.getInstance(this).getBidById(bidId);
         if (b!=null && b.size() > 0) {
             bid =(BidModel) b.get(0);
@@ -117,7 +122,7 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
 
             }
         });
-        amountTextView.setText(bid.getAmount()+" RS");
+        amountTextView.setText(getAmount()+" RS");
         locationTextView =  (TextView) findViewById(R.id.location_text_view);
         locationTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,7 +194,6 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
                     int   year = arg0.getYear();
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(year, month, day);
-
                     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                     formattedDate = sdf.format(calendar.getTime());
                     setDateTextView.setText(formattedDate);
@@ -216,8 +220,14 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
 
         if (apiType == API_TYPE.confirmBidBroadcast) {
             if (progressDialog != null) {
+                /// Schedule Task :D
+                TaskScheduler.getInstance().scheduleTaskForUser(localBid , getApplicationContext());
+
                 progressDialog.dismiss();
-                finish();
+                //finish();
+                Intent intent = new Intent( getApplicationContext(), DrawerActivity.class );
+                intent.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
+                this.startActivity( intent );
             }
         }
         else if (apiType == API_TYPE.confirmBidSIngle) {
@@ -259,26 +269,30 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
     private HashMap<String,String> prepareParamsForConfirmationSingle() {
         String token = "";
        // String timeString = getTimeString(timePicker1.getCurrentHour(),timePicker1.getCurrentMinute());
+        String ID = UUID.randomUUID().toString();
         String timeString  =  setTimeTextView.getText().toString();
         localBid = new ConfirmBidModel();
+        localBid.setIsDeleted("0");
+        localBid.setID(ID);
         localBid.setMessage("Dummy Message");
         localBid.setBidId(bid.getBidId());
         localBid.setUserId(Session.sharedInstance.getUser().getPhoneNumber());
-        localBid.setSpId(((AcceptedBidsModel) bidResponseToConfirm).getSpId());
-        localBid.setSpToken(((AcceptedBidsModel) bidResponseToConfirm).getSpToken());
+        localBid.setSpId(getSpID());
+        localBid.setSpToken(getSpToken());
         localBid.setLat(selectedPlace.getLatLng().latitude +"");
         localBid.setLongi(selectedPlace.getLatLng().longitude +"");
         localBid.setDate(formattedDate);
-
+        localBid.setTime(timeString);
+        localBid.setAmount(getAmount());
         HashMap params =   new HashMap<>();
         HashMap<String, String> data = new HashMap<>();
         HashMap<String, String> notification = new HashMap<>();
         //data.put("to",categoryName);
-        data.put("ID", UUID.randomUUID().toString());
+        data.put("ID", ID);
         data.put("message", "Dummy Message");
         data.put("bidId", bid.getBidId());
         data.put("date",formattedDate);
-        data.put("amount",bid.getAmount());
+        data.put("amount",getAmount());
         data.put("Bid_Type","Bid_Confirm_Single");
         data.put("serviceTime",timeString);
         data.put("lat",selectedPlace.getLatLng().latitude +"");
@@ -286,7 +300,7 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
         notification.put("body","You have just assigned a new task.");
         notification.put("title","Congratulations!!");
 
-        params.put("to",((AcceptedBidsModel) bidResponseToConfirm).getSpToken());
+        params.put("to",getSpToken());
 
         Gson gson = new Gson();
         String dataStr = gson.toJson(data);
@@ -305,7 +319,7 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
         //data.put("to",categoryName);
         data.put("Bid_Type","Bid_Lock");
         data.put("bidId", bid.getBidId());
-        data.put("assignedTo",((AcceptedBidsModel) bidResponseToConfirm).getSpId());
+        data.put("assignedTo",getSpID());
 //("/topics/"+catName
         params.put("to","/topics/"+bid.getCategoryName());
 
@@ -330,8 +344,8 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
         } else {
             format = "AM";
         }
-        return hour + ":" + minute + " " + format;
-
+        String timeString =  hour + ":" + minute + " " + format;
+        return timeString;
     }
 
     public boolean validate()
@@ -342,4 +356,33 @@ public class ServiceConfirmationActivity extends AppCompatActivity implements Me
         }
         return false;
     }
+
+    // HELPER FUNCTIONS
+    String getSpID() {
+        if (bidResponseToConfirm instanceof AcceptedBidsModel) {
+           return ((AcceptedBidsModel) bidResponseToConfirm).getSpId();
+        }
+        else {
+            return ((UserBidCounterModel) bidResponseToConfirm).getSpId();
+        }
+    }
+
+    String getSpToken() {
+        if (bidResponseToConfirm instanceof AcceptedBidsModel) {
+            return ((AcceptedBidsModel) bidResponseToConfirm).getSpToken();
+        }
+        else {
+            return ((UserBidCounterModel) bidResponseToConfirm).getSpToken();
+        }
+    }
+
+    String getAmount() {
+        if (bidResponseToConfirm instanceof AcceptedBidsModel) {
+            return bid.getAmount();
+        }
+        else {
+            return ((UserBidCounterModel) bidResponseToConfirm).getAmount();
+        }
+    }
+
 }

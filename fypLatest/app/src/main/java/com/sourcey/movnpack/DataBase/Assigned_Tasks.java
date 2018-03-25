@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class Assigned_Tasks extends Table {
     public static final String TABLE_NAME = "Assigned_Tasks";
-    public static final String SCHEMA = "CREATE TABLE IF NOT EXISTS Assigned_Tasks (ID TEXT,MESSAGE TEXT, BID_ID TEXT,DATE TEXT,USER_ID TEXT,USER_TOKEN,AMOUNT TEXT,SP_ID TEXT,LAT TEXT,LONG TEXT,TIME TEXT)";
+    public static final String SCHEMA = "CREATE TABLE IF NOT EXISTS Assigned_Tasks (ID TEXT,MESSAGE TEXT, BID_ID TEXT,DATE TEXT,USER_ID TEXT,USER_TOKEN,AMOUNT TEXT,SP_ID TEXT,LAT TEXT,LONG TEXT,TIME TEXT,IS_DELETED TEXT)";
 
     private final String ID = "ID";
     public static final String MESSAGE = "MESSAGE";
@@ -29,6 +29,7 @@ public class Assigned_Tasks extends Table {
     public static final String LAT = "LAT";
     public static final String LONG = "LONG";
     public static final String TIME = "TIME";
+    public static final String ISDELETED = "IS_DELETED";
     public Assigned_Tasks(){
 
         super(TABLE_NAME);
@@ -49,6 +50,7 @@ public class Assigned_Tasks extends Table {
         contentValues.put(LAT, ((AssignedTasksModel)data).getLat());
         contentValues.put(LONG, ((AssignedTasksModel)data).getLongi());
         contentValues.put(TIME, ((AssignedTasksModel)data).getTime());
+        contentValues.put(ISDELETED, ((AssignedTasksModel)data).getIsDeleted());
         return contentValues;
 
     }
@@ -76,6 +78,7 @@ public class Assigned_Tasks extends Table {
                 bidModel.setLat(cursor.getString(cursor.getColumnIndex(LAT)));
                 bidModel.setLongi(cursor.getString(cursor.getColumnIndex(LONG)));
                 bidModel.setTime(cursor.getString(cursor.getColumnIndex(TIME)));
+                bidModel.setIsDeleted(cursor.getString(cursor.getColumnIndex(ISDELETED)));
                 bidArray.add(bidModel);
                 cursor.moveToNext();
                 i++;
@@ -100,11 +103,20 @@ public class Assigned_Tasks extends Table {
 
     @Override
     protected String whereClauseForUpdate() {
-        return USER_TOKEN + "=?";
+        return ID + "=?";
     }
-
+    protected String whereClauseForDelete() {
+        return ID + "=?";
+    }
     @Override
     protected String whereClauseForData() {
         return " WHERE "+ BID_ID + "=?";
     }
+    protected String whereClauseForData1() {
+        return " WHERE "+ BID_ID + "=?"+" AND " +ISDELETED+"=?";
+    }
+    protected String whereClauseForDataWIthID() {
+        return " WHERE "+ ID + "=?";
+    }
+    protected String whereClauseForNonDeleted() { return " WHERE "+ ISDELETED + "!=?";}
 }

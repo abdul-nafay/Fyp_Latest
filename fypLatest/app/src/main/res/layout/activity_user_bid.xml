@@ -36,6 +36,6 @@ tools:showIn="@layout/activity_main">
             android:id="@+id/empty_user_bid_textView"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/empty_user_bid"
-            android:text="You dont have any bids."/>
+            android:text="@string/noBids_Placeholder"/>
 
 </RelativeLayout>

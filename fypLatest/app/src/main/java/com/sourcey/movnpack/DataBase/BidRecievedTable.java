@@ -110,4 +110,6 @@ public class BidRecievedTable extends Table {
     protected String whereClauseForData() {
         return " WHERE "+ BID_ID + "=?";
     }
+
+    protected String whereClauseForNonRejectedBids() { return " WHERE "+ STATUS + "!=?";}
 }

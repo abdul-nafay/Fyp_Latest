@@ -125,10 +125,9 @@ public class SPCounterBidActivity extends AppCompatActivity {
 
                 SPBidCounterModel spBidCounterModel = new SPBidCounterModel();
                 spBidCounterModel.setBidId(bidId);
-                spBidCounterModel.setMessage(amount);
+                spBidCounterModel.setAmount(amount);
                 spBidCounterModel.setMessage(message);
                 spBidCounterModel.setDate(date);
-
                 boolean resu = DatabaseManager.getInstance(getApplicationContext()).addSPBidCounter(spBidCounterModel);
 
                 if (resu){

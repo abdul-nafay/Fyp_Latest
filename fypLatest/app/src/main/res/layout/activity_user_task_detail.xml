@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -37,15 +36,15 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/location_label"
+                    android:id="@+id/user_task_location_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Location : Tap to view Locaton"
                     android:textSize="20dp" />
 
-                   <!-- location Button -->
+                <!-- location Button -->
                 <Button
-                    android:id="@+id/btn_location"
+                    android:id="@+id/user_task_btn_location"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:background="@drawable/search_location"/>
@@ -63,14 +62,14 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/time_label"
+                    android:id="@+id/user_task_time_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Time :"
                     android:textSize="25dp" />
 
                 <TextView
-                    android:id="@+id/time_text_view"
+                    android:id="@+id/user_task_time_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="00 : 00 AM"
@@ -89,14 +88,14 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/date_label"
+                    android:id="@+id/user_task_date_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Date :"
                     android:textSize="25dp" />
 
                 <TextView
-                    android:id="@+id/date_text_view"
+                    android:id="@+id/user_task_date_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="00/00/2000"
@@ -115,14 +114,14 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/amount_label"
+                    android:id="@+id/user_task_amount_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Amount :"
                     android:textSize="25dp" />
 
                 <TextView
-                    android:id="@+id/amount_text_view"
+                    android:id="@+id/user_task_amount_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="250000 rs"
@@ -131,24 +130,56 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/user_task_sp_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Assigned To :"
+                    android:textSize="25dp" />
+
+                <TextView
+                    android:id="@+id/user_task_sp_name_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="25dp"/>
+
+            </LinearLayout>
 
 
 
 
             <!-- View Orignal Bid Button -->
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_view_orignal_bid"
+                android:id="@+id/user_task_btn_view_orignal_bid"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="25dp"
                 android:background="@color/green"
                 android:padding="12dp"
                 android:enabled="true"
                 android:text="View Orignal Bid" />
-
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/cancel_Bid"
+                android:id="@+id/user_task_view_sp_detail"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/yellow"
+                android:padding="12dp"
+                android:enabled="true"
+                android:text="View Service Provider Details" />
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/user_task_cancel_Bid"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
@@ -158,27 +189,6 @@
                 android:enabled="true"
                 android:text="Cancel Task"
                 />
-
-            <!-- Confirm Button
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_confirm_service"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:background="@color/yellow"
-                android:padding="12dp"
-                android:text="Confirm Service" />
-
-            Reject Button
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_reject_service"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/red"
-                android:padding="12dp"
-                android:text="Reject" />-->
-
-
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

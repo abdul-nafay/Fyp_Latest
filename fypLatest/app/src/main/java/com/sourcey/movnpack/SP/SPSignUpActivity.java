@@ -60,8 +60,7 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
     @Bind(R.id.input_cnic) EditText _cnicText;
     @Bind(R.id.input_license_number) EditText _licenseNumberText;
 
-    @Bind(R.id.input_license_number_parent)
-    TextInputLayout _licenseNumberTextParent;
+    @Bind(R.id.input_license_number_parent) TextInputLayout _licenseNumberTextParent;
     @Bind(R.id.input_categoryList) Spinner _categoryListText;
     @Bind(R.id.input_password) EditText _passwordText;
     @Bind(R.id.input_reEnterPassword) EditText _reEnterPasswordText;
@@ -78,6 +77,17 @@ public class SPSignUpActivity extends Activity implements View.OnClickListener {
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,spinnerList);
         _categoryListText = (Spinner) findViewById(R.id.input_categoryList);
+        _nameText = (EditText) findViewById(R.id.input_name);
+        _emailText = (EditText) findViewById(R.id.input_email);
+        _mobileText = (EditText) findViewById(R.id.input_mobile);
+        _addressText = (EditText) findViewById(R.id.input_address);
+        _cnicText = (EditText) findViewById(R.id.input_cnic);
+        _licenseNumberText = (EditText) findViewById(R.id.input_license_number);
+        _licenseNumberTextParent = (TextInputLayout) findViewById(R.id.input_license_number_parent);
+        _passwordText = (EditText) findViewById(R.id.input_password);
+        _reEnterPasswordText = (EditText) findViewById(R.id.input_reEnterPassword);
+        _signupButton = (Button) findViewById(R.id.btn_signup);
+        _loginLink = (TextView) findViewById(R.id.link_login);
 
         _categoryListText.setAdapter(arrayAdapter);
 

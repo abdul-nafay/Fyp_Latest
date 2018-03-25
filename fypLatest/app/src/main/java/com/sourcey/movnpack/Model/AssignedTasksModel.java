@@ -15,6 +15,7 @@ public class AssignedTasksModel extends  BaseModel {
     String spId;
     String lat;
     String longi;
+    String isDeleted;
 
     public String getTime() {
         return time;
@@ -105,4 +106,8 @@ public class AssignedTasksModel extends  BaseModel {
     public void setLongi(String longi) {
         this.longi = longi;
     }
+
+    public String getIsDeleted() { return isDeleted;  }
+
+    public void setIsDeleted(String isDeleted) { this.isDeleted = isDeleted;  }
 }

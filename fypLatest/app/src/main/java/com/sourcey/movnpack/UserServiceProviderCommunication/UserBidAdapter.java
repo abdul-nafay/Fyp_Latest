@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -32,6 +33,7 @@ public class UserBidAdapter extends ArrayAdapter<BidModel> implements View.OnCli
         TextView messageInitialsTextView;
         TextView dateTextView;
         TextView acceptedCountTextView;
+        ImageView lockImageView;
     }
 
     public UserBidAdapter(ArrayList<BidModel> data, Context context) {
@@ -78,6 +80,7 @@ public class UserBidAdapter extends ArrayAdapter<BidModel> implements View.OnCli
             viewHolder.messageInitialsTextView = (TextView) convertView.findViewById(R.id.message_initials_textview);
             viewHolder.dateTextView = (TextView) convertView.findViewById(R.id.date_textview);
             viewHolder.acceptedCountTextView = (TextView) convertView.findViewById(R.id.count_accepted);
+            viewHolder.lockImageView = (ImageView) convertView.findViewById(R.id.lock_bid);
             result=convertView;
 
             convertView.setTag(viewHolder);
@@ -94,12 +97,18 @@ public class UserBidAdapter extends ArrayAdapter<BidModel> implements View.OnCli
         viewHolder.messageInitialsTextView.setText(dataModel.getMessage());
         viewHolder.dateTextView.setText(dataModel.getDate());
         ArrayList<BaseModel> m = DatabaseManager.getInstance(getContext()).getAcceptedBidId(dataModel.getBidId());
-        if (m!=null){
-            viewHolder.acceptedCountTextView.setText(m.size()+"");
-            viewHolder.acceptedCountTextView.setVisibility(View.VISIBLE);
+        if (dataModel.isConfirmed()) {
+            viewHolder.acceptedCountTextView.setVisibility(View.GONE);
+            viewHolder.lockImageView.setVisibility(View.VISIBLE);
         }
         else {
-            viewHolder.acceptedCountTextView.setVisibility(View.GONE);
+            viewHolder.lockImageView.setVisibility(View.GONE);
+            if (m != null) {
+                viewHolder.acceptedCountTextView.setText(m.size() + "");
+                viewHolder.acceptedCountTextView.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.acceptedCountTextView.setVisibility(View.GONE);
+            }
         }
         //viewHolder.info.setOnClickListener(this);
         //viewHolder.info.setTag(position);

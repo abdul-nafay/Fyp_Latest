@@ -65,9 +65,19 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        _loginButton.setOnClickListener((View.OnClickListener)this);
-        _signupLink.setOnClickListener((View.OnClickListener)this);
-        _signupLinkSP.setOnClickListener((View.OnClickListener)this);
+        _loginButton = (Button) findViewById(R.id.btn_login);
+        _emailText = (EditText) findViewById(R.id.input_email);
+        _passwordText = (EditText) findViewById(R.id.input_password);
+        _signupLink = (TextView) findViewById(R.id.link_signup);
+        _signupLinkSP = (TextView) findViewById(R.id.link_signup_sp);
+        loginLayout = (LinearLayout) findViewById(R.id.loginLayout);
+        radioCheck = (RadioGroup) findViewById(R.id.radioCheck);
+        userRadioBtn = (RadioButton) findViewById(R.id.userRadioBtn);
+        spRadioBtn = (RadioButton) findViewById(R.id.serviceProviderRadioBtn);
+
+        _loginButton.setOnClickListener(this);
+        _signupLink.setOnClickListener(this);
+        _signupLinkSP.setOnClickListener(this);
 
 
 

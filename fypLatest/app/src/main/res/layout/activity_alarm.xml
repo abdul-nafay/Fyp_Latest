@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.sourcey.movnpack.Alarm.AlarmActivity">
+
+    <TextView
+        android:id="@+id/AlarmHeading"
+        android:layout_margin="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:text="Reminder : You have a service registered at this time."/>
+
+        <ImageView
+            android:id="@+id/AlarmImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_alarm"
+            android:layout_below="@+id/AlarmHeading"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/AlarmImage"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="40dp">
+
+        <Button
+            android:id="@+id/button_alarm_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View Scheduled Task"/>
+
+    </LinearLayout>
+</RelativeLayout>

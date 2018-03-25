@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.sourcey.movnpack.AppFragments.HomeMapFragment;
 import com.sourcey.movnpack.AppFragments.SettingsFragment;
+import com.sourcey.movnpack.AppFragments.UserScheduledTaskFragment;
 import com.sourcey.movnpack.Helpers.Session;
 import com.sourcey.movnpack.LoginModule.LoginActivity;
 import com.sourcey.movnpack.Model.User;
@@ -28,7 +29,7 @@ import com.sourcey.movnpack.UserServiceProviderCommunication.UserBidActivity;
 import com.sourcey.movnpack.UserServiceProviderCommunication.UserBidConversationActivity;
 
 public class DrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, HomeMapFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, HomeMapFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener , UserScheduledTaskFragment.OnFragmentInteractionListener {
     private TextView userNameTextView;
     private TextView userNumberTextView;
     private TextView spCategoryTextView;
@@ -158,6 +159,7 @@ public class DrawerActivity extends AppCompatActivity
             SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("Email",null);
+            editor.putString("HashString",null);
             editor.commit();
             User user = new User();
             user.setEmail("");
@@ -165,8 +167,9 @@ public class DrawerActivity extends AppCompatActivity
             startActivity(intent);
             finish();
             return true;
-
-
+        }
+        else if (id == R.id.scheduled_tasks) {
+            fragmentClass = UserScheduledTaskFragment.class;
         }
 
         try {

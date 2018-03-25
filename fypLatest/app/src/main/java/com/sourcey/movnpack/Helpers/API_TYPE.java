@@ -5,7 +5,7 @@ package com.sourcey.movnpack.Helpers;
  */
 
 public enum API_TYPE {
-    confirmBidBroadcast(0), confirmBidSIngle(1);
+    confirmBidBroadcast(0), confirmBidSIngle(1) , unLockBid(2) , spCancelBid(3), userCancelBid(4);
 
     public int value;
     API_TYPE(int value){

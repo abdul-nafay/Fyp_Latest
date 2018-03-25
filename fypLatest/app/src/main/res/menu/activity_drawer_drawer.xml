@@ -15,6 +15,10 @@
             android:icon="@drawable/timeout"
             android:title="Bid History" />
 
+        <item
+            android:id="@+id/scheduled_tasks"
+            android:icon="@drawable/scheduledtask"
+            android:title="Scheduled Tasks"/>
 
         <item
             android:id="@+id/nav_logout"

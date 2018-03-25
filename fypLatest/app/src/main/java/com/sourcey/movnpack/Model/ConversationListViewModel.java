@@ -15,8 +15,12 @@ public class ConversationListViewModel {
     String status;
     String spToken;
     String bidID;
+    //public AcceptedBidsModel a;
+    String amount;
+    BaseModel bidResponse;
     public boolean isAcceptedBid;
     public boolean isConfirmed;
+
     public String getBidID() {
         return bidID;
     }
@@ -25,15 +29,14 @@ public class ConversationListViewModel {
         this.bidID = bidID;
     }
 
-    public AcceptedBidsModel getA() {
-        return a;
+    public BaseModel getBidResponse() {
+        return bidResponse;
     }
 
-    public void setA(AcceptedBidsModel a) {
-        this.a = a;
+    public void setBidResponse(BaseModel bidResponse) {
+        this.bidResponse = bidResponse;
     }
 
-    public AcceptedBidsModel a;
     public String getAmount() {
         return amount;
     }
@@ -42,7 +45,6 @@ public class ConversationListViewModel {
         this.amount = amount;
     }
 
-    String amount;
     public ConversationListViewModel(String name, String message, String date, String status, String spToken, String amount) {
         this.name = name;
         this.message = message;

@@ -16,9 +16,9 @@ import java.util.ArrayList;
 
 public class Confirmed_Bids extends Table {
         public static final String TABLE_NAME = "Confirmed_Bids";
-        public static final String SCHEMA = "CREATE TABLE IF NOT EXISTS Confirmed_Bids (MESSAGE TEXT, BID_ID TEXT,DATE TEXT,USER_ID TEXT,AMOUNT TEXT,SP_ID TEXT,SP_TOKEN TEXT,LAT TEXT,LONG TEXT,TIME TEXT)";
+        public static final String SCHEMA = "CREATE TABLE IF NOT EXISTS Confirmed_Bids (ID TEXT, MESSAGE TEXT, BID_ID TEXT,DATE TEXT,USER_ID TEXT,AMOUNT TEXT,SP_ID TEXT,SP_TOKEN TEXT,LAT TEXT,LONG TEXT,TIME TEXT,IS_DELETED TEXT)";
 
-        //   private final String ID = "ID";
+        public static final String ID = "ID";
         public static final String MESSAGE = "MESSAGE";
         public static final String BID_ID = "BID_ID";
         public static final String DATE = "DATE";
@@ -29,6 +29,7 @@ public class Confirmed_Bids extends Table {
         public static final String LAT = "LAT";
         public static final String LONG = "LONG";
         public static final String TIME = "TIME";
+        public static final String ISDELETED = "IS_DELETED";
         public Confirmed_Bids(){
 
             super(TABLE_NAME);
@@ -38,6 +39,7 @@ public class Confirmed_Bids extends Table {
         @Override
         protected ContentValues buildContentValues(BaseModel data) {
             ContentValues contentValues = new ContentValues();
+            contentValues.put(ID, ((ConfirmBidModel) data).getID());
             contentValues.put(MESSAGE, ((ConfirmBidModel) data).getMessage());
             contentValues.put(BID_ID, ((ConfirmBidModel) data).getBidId());
             contentValues.put(DATE, ((ConfirmBidModel)data).getDate());
@@ -48,6 +50,7 @@ public class Confirmed_Bids extends Table {
             contentValues.put(LAT, ((ConfirmBidModel)data).getLat());
             contentValues.put(LONG, ((ConfirmBidModel)data).getLongi());
             contentValues.put(TIME, ((ConfirmBidModel)data).getTime());
+            contentValues.put(ISDELETED, ((ConfirmBidModel)data).getIsDeleted());
             return contentValues;
 
         }
@@ -63,7 +66,7 @@ public class Confirmed_Bids extends Table {
                 while(!cursor.isAfterLast())
                 {
                     ConfirmBidModel bidModel = new ConfirmBidModel();
-                    //user.setId(cursor.getInt(cursor.getColumnIndex(ID)));
+                    bidModel.setID(cursor.getString(cursor.getColumnIndex(ID)));
                     bidModel.setMessage(cursor.getString(cursor.getColumnIndex(MESSAGE)));
                     bidModel.setBidId(cursor.getString(cursor.getColumnIndex(BID_ID)));
                     bidModel.setDate(cursor.getString(cursor.getColumnIndex(DATE)));
@@ -74,6 +77,7 @@ public class Confirmed_Bids extends Table {
                     bidModel.setLat(cursor.getString(cursor.getColumnIndex(LAT)));
                     bidModel.setLongi(cursor.getString(cursor.getColumnIndex(LONG)));
                     bidModel.setTime(cursor.getString(cursor.getColumnIndex(TIME)));
+                    bidModel.setIsDeleted(cursor.getString(cursor.getColumnIndex(ISDELETED)));
                     bidArray.add(bidModel);
                     cursor.moveToNext();
                     i++;
@@ -103,6 +107,14 @@ public class Confirmed_Bids extends Table {
 
         @Override
         protected String whereClauseForData() {
-            return " WHERE "+ BID_ID + "=?";
+            return " WHERE "+ BID_ID + "=?" + " AND " + ISDELETED + "=?";
         }
+        protected String whereClauseForUpdateID() {
+            return ID + "=?";
+        }
+         protected String whereClauseID() {
+            return " WHERE "+ ID + "=?";
+        }
+
+    protected String whereClauseForNonDeleted() { return " WHERE "+ ISDELETED + "!=?";}
 }

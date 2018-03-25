@@ -5,6 +5,7 @@ package com.sourcey.movnpack.Model;
  */
 
 public class ConfirmBidModel extends BaseModel{
+
     String message;
     String bidId;
     String date;
@@ -14,6 +15,9 @@ public class ConfirmBidModel extends BaseModel{
     String spToken;
     String lat;
     String longi;
+    String ID;
+    String isDeleted;
+    String time;
 
     public String getTime() {
         return time;
@@ -22,8 +26,6 @@ public class ConfirmBidModel extends BaseModel{
     public void setTime(String time) {
         this.time = time;
     }
-
-    String time;
 
     public String getMessage() {
         return message;
@@ -95,5 +97,21 @@ public class ConfirmBidModel extends BaseModel{
 
     public void setLongi(String longi) {
         this.longi = longi;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public String getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(String isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

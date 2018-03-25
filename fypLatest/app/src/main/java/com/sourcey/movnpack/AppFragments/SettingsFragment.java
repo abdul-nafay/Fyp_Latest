@@ -217,6 +217,7 @@ public class SettingsFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+
     public void update() {
         Log.d(TAG, "update");
 

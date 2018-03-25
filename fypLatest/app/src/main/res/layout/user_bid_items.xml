@@ -40,5 +40,14 @@
         android:background="@drawable/texview_design"
         android:gravity="center"
         />
-
+    <ImageView
+        android:id="@+id/lock_bid"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/date_textview"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/lock_icon"
+        android:gravity="center"
+        />
 </RelativeLayout>

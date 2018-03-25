@@ -1,6 +1,8 @@
 package com.sourcey.movnpack.Utility;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -76,9 +78,48 @@ public class Utility {
     }
 
     public static String getCurrentDateString() {
-        SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+        SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
         String dateString = sdf2.format(new Date());
         return dateString;
+    }
+
+    public static Calendar getCalenderFromDateString(String dateString) {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date date = format.parse(dateString);
+            Calendar clndr = format.getCalendar();
+
+            System.out.println(date);
+            return clndr;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Calendar getCalendarFromTimeString(String timeString)
+    {
+        /*
+        String[] splitted = timeString.split(":");
+        int hour = Integer.parseInt(splitted[0]);
+        int min = Integer.parseInt(splitted[1].split(" ")[0]);
+        if (hour == 12) {
+            hour -=12 ;
+        } else if (hour < 12 ) {
+            hour += 12;
+        }
+*/
+        try{
+            final SimpleDateFormat sdfm = new SimpleDateFormat("K:mm a");
+            final Date dateObj = sdfm.parse(timeString);
+            Calendar clndr = sdfm.getCalendar();
+            return clndr;
+
+        }
+        catch (ParseException e ) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

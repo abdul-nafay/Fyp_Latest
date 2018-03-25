@@ -19,6 +19,11 @@
             android:icon="@drawable/ic_menu_manage"
             android:title="Bid History" />
 
+        <item
+            android:id="@+id/scheduled_tasks_sp"
+            android:icon="@drawable/scheduledtask"
+            android:title="Scheduled Tasks" />
+
         <!--<item
             android:id="@+id/nav_test"
             android:icon="@drawable/ic_menu_manage"

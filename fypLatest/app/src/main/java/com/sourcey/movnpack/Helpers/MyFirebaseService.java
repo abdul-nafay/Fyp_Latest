@@ -29,6 +29,7 @@ import com.sourcey.movnpack.Model.UserBidCounterModel;
 import com.sourcey.movnpack.R;
 import com.sourcey.movnpack.UserServiceProviderCommunication.SPAssignedTaskActivity;
 import com.sourcey.movnpack.UserServiceProviderCommunication.SPBidActivity;
+import com.sourcey.movnpack.UserServiceProviderCommunication.UserBidActivity;
 import com.sourcey.movnpack.UserServiceProviderCommunication.UserBidConversationActivity;
 import com.sourcey.movnpack.Utility.MemorizerUtil;
 
@@ -161,6 +162,7 @@ public class MyFirebaseService extends FirebaseMessagingService{
                     localBid.setBidId(data.get("bidId"));
                     localBid.setTime(data.get("serviceTime"));
                     localBid.setAmount(data.get("amount"));
+                    localBid.setIsDeleted("0");
                    // BidRecievedModel bid = (BidRecievedModel) DatabaseManager.getInstance(this).getBidById(localBid.getBidId()).get(0);
                     BidRecievedModel bid = (BidRecievedModel) DatabaseManager.getInstance(this).getBidReceivedById(localBid.getBidId()).get(0);
                     localBid.setUserId(data.get(bid.getUserId()));
@@ -194,6 +196,34 @@ public class MyFirebaseService extends FirebaseMessagingService{
                     else {
                         bidRec.setLock(2);
                         DatabaseManager.getInstance(this).updateBidRecievedStatus(bidRec);
+                    }
+                    break;
+                case "Bid_Unlock":
+                    BidRecievedModel bidRec1 = (BidRecievedModel) DatabaseManager.getInstance(this).getBidReceivedById(data.get("bidId")).get(0);
+                    if (bidRec1 != null) {
+                        bidRec1.setLock(0);
+                        DatabaseManager.getInstance(this).updateBidRecievedStatus(bidRec1);
+                     }
+                    break;
+                case "SP_Cancel-Task":
+                    ConfirmBidModel cbm = DatabaseManager.getInstance(this).getConfirmedBidByID(data.get("ID"));
+                    boolean isDel = DatabaseManager.getInstance(this).deleteConfirmBid(cbm);
+                    if (remoteMessage.getNotification() != null) {
+                        Log.d("TAG", "Message Notification Body: " + remoteMessage.getNotification().getBody());
+                        sendNotificationToUserForCancelledBidBySP(remoteMessage.getNotification().getBody());
+                    }
+
+                    break;
+                case "User_Cancel-Task":
+                    AssignedTasksModel assignedTasksModel = DatabaseManager.getInstance(this).getAssignedTaskByID(data.get("ID"));
+                    if (DatabaseManager.getInstance(this).deleteAssignedTaskModel(assignedTasksModel)) {
+                        if (remoteMessage.getNotification() != null) {
+                            Log.d("TAG", "Message Notification Body: " + remoteMessage.getNotification().getBody());
+                            sendNotificationToSForCancelledBidByUser(remoteMessage.getNotification().getBody());
+                        }
+                    }
+                    else {
+                        Log.d("ALI","Unable TO Delete Assigned Model");
                     }
                 default:
                     break;
@@ -283,6 +313,44 @@ public class MyFirebaseService extends FirebaseMessagingService{
         Intent intent = new Intent(this, SPAssignedTaskActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("bidId",assignedTasksModel.getBidId());
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent,
+                PendingIntent.FLAG_ONE_SHOT);
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Mov N Pack")
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri).setContentIntent(pendingIntent).setPriority(Notification.PRIORITY_HIGH);
+        ;
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+    private void sendNotificationToUserForCancelledBidBySP(String messageBody) {
+        Intent intent = new Intent(this, UserBidActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent,
+                PendingIntent.FLAG_ONE_SHOT);
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Mov N Pack")
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri).setContentIntent(pendingIntent).setPriority(Notification.PRIORITY_HIGH);
+        ;
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+    private void sendNotificationToSForCancelledBidByUser(String messageBody) {
+        Intent intent = new Intent(this, SPBidActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent,
                 PendingIntent.FLAG_ONE_SHOT);
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

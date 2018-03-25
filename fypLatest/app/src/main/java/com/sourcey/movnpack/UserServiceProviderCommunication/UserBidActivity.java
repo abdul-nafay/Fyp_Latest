@@ -81,12 +81,18 @@ public class UserBidActivity extends AppCompatActivity {
 
                 BidModel dataModel= dataModels.get(position);
 
-                Intent intent = new Intent(UserBidActivity.this,UserBidConversationActivity.class);
-                intent.putExtra("bidId",dataModel.getBidId());
-                startActivity(intent);
-
-                Snackbar.make(view, dataModel.getCategoryName()+"\n"+dataModel.getMessage()+" date: "+dataModel.getDate(), Snackbar.LENGTH_LONG)
-                        .setAction("No action", null).show();
+                if (dataModel.isConfirmed()) {
+                    Intent intent = new Intent(UserBidActivity.this,UserTaskDetailActivity.class);
+                    //intent.putExtra("bidId",dataModel.getBidId());
+                    intent.putExtra("bidID",dataModel.getBidId());
+                    intent.putExtra("cbmID",dataModel.getConfirmedBidModel().getID());
+                    startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(UserBidActivity.this,UserBidConversationActivity.class);
+                    intent.putExtra("bidId",dataModel.getBidId());
+                    startActivity(intent);
+                }
             }
         });
 

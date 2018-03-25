@@ -9,7 +9,7 @@ import android.os.Parcelable;
 
 public class BidRecievedModel extends BaseModel implements Parcelable {
 
-    String message,bidId,date,userToken,userId,userName,amount,categoryName,spId,status , subject;
+    String message,bidId,date,userToken,userId,userName,amount,categoryName,status ,spId, subject;
     int lock ;
 
     public int getLock() {
@@ -130,9 +130,8 @@ public class BidRecievedModel extends BaseModel implements Parcelable {
         dest.writeString(categoryName);
         dest.writeString(status);
         dest.writeString(spId);
-
-
-
+        dest.writeString(subject);
+        dest.writeInt(lock);
     }
 
     public static final Parcelable.Creator<BidRecievedModel> CREATOR = new Parcelable.Creator<BidRecievedModel>() {
@@ -159,5 +158,7 @@ public class BidRecievedModel extends BaseModel implements Parcelable {
         categoryName = source.readString();
         status = source.readString();
         spId = source.readString();
+        subject = source.readString();
+        lock = source.readInt();
     }
 }

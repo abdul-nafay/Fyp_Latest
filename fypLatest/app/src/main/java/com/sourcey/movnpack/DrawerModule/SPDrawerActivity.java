@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.sourcey.movnpack.AppFragments.HomeMapFragment;
 import com.sourcey.movnpack.AppFragments.SPHomeMapFragment;
+import com.sourcey.movnpack.AppFragments.SPScheduledTaskFragment;
 import com.sourcey.movnpack.AppFragments.SettingsFragment;
 import com.sourcey.movnpack.BidPlacementActivities.SPBidRecievedActivity;
 import com.sourcey.movnpack.BidPlacementActivities.SPCounterBidActivity;
@@ -41,7 +42,7 @@ import com.sourcey.movnpack.UserServiceProviderCommunication.UserBidActivity;
 import com.sourcey.movnpack.Utility.Utility;
 
 public class SPDrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, SPHomeMapFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, SPHomeMapFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener , SPScheduledTaskFragment.OnFragmentInteractionListener{
     private TextView userNameTextView;
     private TextView userNumberTextView;
     private TextView spCategoryTextView;
@@ -153,6 +154,10 @@ public class SPDrawerActivity extends AppCompatActivity
             return true;
 
         }
+        else if (id == R.id.scheduled_tasks_sp) {
+            closeDrawer();
+            fragmentClass = SPScheduledTaskFragment.class;
+        }
 
         else if (id == R.id.nav_TimeIn) {
             closeDrawer();
@@ -199,6 +204,7 @@ public class SPDrawerActivity extends AppCompatActivity
             SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("Email",null);
+            editor.putString("HashString",null);
             editor.commit();
             ServiceProvider serviceProvider = new ServiceProvider();
             serviceProvider.setEmail("");

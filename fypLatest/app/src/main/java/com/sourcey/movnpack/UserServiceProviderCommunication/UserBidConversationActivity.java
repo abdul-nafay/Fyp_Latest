@@ -30,6 +30,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.sourcey.movnpack.DataBase.AcceptedBids;
 import com.sourcey.movnpack.DataBase.DatabaseManager;
 import com.sourcey.movnpack.LoginModule.SignupActivity;
 import com.sourcey.movnpack.Model.AcceptedBidsModel;
@@ -55,19 +56,14 @@ public class UserBidConversationActivity extends AppCompatActivity {
 
     TextView amountTextView;
     Button backBtn;
-
     Button viewBidDetailBtn;
     RelativeLayout mRelativeLayout;
-
-
     String message,date,amount,counterMessage;
-
-
     ArrayList<ConversationListViewModel> dataModels;
     ArrayList<BaseModel> bids;
     ListView listView;
     private static UserBidConversationAdapter adapter;
-    AcceptedBidsModel selectedBidModel;
+    BaseModel selectedBidModel;
     BidModel bidModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +75,7 @@ public class UserBidConversationActivity extends AppCompatActivity {
         viewBidDetailBtn = (Button) findViewById(R.id.btn_view_bid_detail);
         mRelativeLayout = (RelativeLayout) findViewById(R.id.rl_custom_layout);
 
-
-
         String bidId = getIntent().getStringExtra("bidId");
-
-
-
 
         amountTextView  = (TextView) findViewById(R.id.bid_amount_text_view);
 
@@ -111,6 +102,7 @@ public class UserBidConversationActivity extends AppCompatActivity {
         dataModels = new ArrayList<>();
         if(bids!=null) {
             for (BaseModel bid : bids) {
+
                 if (bid instanceof AcceptedBidsModel) {
                     AcceptedBidsModel a = (AcceptedBidsModel) bid;
                     ConversationListViewModel c =  new ConversationListViewModel(a.getSpName(),"Accepted your offer",a.getDate(),"1",a.getSpToken(),"");
@@ -126,7 +118,7 @@ public class UserBidConversationActivity extends AppCompatActivity {
                     else {
                         c.isConfirmed = false;
                     }
-                    c.a = a;
+                    c.setBidResponse(a);
 
                     c.setBidID(a.getBidId());
                     c.isAcceptedBid = true;
@@ -134,7 +126,27 @@ public class UserBidConversationActivity extends AppCompatActivity {
                 }
                 else {
                     UserBidCounterModel u = (UserBidCounterModel) bid;
-                    dataModels.add(new ConversationListViewModel(u.getSpName(),"Countered Your Offer",u.getDate(),"2",u.getSpToken(),u.getAmount()));
+                    ConversationListViewModel c = new ConversationListViewModel(u.getSpName(),"Countered Your Offer",u.getDate(),"2",u.getSpToken(),u.getAmount());
+//                    AcceptedBidsModel a = (AcceptedBidsModel) bid;
+//                    ConversationListViewModel c =  new ConversationListViewModel(a.getSpName(),"Accepted your offer",a.getDate(),"1",a.getSpToken(),"");
+                    if (bidModel.isConfirmed()) {
+                        ConfirmBidModel cbm = bidModel.getConfirmedBidModel();
+                        if (cbm.getSpId().equals(u.getSpId())) {
+                            c.isConfirmed = true;
+                        }
+                        else {
+                            c.isConfirmed = false;
+                        }
+                    }
+                    else {
+                        c.isConfirmed = false;
+                    }
+                    c.setBidResponse(u);
+
+                    c.setBidID(u.getBidId());
+                    c.isAcceptedBid = false;
+                    dataModels.add(c);
+
                 }
 
             }
@@ -151,7 +163,8 @@ public class UserBidConversationActivity extends AppCompatActivity {
 
                 ConversationListViewModel dataModel= dataModels.get(position);
                 counterMessage=dataModel.getMessage();
-                selectedBidModel = dataModel.getA();
+               // selectedBidModel = dataModel.getA();
+                selectedBidModel = dataModel.getBidResponse();
                 dialogBoxAccepted(view ,dataModel);
 
 
@@ -276,7 +289,15 @@ public class UserBidConversationActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(), spProfileInfo.class);
-                    intent.putExtra("number",c.a.getSpId());
+                    //intent.putExtra("number",c.a.getSpId());
+                    if (c.getBidResponse() instanceof  AcceptedBidsModel) {
+                        intent.putExtra("number",( (AcceptedBidsModel) c.getBidResponse()).getSpId());
+                    }
+                    else {
+                        if (c.getBidResponse() instanceof  UserBidCounterModel) {
+                            intent.putExtra("number",( (UserBidCounterModel) c.getBidResponse()).getSpId());
+                        }
+                    }
                     startActivity(intent);
                 }
             });
@@ -299,8 +320,14 @@ public class UserBidConversationActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(), ServiceConfirmationActivity.class);
 
-                    intent.putExtra("acceptedBid",(Parcelable) selectedBidModel);
-                    intent.putExtra("bidId",selectedBidModel.getBidId());
+                    intent.putExtra("bidResponse",(Parcelable) selectedBidModel);
+                    //intent.putExtra("bidId",selectedBidModel.getBidId());
+                    if (c.getBidResponse() instanceof AcceptedBidsModel) {
+                        intent.putExtra("bidId",( (AcceptedBidsModel) selectedBidModel).getBidId());
+                    }
+                    else {
+                        intent.putExtra("bidId",( (UserBidCounterModel) selectedBidModel).getBidId());
+                    }
                     startActivity(intent);
                 }
             });
